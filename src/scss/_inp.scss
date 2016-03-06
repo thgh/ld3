@@ -1,0 +1,80 @@
+.inp-text>label {
+	width: 8rem;
+	margin-bottom: 0;
+	float: left;
+}
+.inp-text>input,
+.inp-text>textarea,
+.inp-text>select {
+	display: block;
+	margin-left: 8.5rem;
+	border: 0;
+	border-bottom: 1px solid #ccc;
+	padding-left: 4px;
+	width: calc(100% - 8.5rem);
+	font: inherit;
+}
+.inp-text>select {
+	width: auto;
+}
+.inp-nav>input {
+	color: white;
+}
+
+/* Flexie */
+
+.inp-label {
+	flex: 0 0 auto;
+	display: inline;
+	padding: 0 1em 0 0;
+	margin: 0;
+	width: auto;
+	font-size: 14px;
+	opacity: 1;
+	font-size: 16px;
+	opacity: .7;
+}
+.inp-text {
+	flex-grow: 1;
+	display: flex;
+	align-items: center;
+	margin: 0;
+	padding: 7px 8px 7px 0;
+	line-height: 24px;
+	&:hover {
+		//background: white;
+	}
+	&>label {
+		flex: 0 0 auto;
+		padding: 0 1em 0 0;
+		width: auto;
+		opacity: .7;
+	}
+	&>input,
+	&>textarea {
+		flex: 10 0 50px;
+		margin-left: 0;
+		width: auto;
+		background: none;
+		border-top: 1px solid transparent;
+		border-bottom: 1px solid transparent;
+		&:invalid {
+			border-bottom: 1px dashed $warning;
+			font-style: italic;
+		}
+	}
+	&>select {
+		flex: 0 0 auto;
+		margin-left: .5em;
+		padding-top: 2px;
+		padding-bottom: 2px;
+	}
+}
+.inp-fake {
+	flex: 100 0 auto;
+	margin-left: 1em;
+}
+.label-prop>.inp-prop {
+	flex: 0 0 8em;
+	margin-right: 2em;
+}

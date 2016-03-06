@@ -1,0 +1,88 @@
+.btn {
+	display: inline-block;
+	border: .15em solid;
+	border-radius: 0;
+	padding: .25em 1em .3em;
+	line-height: 1.5em;
+	text-transform: uppercase;
+	text-decoration: none;
+	font-size: 14px;
+	font-weight: 500;
+	font-family: inherit;
+	cursor: pointer;
+	background: none;
+	color: transparentize($fg, .4);
+	-webkit-user-select: none;
+	user-select: none;
+	> .mdi {
+    margin-right: 4px;
+		font-size: 18px;
+		line-height: 21px;
+		vertical-align: top;
+	}
+}
+.btn:hover {
+	color: $fg;
+}
+.btn-other {
+	opacity: .5;
+}
+.btn-soft {
+	border-color: transparent;
+	&:hover {
+		background-color: rgba(0, 0, 0, .1);
+	}
+	&:disabled {
+		background-color: rgba(255, 0, 0, .1);
+		color: #666;
+		cursor: not-allowed;
+	}
+}
+.btn-save {
+	border-color: #0aa;
+	background: #0aa;
+	color: white;
+	&:focus,
+	&:hover {
+		background-color: #088;
+		border-color: #088;
+		color: white;
+	}
+}
+.btn-hover-danger {
+	&:focus,
+	&:hover {
+		border-color: #c00;
+		background: #c00;
+		color: white;
+	}
+}
+
+/* Specific something */
+
+.current .btn+.btn {
+	margin-left: 1em;
+}
+
+/* Button containers */
+
+.btn-p {
+	>.btn {
+		margin-bottom: .3em;
+	}
+}
+.flex-btns {
+	display: flex;
+	flex-wrap: wrap;
+	padding-bottom: 8px;
+	-webkit-user-select: none;
+	user-select: none;
+	&>.btn {
+		margin-right: 8px;
+		margin-bottom: 8px;
+		border-radius: 2px;
+	}
+}
+.action-btns {
+	margin-top: 1em;
+}

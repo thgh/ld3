@@ -1,0 +1,139 @@
+.section-editor {
+	//background: white;
+	h1 {
+		margin: 0 0 .5em;
+		font-size: 1.5em;
+		font-weight: 400;
+	}
+	h2 {
+		margin: 2em 0 0;
+		opacity: .5;
+		font-size: 1em;
+		text-transform: uppercase;
+		&:first-child {
+			padding-top: 0;
+		}
+		small {
+			text-transform: none;
+			font-weight: normal;
+			font-size: 14px;
+			&::before {
+				content: '\2014  ';
+			}
+		}
+	}
+}
+.fragment-sync {
+	float: right;
+	margin-left: 8px;
+	padding: 8px;
+	font-size: 16px;
+	background: transparentize($fg, .3);
+	color: $bg;
+	cursor: pointer;
+	border-radius: 2px;
+	&:hover {
+		background: $fg;
+	}
+}
+.fragment-json {
+	position: relative;
+	float: right;
+	padding: 8px;
+	font-size: 16px;
+	color: #888;
+	&:hover {
+		z-index: 2;
+		background: rgba(0, 0, 0, .1);
+	}
+	&:hover>.fragment-pre {
+		display: block;
+	}
+}
+.fragment-pre {
+	display: none;
+	position: absolute;
+	z-index: 10;
+	top: 100%;
+	right: 0;
+	font-size: 1rem;
+	background: #fff;
+	box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+}
+.fragment-h1 {
+	display: inline-block;
+}
+.ld-nested {
+	margin-bottom: 1em;
+	margin-left: -1rem;
+	border: .5em solid $bgNest;
+	border-top: 0;
+	padding-left: 1em;
+	.preview-open,
+	.ld-nested {
+		margin-left: -.5rem;
+		margin-right: .5rem;
+	}
+}
+.ld-link {
+	opacity: .5;
+	margin-left: -.7em;
+	margin-left: 0em;
+	margin-right: .7em;
+}
+.ld-equals {
+	opacity: .5;
+	margin-left: -8px;
+	margin-right: 8px;
+}
+.ld-addprops {
+	max-width: none;
+	font-size: 14px;
+}
+.ld-addprop {
+	margin-right: .5em;
+	cursor: pointer;
+}
+.ld-addprop:hover {
+	text-decoration: underline;
+}
+.ld-addprop::after {
+	content: ' ';
+}
+.ld-propclass {
+	margin-right: 10px;
+	border-radius: 3px;
+	padding: 2px 5px;
+	font-size: 12px;
+	font-weight: 700;
+	line-height: 16px;
+	background-color: transparentize($fgNav, .5);
+	color: $bg;
+	.inp-text>& {
+		margin-left: .5em;
+	}
+	header:hover &,
+	.inp-text:hover>& {
+		background-color: $fgNav;
+	}
+}
+.prop-description {
+	padding: 8px 0;
+	font-size: .85em;
+	line-height: 1.2em;
+	color: $info;
+}
+
+/* Preview */
+
+.preview {
+	padding: 8px 0;
+	line-height: 24px;
+}
+.preview-open {
+	margin-left: -1rem;
+	padding-left: 1rem;
+	background-color: $bgNest;
+	-webkit-user-select: none;
+	user-select: none;
+}

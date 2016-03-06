@@ -1,0 +1,65 @@
+/* Structure utilities */
+
+.container {
+	margin: 0 auto;
+	padding-left: 1em;
+	padding-right: 1em;
+	max-width: 40em;
+}
+.container-screen {
+	padding-left: 1em;
+	padding-right: 1em;
+}
+.container-page {
+	padding-left: 2cm;
+	padding-right: 2cm;
+}
+.container-nav {
+	justify-content: flex-end;
+	margin: 0 auto;
+	padding-left: 1em;
+	padding-right: 8px;
+	max-width: none;
+}
+
+/* Main structure */
+
+body {
+	min-width: 500px;
+	background: $bg;
+	color: $fg;
+}
+a{
+  color: $fgNav;
+  opacity: .7;
+}
+.main {
+}
+.section-browser {
+	position: fixed;
+	top: 0;
+	left: 0;
+	bottom: 0;
+  max-width: 16em;
+	overflow-y: auto;
+	background: $bgNav;
+	color: $fgNav;
+}
+.section-editor {
+	padding: 2rem;
+	margin-left: 16em;
+	max-width: 50em;
+}
+.section-intro {
+	font-size: 16px;
+	a {
+		color: hsl(hue(#099), 100, 50);
+		font-weight: 500;
+	}
+	a:visited {
+		color: hsl(hue(#099), 100, 90);
+	}
+	.hero {
+		padding: 2rem 0 2rem;
+	}
+}

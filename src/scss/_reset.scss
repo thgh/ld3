@@ -1,0 +1,21 @@
+html {
+	font-size: inherit;
+}
+body {
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", sans-serif;
+	overflow-y: scroll;
+}
+* {
+	box-sizing: border-box;
+}
+p {
+	margin: 1em 0;
+	max-width: 40em;
+}
+input {
+	color: inherit;
+}
