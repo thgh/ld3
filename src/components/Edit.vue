@@ -2,36 +2,37 @@
   <main>
     <section class="section section-browser">
       <p>
-        <a v-link="{ path: '/.hello' }">hello</a>
-        <a v-link="{ path: '/.config' }">config</a>
-        <a v-link="{ path: '/datasets/wut' }">dataset</a>
+        <a href="#!home">home</a>
+        <a href="#!conf">config</a>
+        <a href="#!dataset/wut">dataset/wut</a>
+        <a href="#!projects:dekastart">projects:dekastart</a>
 
       </p>
-      <recent-fragments :list="fragmentCache"></recent-fragments>
+      <recent-fragments :list="fragmentCache" :route="route"></recent-fragments>
       <p>
       {{blub}}
       </p>
 
     </section>
     <section class="section section-editor">
-      <fragment-editor v-if="uri" :fragments="fragmentCache" :uri="uri"></fragment-editor>
+      <fragment v-if="route.uri" :fragments="fragmentCache" :uri="route.uri"></fragment>
     </section>
   </main>
 </template>
 
 <script>
-import RecentFragments from './components/RecentFragments'
-import FragmentEditor from './components/FragmentEditor'
+import RecentFragments from './RecentFragments'
+import Fragment from './Fragment'
 
 export default {
+  props: ['route'],
   components: {
     RecentFragments,
-    FragmentEditor
+    Fragment
   },
   data () {
     return {
       blub: 15,
-      uri: false,
       fragmentCache: {}
     }
   },
@@ -41,6 +42,7 @@ export default {
     }
   },
   ready () {
+    // console.info(window.location)
     // console.log('edit', this.$route.path)
 
     // Wait for server...
@@ -57,7 +59,11 @@ export default {
         'schema:about': {
           '@id': 'https://thomasg.be/ld/store/projects/restaurantdekastart'
         },
-        'schema:author': 'Thomas & Juta',
+        'schema:author': [
+          {'@id': 'thomasg:thomas'},
+          {'@id': 'thomasg:juta'},
+          {'@id': 'thomasg:markske'}
+        ],
         'schema:releasedEvent': 'june 2013',
         'schema:provider': 'thomasg.be'
       },
@@ -91,24 +97,7 @@ export default {
         }
       }
     }
-    let uri = this.$route.path.substring(1)
-    if (uri in this.fragmentCache) {
-      this.uri = uri
-    } else {
-      console.warn('watcha doin?', uri)
-    }
+    this.route.uri = window.location.hash.substr(2)
   }
 }
 </script>
-
-<style lang="scss">
-@import 'scss/variables.scss';
-@import 'scss/shame.scss';
-
-@import 'scss/reset';
-@import 'scss/structure';
-@import 'scss/browser';
-@import 'scss/editor';
-@import 'scss/inp';
-@import 'scss/btn';
-</style>
