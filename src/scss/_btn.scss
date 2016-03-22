@@ -58,6 +58,18 @@
 	}
 }
 
+.btn-add {
+	border: 0;
+	padding: 0px 1rem;
+	background: rgba(255, 255, 255, .1);
+	color: transparent;
+	&:focus,
+	&:hover {
+		background: rgba(255, 255, 255, .2);
+		color: white;
+	}
+}
+
 /* Specific something */
 
 .current .btn+.btn {

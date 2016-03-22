@@ -1,3 +1,6 @@
+.inp-text {
+	position: relative;
+}
 .inp-text>label {
 	width: 8rem;
 	margin-bottom: 0;
@@ -10,9 +13,11 @@
 	margin-left: 8.5rem;
 	border: 0;
 	border-bottom: 1px solid #ccc;
+	padding: 0;
 	padding-left: 4px;
 	width: calc(100% - 8.5rem);
 	font: inherit;
+	color: inherit;
 }
 .inp-text>select {
 	width: auto;
@@ -24,6 +29,7 @@
 /* Flexie */
 
 .inp-label {
+	position: relative;
 	flex: 0 0 auto;
 	display: inline;
 	padding: 0 1em 0 0;
@@ -56,7 +62,6 @@
 		margin-left: 0;
 		width: auto;
 		background: none;
-		border-top: 1px solid transparent;
 		border-bottom: 1px solid transparent;
 		&:invalid {
 			border-bottom: 1px dashed $warning;

@@ -9,12 +9,6 @@ import Conf from './components/Conf'
 import Edit from './components/Edit'
 
 export default {
-  components: {
-    Hello,
-    Home,
-    Conf,
-    Edit
-  },
   data () {
     if (window.location.pathname !== '/') {
       console.log('replaceState', window.location.pathname)
@@ -45,12 +39,14 @@ export default {
         console.log('goto ', hash.substr(2))
         this.route.view = 'edit'
         this.route.uri = hash.substr(2)
+        window.document.title = 'ld3:edit ' + this.route.uri
       } else {
         console.log('changed hash to ', hash)
       }
     }
   },
   ready () {
+    this.hashchange()
   },
   attached () {
     // Start routing
@@ -59,6 +55,12 @@ export default {
   detached () {
     // Stop routing
     window.removeEventListener('hashchange', this.hashchange, false)
+  },
+  components: {
+    Hello,
+    Home,
+    Conf,
+    Edit
   }
 }
 </script>
