@@ -1,4 +1,6 @@
 var path = require('path')
+var cssLoaders = require('./css-loaders')
+var projectRoot = path.resolve(__dirname, '../')
 
 module.exports = {
   entry: {
@@ -6,28 +8,31 @@ module.exports = {
   },
   output: {
     path: path.resolve(__dirname, '../dist/static'),
-    publicPath: '/static/',
+    publicPath: './static/',
     filename: '[name].js'
   },
   resolve: {
     extensions: ['', '.js', '.vue'],
+    fallback: [path.join(__dirname, '../node_modules')],
     alias: {
       'src': path.resolve(__dirname, '../src')
     }
   },
   resolveLoader: {
-    root: path.join(__dirname, 'node_modules')
+    fallback: [path.join(__dirname, '../node_modules')]
   },
   module: {
     preLoaders: [
       {
         test: /\.vue$/,
         loader: 'eslint',
+        include: projectRoot,
         exclude: /node_modules/
       },
       {
         test: /\.js$/,
         loader: 'eslint',
+        include: projectRoot,
         exclude: /node_modules/
       }
     ],
@@ -39,6 +44,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel',
+        include: projectRoot,
         exclude: /node_modules/
       },
       {
@@ -50,7 +56,7 @@ module.exports = {
         loader: 'vue-html'
       },
       {
-        test: /\.(png|jpg|gif|svg)$/,
+        test: /\.(png|jpg|gif|svg|woff2?|eot|ttf)(\?.*)?$/,
         loader: 'url',
         query: {
           limit: 10000,
@@ -58,6 +64,9 @@ module.exports = {
         }
       }
     ]
+  },
+  vue: {
+    loaders: cssLoaders()
   },
   eslint: {
     formatter: require('eslint-friendly-formatter')
