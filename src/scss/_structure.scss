@@ -28,6 +28,10 @@ body {
 	min-width: 500px;
 	background: $bg;
 	color: $fg;
+	transition: background 0.3s, color 0.3s;
+}
+.focused {
+	background:#111;
 }
 a{
   color: $fgNav;

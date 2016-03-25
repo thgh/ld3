@@ -14,7 +14,6 @@
         <input v-if="addPropShow" v-model="addPropSearch" placeholder="property..." @change="loadProps" @focus="addPropShow=1;loadProps()" class="inp-prop" required>
         <input v-if="addPropShow" v-model="addPropValue" placeholder="value..." @change="guessProp" @focus="addPropShow=0" required>
       </label>
-      <pre v-text="fragment|json"></pre>
       <div v-show="hasPlugin" :is="fragment['@type']" :a="fragment">test</div>
     </article>
   </div>

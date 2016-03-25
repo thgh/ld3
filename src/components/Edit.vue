@@ -17,7 +17,7 @@
     <section class="section section-editor">
       <fragment v-if="currentFragment" :fragment.sync="currentFragment"></fragment>
     </section>
-    <div class="backdrop" :class="{active:backdrop}" @click.prevent.stop="cancel"></div>
+    <div class="backdrop" :class="{active:this.focusIds.length}" @click.prevent.stop="unfocus"></div>
   </main>
 </template>
 
@@ -56,6 +56,7 @@ export default {
     return {
       backdrop: false,
       blub: 15,
+      focusIds: [],
       fragments: {},
       fragmentCache: {}
     }
@@ -88,16 +89,20 @@ export default {
         this.$set('fragmentCache', JSON.parse(JSON.stringify(this.fragmentCache)))
       })
     },
-    cancel () {
-      this.$broadcast('deactivate')
-      console.log('cancel')
-      this.backdrop = false
+    unfocus () {
+      var uid = this.focusIds.pop()
+      this.$broadcast('unfocus', uid)
+      console.log('unfocus', uid, this.focusIds.length)
     }
   },
   events: {
-    activate () {
-      console.log('edit prop activate')
-      this.backdrop = true
+    objectFocused (uid) {
+      this.focusIds.push(uid)
+      console.log('  focus', uid, this.focusIds.length)
+    },
+    siblingUnfocused (uid) {
+      this.focusIds.splice(this.focusIds.indexOf(uid), 1)
+      console.log('unfocus', uid, this.focusIds.length)
     }
   },
   ready () {
@@ -107,6 +112,13 @@ export default {
     this.fetch('https://ld.dev/store/public/projects/ldeditor')
     this.fetch('https://ld.dev/store/public/invoices/1')
     this.route.uri = window.location.hash.substr(2)
+  },
+  watch: {
+    focusIds (val) {
+      this.$root.class.focused = !!val.length
+      // this.$root.style.background = val.length ? '#000' : null
+      // this.$root.style.color = val.length ? '#333' : null
+    }
   },
   components: {
     RecentFragments,
@@ -124,12 +136,11 @@ export default {
   left: 0;
   height: 100%;
   width: 100%;
-  background-color: black;
   pointer-events: none;
   transition: opacity .3s;
 }
 .backdrop.active {
-  opacity: .85;
+  opacity: .9;
   pointer-events: all;
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
-  <label class="inp-text prop" :class="{active:active}" title="{placeholder}">
-    <span class="inp-label">{{prop}}</span>
-    <component :is="renderType" :fragment.sync="fragment" :prop="prop"></component>
-  </label>
+  <div class="inp-text prop" :class="{'focus-prop':focus&&!focusFrom,'focus-from':focusFrom}" title="{placeholder}" @click.stop>
+    <label class="inp-label" :for="_uid">{{prop}}</label>
+    <component :is="renderType" :fragment.sync="fragment" :prop="prop" :id="_uid"></component>
+  </div>
 </template>
 
 <script>
@@ -17,23 +17,37 @@ export default {
   props: ['fragment', 'prop'],
   data () {
     return {
-      active: false
+      focus: false,
+      focusFrom: false
     }
   },
   computed: {
     renderType () {
       let o = this.fragment[this.prop]
-      return typeof o !== 'object' ? (o.length < 50 ? 'ValueString' : 'ValueText') : Array.isArray(o) ? 'ValueArray' : o['@id'] && o['@id'].charAt(0) !== '_' ? 'ValueReference' : 'ValueObject'
+      return typeof o !== 'object' ? (typeof o === 'boolean' ? 'ValueString' : typeof o === 'number' ? 'ValueString' : o.length > 50 ? 'ValueText' : 'ValueString') : Array.isArray(o) ? 'ValueArray' : o['@id'] && o['@id'].charAt(0) !== '_' ? 'ValueReference' : 'ValueObject'
     }
   },
   events: {
     deactivate () {
-      this.active = false
+      this.focus = false
       return true
     },
-    objectActivated () {
-      this.active = true
-      return true
+    propFocus (val) {
+      console.log('pf', val, this._uid)
+      this.focus = val
+      if (!val) {
+        this.focusFrom = val
+      }
+      this.$dispatch('focusFrom', val, this._uid)
+    },
+    focusFrom (val, uid) {
+      if (this._uid === uid) {
+        return true
+      }
+      this.focusFrom = val
+    },
+    arrayFocused () {
+      // Catch it here, don't want it dispatched further
     }
   },
   components: {
@@ -48,9 +62,50 @@ export default {
 
 <style lang="scss">
 @import '../scss/variables';
-.inp-text.active {
+
+.prop {
+  transition: opacity 0.3s;
+}
+// > normal
+.inp-label {
+  padding-left: 1rem!important;
+}
+
+// .focused > low
+.focused .prop {
+  opacity: 0.1;
+}
+
+.focus-from {
+  background: #090909;
+}
+
+// .focus-prop > normal
+.focus-prop{
+  color: white;
+  background: transparentize($bg, .5);
+}
+.focus-from.prop,
+.focus-prop.prop {
+  opacity: 1;
+}
+
+.focus-prop>.value-array>.value-object>.props-list>.prop,
+.focus-prop>.value-object>.props-list>.prop {
+  opacity: 1;
+}
+
+// .focus-prop .focus-object > normal
+
+// .focus-prop.focus-from > low
+.focus-from {
+  //outline: 1px solid grey;
+}
+
+// .focus-prop .focus-object .focus-prop > normal
+.focus-prop {
   z-index: 11;
-  outline: 1px solid red;
+  //outline: 1px solid orange;
 }
 .props-list {
   flex-basis: 100%;

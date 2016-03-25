@@ -1,11 +1,11 @@
 <template>
-  <div class="value-object" :class="{active:active}" @click.prevent.stop="activate">
+  <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
     <span>{{ value.name || value['@id'] || 'Unnamed' }}</span>
     <span class="ld-propclass">{{ value['@type'] }}</span> 
-    <div class="props-list" v-if="active && value">
-      <div is="props-list" :fragmentprops.sync="value"></div>
-    </div>
+    <props-list v-if="focus && value" :fragmentprops.sync="value"></props-list>
   </div>
+  
+  <div v></div>
 </template>
 
 <script>
@@ -16,7 +16,7 @@ export default {
   props: ['fragment', 'prop', 'index'],
   data () {
     return {
-      active: false
+      focus: false
     }
   },
   computed: {
@@ -25,14 +25,22 @@ export default {
     },
     list () {
       console.log('list', this.value)
-      return this.active ? 'propsList' : ''
+      return this.focus ? 'propsList' : ''
     }
   },
   methods: {
-    activate () {
-      this.active = true
+    focusObject () {
+      if (this.focus) {
+        return
+      }
+      // Unfocus siblings
+      this.$dispatch('arrayFocused')
+      // Focus parent
+      this.$dispatch('propFocus', true)
+      // Focus this
+      this.focus = true
       this.activeLock = true
-      this.$dispatch('objectActivated')
+      this.$dispatch('objectFocused', this._uid)
       this.activeLock = false
     },
     renderType (o) {
@@ -40,9 +48,17 @@ export default {
     }
   },
   events: {
-    deactivate () {
-      if (!this.activeLock) {
-        this.active = false
+    unfocus (uid) {
+      if (this._uid === uid) {
+        this.focus = false
+        this.$dispatch('propFocus', false)
+      }
+      return true
+    },
+    siblingObjectActivated () {
+      if (!this.activeLock && this.focus) {
+        this.focus = false
+        this.$dispatch('siblingUnfocused', this._uid)
       }
     }
   },
@@ -54,13 +70,39 @@ export default {
 
 <style lang="scss">
 @import '../scss/variables';
-.value-object.active {
-  outline: 1px solid green;
+.value-object {
+  cursor: pointer;
 }
-.prop.active .value-object {
-  opacity: .2
+
+// > normal
+
+.focus-prop{
+  color: white;
+  background: $bg;
 }
-.prop.active .value-object.active {
+
+
+.focus-object {
+  // outline: 1px solid green;
+}
+// .focus-prop (unfocused) > low
+.focus-prop .value-object {
+  opacity: 0.1
+}
+// .focus-prop .focus-object .focus-prop > normal
+.prop .props-list .value-object,
+// .focus-prop .focus-object > normal
+.prop .focus-object {
   opacity: 1
 }
+
+// .focus-prop.focus-from (unfocused) > low
+// .focus-prop.focus-from .focus-object > low
+.focus-from .focus-object {
+  // outline: 1px solid red;
+}
+.focus-from .focus-prop .focus-object {
+  //outline: 1px solid green;
+}
+
 </style>

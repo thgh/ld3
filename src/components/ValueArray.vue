@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="value-array">
     <component v-for="_nope in fragment[prop]" :is="renderType[$index]" :fragment.sync="fragment" :prop="prop" :index="$index"></component>
     <button class="btn-add" @click="push">Add</button>
   </div>
@@ -26,9 +26,8 @@ export default {
     }
   },
   events: {
-    objectActivated () {
-      this.$broadcast('deactivate')
-      return true
+    arrayFocused () {
+      this.$broadcast('siblingObjectActivated')
     }
   },
   components: {
@@ -36,3 +35,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.focus-prop .btn-add {
+  opacity: 0
+}
+</style>

@@ -1,9 +1,6 @@
 <template>
   <div class="props-list" :class="{active:blurry}">
-    <div v-for="(prop, value) in fragmentprops" v-if="prop[0]!=='@'">
-      <prop :fragment.sync="fragmentprops" :prop="prop"></prop>
-    </div>
-    <div class="blurry" @click.prevent.stop="cancel"></div>
+    <prop v-for="(prop, value) in fragmentprops" v-if="prop[0]!=='@'" :fragment.sync="fragmentprops" :prop="prop"></prop>
   </div>
 </template>
 
@@ -20,13 +17,7 @@ export default {
   },
   methods: {
     cancel () {
-      this.$broadcast('deactivate')
       this.blurry = false
-    }
-  },
-  events: {
-    objectActivated () {
-      this.blurry = true
     }
   }
 }
@@ -36,16 +27,29 @@ export default {
 @import '../scss/variables';
 .props-list {
   position: relative;
+  margin-left: -1rem!important;
 }
 .prop .props-list {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  width: 100%;
-  background-color: $bg;
+  margin-left: 0!important;
+  padding: .5rem 0;
+  background-color: #000;
+  // outline: 1px solid purple;
 }
-.blurry {
+.focus-from .props-list {
+  background: #090909;
+  z-index: 12;
+}
+.focus-from .focus-prop .props-list {
+  background-color: #000;
+}
+.value-array>.value-object>.props-list {
+  margin-top: -1.6rem;
+}
+/*.blurry {
   position: absolute;
   top: 0;
   right: 0;
@@ -53,11 +57,11 @@ export default {
   bottom:0 ;
   background-color: $bg;
   opacity: 0;
-  transition: .2s opacity;
+  transition: opacity 1s;
   pointer-events:none;
 }
 .props-list.active>.blurry {
   opacity: .9;
   pointer-events:all;
-}
+}*/
 </style>

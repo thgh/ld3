@@ -12,5 +12,14 @@ Vue.config.debug = true
 /* eslint-disable no-new */
 new Vue({
   el: 'body',
+  data: {
+    class: {
+      focused: null
+    },
+    style: {
+      color: null,
+      background: null
+    }
+  },
   components: { App }
 })
