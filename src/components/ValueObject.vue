@@ -76,16 +76,12 @@ export default {
 
 // > normal
 
-.focus-prop{
-  color: white;
-  background: $bg;
-}
-
 
 .focus-object {
   // outline: 1px solid green;
 }
 // .focus-prop (unfocused) > low
+.focus-from .value-object,
 .focus-prop .value-object {
   opacity: 0.1
 }

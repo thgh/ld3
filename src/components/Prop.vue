@@ -83,7 +83,12 @@ export default {
 // .focus-prop > normal
 .focus-prop{
   color: white;
-  background: transparentize($bg, .5);
+  background: black;
+}
+
+.focus-prop:hover{
+  color: white;
+  background: $bg;
 }
 .focus-from.prop,
 .focus-prop.prop {
