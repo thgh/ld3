@@ -1,14 +1,16 @@
 <template>
-  <textarea rows="{{len}}" v-model="fragment[prop]" placeholder="{placeholder}"></textarea>
+  <textarea v-model="fragment[prop]" placeholder="{placeholder}"></textarea>
 </template>
 
 <script>
 export default {
   name: 'value-text',
   props: ['fragment', 'prop'],
-  computed: {
-    len () {
-      return Math.ceil(this.fragment[this.prop].length / 60)
+  attached () {
+    var textarea = this.$el
+    textarea.oninput = function () {
+      textarea.style.height = ''
+      textarea.style.height = 1 + Math.min(textarea.scrollHeight, 500) + 'px'
     }
   }
 }

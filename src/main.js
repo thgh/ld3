@@ -4,10 +4,10 @@ import App from './App'
 
 import Prop from './components/Prop'
 
+// Fix recursive initializing bug: PropsList > Prop > ValueObject > PropsList > Prop > ...
 Vue.component('Prop', Prop)
 
 Vue.use(VueResource)
-Vue.config.debug = true
 
 /* eslint-disable no-new */
 new Vue({
