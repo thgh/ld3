@@ -36,8 +36,13 @@ export default {
   right: 0;
   margin-left: 0!important;
   padding: .5rem 0;
-  background-color: #000;
+  background-color: black;
   // outline: 1px solid purple;
+  transition: background 1s;
+}
+.focus-prop:hover .props-list {
+  background-color: $bg;
+  transition: background 0.2s;
 }
 .focus-from .props-list {
   background: #090909;
@@ -45,6 +50,9 @@ export default {
 }
 .focus-from .focus-prop .props-list {
   background-color: #000;
+}
+.focus-from .focus-prop:hover .props-list {
+  background-color: $bg;
 }
 .value-array>.value-object>.props-list {
   margin-top: -1.6rem;

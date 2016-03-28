@@ -64,7 +64,7 @@ export default {
 @import '../scss/variables';
 
 .prop {
-  transition: opacity 0.3s;
+  transition: opacity 0.3s, background 1s;
 }
 // > normal
 .inp-label {
@@ -89,6 +89,7 @@ export default {
 .focus-prop:hover{
   color: white;
   background: $bg;
+  transition: opacity 0.3s, background 0.2s;
 }
 .focus-from.prop,
 .focus-prop.prop {
