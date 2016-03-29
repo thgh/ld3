@@ -30,19 +30,27 @@ import LdContext from '../libs/LdContext'
 //   'schema': 'http://schema.org/',
 //   'thomas': 'http://thomasg.be/'
 // }
-var reverseNamespaces = {
-  'https:': 'http:',
-  'http://schema.org/': 'schema:',
-  'http://thomasg.be/': 'thomasg:',
-  'http://ld.dev/': 'dev:',
-  'dev:store/public/': 'store:',
-  'store:projects/': 'projects:',
-  'store:invoices/': 'invoices:'
-}
 
-function namespaceMinifier (s) {
-  for (let ns in reverseNamespaces) {
-    s['@id'] = s['@id'].replace(ns, reverseNamespaces[ns])
+var namespaces = [
+  {ns: 'schema:', url: 'https://schema.org/'},
+  {ns: 'schema:', url: 'http://schema.org/'},
+  {ns: 'dev:', url: 'https://ld.dev/'},
+  {ns: 'dev:', url: 'http://ld.dev/'},
+  {ns: 'store:', url: 'dev:store/public/'},
+  {ns: 'projects:', url: 'store:projects/'},
+  {ns: 'invoices:', url: 'store:invoices/'},
+  {ns: 'orgs:', url: 'store:orgs/'}
+]
+
+var namespaceMinifier = function (s) {
+  for (var i = 0; i < namespaces.length; i++) {
+    s['@id'] = s['@id'].replace(namespaces[i].url, namespaces[i].ns)
+  }
+  return s
+}
+var namespaceUndoer = function (s) {
+  for (var i = namespaces.length - 1; i >= 0; i--) {
+    s = s.replace(namespaces[i].ns, namespaces[i].url)
   }
   return s
 }
@@ -68,6 +76,7 @@ export default {
   },
   methods: {
     fetch (url) {
+      url = namespaceUndoer(url)
       this.$http.get(url).then(function (res) {
         if (!res.data) {
           return console.warn('no data in response')
@@ -79,14 +88,16 @@ export default {
           for (let s of res.data) {
             if (s['@id']) {
               s = namespaceMinifier(s)
-              this.fragmentCache[s['@id']] = s
+              this.$root.fragmentCache[s['@id']] = s
             }
           }
         } else if (res.data['@id']) {
           let s = namespaceMinifier(res.data)
-          this.fragmentCache[s['@id']] = s
+          this.$root.fragmentCache[s['@id']] = s
         }
-        this.$set('fragmentCache', JSON.parse(JSON.stringify(this.fragmentCache)))
+        this.$root.$set('fragmentCache', JSON.parse(JSON.stringify(this.$root.fragmentCache)))
+        this.$set('fragmentCache', JSON.parse(JSON.stringify(this.$root.fragmentCache)))
+        console.log(this.$root.fragmentCache)
       })
     },
     unfocus () {
@@ -105,12 +116,20 @@ export default {
       console.log('unfocus', uid, this.focusIds.length)
     }
   },
+  init () {
+    this.$root.ns = {
+      minify: namespaceMinifier,
+      undo: namespaceUndoer
+    }
+    this.$root.fragmentCache = this.$root.fragmentCache || {}
+  },
   ready () {
     // console.info(window.location)
     // console.log('edit', this.$route.path)
 
-    this.fetch('https://ld.dev/store/public/projects/ldeditor')
-    this.fetch('https://ld.dev/store/public/invoices/1')
+    this.fetch('projects:ldeditor')
+    this.fetch('invoices:1')
+    this.fetch('orgs:thomasg')
     this.route.uri = window.location.hash.substr(2)
   },
   watch: {

@@ -4,8 +4,6 @@
     <span class="ld-propclass">{{ value['@type'] }}</span> 
     <props-list v-if="focus && value" :fragmentprops.sync="value"></props-list>
   </div>
-  
-  <div v></div>
 </template>
 
 <script>
@@ -21,7 +19,7 @@ export default {
   },
   computed: {
     value () {
-      return typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
+      return typeof this.prop !== 'string' ? this.fragment : typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
     },
     list () {
       console.log('list', this.value)
