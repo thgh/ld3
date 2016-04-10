@@ -3,6 +3,7 @@
 	h1 {
 		margin: 0 0 .5em;
 		font-size: 1.5em;
+		line-height: 1.4em;
 		font-weight: 400;
 	}
 	h2 {
@@ -42,6 +43,7 @@
 	padding: 8px;
 	font-size: 16px;
 	color: #888;
+	background-color:white;
 	&:hover {
 		z-index: 2;
 		background: rgba(0, 0, 0, .1);
@@ -52,13 +54,16 @@
 }
 .fragment-pre {
 	display: none;
-	position: absolute;
+	position: fixed;
 	z-index: 10;
-	top: 100%;
-	right: 0;
+	top: 1rem;
+	left: 1rem;
+	right: 1rem;
+	bottom: 1rem;
 	font-size: 1rem;
 	background: #fff;
 	box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+	overflow: auto;
 }
 .fragment-h1 {
 	display: inline-block;
@@ -112,8 +117,8 @@
 		margin-left: .5em;
 	}
 	header:hover &,
-	.inp-text:hover>& {
-		background-color: $fgNav;
+	.value-object:hover>& {
+		opacity: 1;
 	}
 }
 .prop-description {

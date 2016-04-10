@@ -1,8 +1,11 @@
 <template>
 	<section>
-	  recent fragments<br>
+	  <h2>recent fragments</h2>
 	  <div v-for="(uri, fragment) in list">
-	    <a href="#!{{uri}}">{{uri}}</a>
+	    <a href="#!{{uri}}" class="a-fragment">
+	    	{{ fragment['schema:name'] || fragment.name || 'Unnamed' }}
+	    	<small>{{ uri }}</small>
+	    </a>
 	  </div>
 	</section>
 </template>

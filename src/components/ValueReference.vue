@@ -1,7 +1,5 @@
 <template>
-  <div>=>>
-    <value-object :fragment.sync="actualFragment"></value-object>
-  </div>
+  <value-object :fragment.sync="actualFragment" :ref="1"></value-object>
 </template>
 
 <script>
@@ -15,7 +13,7 @@ export default {
       return typeof this.prop !== 'string' ? this.fragment : typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
     },
     actualFragment () {
-      return this.$root.fragmentCache[this.$root.ns.minify(this.value)['@id']]
+      return this.$root.fragmentCache[this.$root.ns.minify(this.value)['@id']] || this.$dispatch('fetch', this.value)
     }
   },
   components: {

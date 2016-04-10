@@ -3,7 +3,6 @@
 </template>
 
 <script>
-import Hello from './components/Hello'
 import Home from './components/Home'
 import Conf from './components/Conf'
 import Edit from './components/Edit'
@@ -20,7 +19,7 @@ export default {
     }
     return {
       route: {
-        view: 'edit',
+        view: 'home',
         uri: ''
       },
       namespaces: {}
@@ -36,10 +35,21 @@ export default {
       } else if (hash.length === 2) {
         console.log('not much hash')
       } else if (hash.substr(0, 2) === '#!') {
-        console.log('goto ', hash.substr(2))
-        this.route.view = 'edit'
-        this.route.uri = hash.substr(2)
-        window.document.title = 'ld3:edit ' + this.route.uri
+        hash = hash.substr(2)
+        if (hash.indexOf(':') === -1) {
+          console.log('page', hash)
+          if (hash !== 'conf' && hash !== 'home' && hash !== 'edit') {
+            console.log('  or', hash)
+            hash = 'home'
+          }
+          this.route.view = hash
+          window.document.title = 'ld3 ' + hash
+        } else {
+          console.log('goto ', hash)
+          this.route.view = 'edit'
+          this.route.uri = hash
+          window.document.title = 'ld3:edit ' + this.route.uri
+        }
       } else {
         console.log('changed hash to ', hash)
       }
@@ -57,7 +67,6 @@ export default {
     window.removeEventListener('hashchange', this.hashchange, false)
   },
   components: {
-    Hello,
     Home,
     Conf,
     Edit

@@ -1,17 +1,19 @@
 <template>
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
-    <span>{{ value.name || value['@id'] || 'Unnamed' }}</span>
+    <span v-if="ref">=></span>
+    <subtle-input :model="value" :placeholder="value['@id'] || 'Unnamed'"></subtle-input>
     <span class="ld-propclass">{{ value['@type'] }}</span> 
     <props-list v-if="focus && value" :fragmentprops.sync="value"></props-list>
   </div>
 </template>
 
 <script>
+import SubtleInput from './SubtleInput'
 import PropsList from './PropsList'
 
 export default {
   name: 'value-object',
-  props: ['fragment', 'prop', 'index'],
+  props: ['fragment', 'prop', 'index', 'ref'],
   data () {
     return {
       focus: false
@@ -61,6 +63,7 @@ export default {
     }
   },
   components: {
+    SubtleInput,
     PropsList
   }
 }

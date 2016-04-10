@@ -1,13 +1,23 @@
 <template>
-    <!-- Editor -->
+  <main>
+    <section class="section section-browser">
+      <p>
+        <a href="#!home">home</a>
+        <a href="#!conf">config</a>
+        <a href="#!dataset/wut">dataset/wut</a>
+        <a href="#!projects:dekastart">projects:dekastart</a>
 
-    <section class="section section-editor" ng-if="stor.active">
-      <div ld-editor="stor.active"></div>
+      </p>
+      <recent-fragments :list="fragmentCache" :route="route"></recent-fragments>
+      <p>
+      {{blub}}
+      </p>
+
     </section>
 
     <!-- Intro -->
 
-    <section class="section section-editor section-intro" ng-if="!stor.active">
+    <section class="section section-editor section-intro">
       <div class="hero">
         <h1>Linked Data editor</h1>
         <p>
@@ -41,6 +51,7 @@
         <br>Intro &mdash; Back to this page.
       </p>
     </section>
+  </main>
 </template>
 
 <script>

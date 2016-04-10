@@ -18,6 +18,11 @@
 	width: calc(100% - 8.5rem);
 	font: inherit;
 	color: inherit;
+	&:focus {
+		outline-offset: 0;
+		outline: 3px solid transparentize(white, .8);
+		background-color: transparentize(white, .8);
+	}
 }
 .inp-text>select {
 	width: auto;
@@ -82,4 +87,29 @@
 .label-prop>.inp-prop {
 	flex: 0 0 8em;
 	margin-right: 2em;
+}
+
+.inp-subtle {
+	position: relative;
+	display: inline-block;
+	min-width: 50px;
+	height: 10px;
+	color: rgba(0,0,0,0);
+	white-space: pre;
+	>input {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		border: 0;
+		font: inherit;
+		line-height: 1.4em;
+		background: none;
+		color: $fg;
+		&:focus {
+			outline-offset: 0;
+			outline: 3px solid transparentize(white, .8);
+			background-color: transparentize(white, .8);
+		}
+	}
 }

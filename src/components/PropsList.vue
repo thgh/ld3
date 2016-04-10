@@ -36,9 +36,9 @@ export default {
   right: 0;
   margin-left: 0!important;
   padding: .5rem 0;
-  background-color: black;
+  background-color: $bg;
   // outline: 1px solid purple;
-  transition: background 1s;
+  transition: background 0.3s;
 }
 .focus-prop:hover .props-list {
   background-color: $bg;
@@ -49,7 +49,7 @@ export default {
   z-index: 12;
 }
 .focus-from .focus-prop .props-list {
-  background-color: #000;
+  background-color: $bg;
 }
 .focus-from .focus-prop:hover .props-list {
   background-color: $bg;
@@ -65,7 +65,7 @@ export default {
   bottom:0 ;
   background-color: $bg;
   opacity: 0;
-  transition: opacity 1s;
+  transition: opacity 0.3s;
   pointer-events:none;
 }
 .props-list.active>.blurry {

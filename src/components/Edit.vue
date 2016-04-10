@@ -6,13 +6,8 @@
         <a href="#!conf">config</a>
         <a href="#!dataset/wut">dataset/wut</a>
         <a href="#!projects:dekastart">projects:dekastart</a>
-
       </p>
-      <recent-fragments :list="fragmentCache" :route="route"></recent-fragments>
-      <p>
-      {{blub}}
-      </p>
-
+      <recent-fragments :list="$root.fragmentCache" :route="route"></recent-fragments>
     </section>
     <section class="section section-editor">
       <fragment v-if="currentFragment" :fragment.sync="currentFragment"></fragment>
@@ -24,7 +19,8 @@
 <script>
 import RecentFragments from './RecentFragments'
 import Fragment from './Fragment'
-import LdContext from '../libs/LdContext'
+// import LdContext from '../libs/LdContext'
+// LdContext.init()
 
 // var namespaces = {
 //   'schema': 'http://schema.org/',
@@ -55,23 +51,19 @@ var namespaceUndoer = function (s) {
   return s
 }
 
-LdContext.init()
-
 export default {
   name: 'edit',
   props: ['route'],
   data () {
     return {
       backdrop: false,
-      blub: 15,
       focusIds: [],
-      fragments: {},
-      fragmentCache: {}
+      fragments: {}
     }
   },
   computed: {
     currentFragment () {
-      return this.fragmentCache && this.route && this.route.uri && this.fragmentCache[this.route.uri]
+      return this.$root.fragmentCache && this.route && this.route.uri && this.$root.fragmentCache[this.route.uri]
     }
   },
   methods: {
@@ -84,19 +76,21 @@ export default {
         if (typeof res.data !== 'object') {
           return console.warn('no object in data of response')
         }
+        if (!this.$root.fragmentCache) {
+          console.log('creating store')
+          this.$root.$set('fragmentCache', {})
+        }
         if (res.data.length && res.data[0]) {
           for (let s of res.data) {
             if (s['@id']) {
               s = namespaceMinifier(s)
-              this.$root.fragmentCache[s['@id']] = s
+              this.$root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
             }
           }
         } else if (res.data['@id']) {
           let s = namespaceMinifier(res.data)
-          this.$root.fragmentCache[s['@id']] = s
+          this.$root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
         }
-        this.$root.$set('fragmentCache', JSON.parse(JSON.stringify(this.$root.fragmentCache)))
-        this.$set('fragmentCache', JSON.parse(JSON.stringify(this.$root.fragmentCache)))
         console.log(this.$root.fragmentCache)
       })
     },
@@ -107,6 +101,12 @@ export default {
     }
   },
   events: {
+    fetch (url) {
+      url = url['@id']
+      let full = namespaceUndoer(url)
+      console.log('  needs', url, full)
+      this.fetch(url)
+    },
     objectFocused (uid) {
       this.focusIds.push(uid)
       console.log('  focus', uid, this.focusIds.length)
@@ -121,7 +121,10 @@ export default {
       minify: namespaceMinifier,
       undo: namespaceUndoer
     }
-    this.$root.fragmentCache = this.$root.fragmentCache || {}
+    if (!this.$root.fragmentCache) {
+      console.log('creating init store')
+      this.$root.$set('fragmentCache', {})
+    }
   },
   ready () {
     // console.info(window.location)
