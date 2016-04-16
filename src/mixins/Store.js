@@ -53,8 +53,8 @@ export default {
     },
     sync (fragment) {
       let $this = this
-      if (typeof uri !== 'object') {
-        console.error('type error')
+      if (typeof fragment !== 'object') {
+        return console.error('Store.fetch expects object, but got', typeof fragment)
       }
       fragment = inert(fragment)
       ns.undoF(fragment)
@@ -73,7 +73,7 @@ export default {
     fetch (uri) {
       let $this = this
       if (typeof uri !== 'string') {
-        console.error('type error')
+        return console.error('Store.fetch expects string, but got', typeof uri)
       }
       uri = ns.undo(uri)
       if (fetching[uri]) {

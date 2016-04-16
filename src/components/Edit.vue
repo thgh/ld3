@@ -34,7 +34,7 @@ export default {
   },
   computed: {
     currentFragment () {
-      return this.$root.fragments && this.route && this.route.uri && this.$root.fragments[this.route.uri]
+      return (this.$root.fragments && this.route && this.route.uri && this.$root.fragments[this.route.uri]) || this.$root.fetch(this.route.uri)
     }
   },
   methods: {
@@ -53,12 +53,6 @@ export default {
     }
   },
   events: {
-    fetch (url) {
-      url = url['@id']
-      let full = this.$root.ns.undo(url)
-      console.log('  needs', url, full)
-      this.$root.fetch(url)
-    },
     objectFocused (uid) {
       this.focusIds.push(uid)
       console.log('  focus', uid, this.focusIds.length)
