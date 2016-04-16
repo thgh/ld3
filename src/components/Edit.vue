@@ -101,6 +101,13 @@ export default {
       var uid = this.focusIds.pop()
       this.$broadcast('unfocus', uid)
       console.log('unfocus', uid, this.focusIds.length)
+    },
+    keyup (evt) {
+      let key = evt.which || evt.keyCode
+      // esc
+      if (key === 27) {
+        window.alert('esc')
+      }
     }
   },
   events: {
@@ -137,6 +144,13 @@ export default {
     this.fetch('invoices:1')
     this.fetch('orgs:thomasg')
     this.route.uri = window.location.hash.substr(2)
+  },
+  attached () {
+    // Editor shortcuts
+    window.addEventListener('keyup', this.keyup, false)
+  },
+  detached () {
+    window.removeEventListener('keyup', this.keyup, false)
   },
   watch: {
     focusIds (val) {
