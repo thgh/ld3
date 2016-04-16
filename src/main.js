@@ -3,6 +3,8 @@ import App from './App'
 
 import Prop from './components/Prop'
 
+import Store from './mixins/Store'
+
 // Fix recursive initializing bug: PropsList > Prop > ValueObject > PropsList > Prop > ...
 Vue.component('Prop', Prop)
 
@@ -18,5 +20,6 @@ new Vue({
       background: null
     }
   },
+  mixins: [Store],
   components: { App }
 })

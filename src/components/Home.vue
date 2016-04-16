@@ -8,7 +8,7 @@
         <a href="#!projects:dekastart">projects:dekastart</a>
 
       </p>
-      <recent-fragments :list="fragmentCache" :route="route"></recent-fragments>
+      <recent-fragments :list="fragments" :route="route"></recent-fragments>
       <p>
       {{blub}}
       </p>
@@ -57,7 +57,7 @@
 <script>
 export default {
   ready () {
-    console.log('home', this)
+    // console.log('home', this)
   }
 }
 </script>

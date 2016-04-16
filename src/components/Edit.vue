@@ -7,7 +7,7 @@
         <a href="#!dataset/wut">dataset/wut</a>
         <a href="#!projects:dekastart">projects:dekastart</a>
       </p>
-      <recent-fragments :list="$root.fragmentCache" :route="route"></recent-fragments>
+      <recent-fragments :list="$root.fragments" :route="route"></recent-fragments>
     </section>
     <section class="section section-editor">
       <fragment v-if="currentFragment" :fragment.sync="currentFragment"></fragment>
@@ -22,35 +22,6 @@ import Fragment from './Fragment'
 // import LdContext from '../libs/LdContext'
 // LdContext.init()
 
-// var namespaces = {
-//   'schema': 'http://schema.org/',
-//   'thomas': 'http://thomasg.be/'
-// }
-
-var namespaces = [
-  {ns: 'schema:', url: 'https://schema.org/'},
-  {ns: 'schema:', url: 'http://schema.org/'},
-  {ns: 'dev:', url: 'https://ld.dev/'},
-  {ns: 'dev:', url: 'http://ld.dev/'},
-  {ns: 'store:', url: 'dev:store/public/'},
-  {ns: 'projects:', url: 'store:projects/'},
-  {ns: 'invoices:', url: 'store:invoices/'},
-  {ns: 'orgs:', url: 'store:orgs/'}
-]
-
-var namespaceMinifier = function (s) {
-  for (var i = 0; i < namespaces.length; i++) {
-    s['@id'] = s['@id'].replace(namespaces[i].url, namespaces[i].ns)
-  }
-  return s
-}
-var namespaceUndoer = function (s) {
-  for (var i = namespaces.length - 1; i >= 0; i--) {
-    s = s.replace(namespaces[i].ns, namespaces[i].url)
-  }
-  return s
-}
-
 export default {
   name: 'edit',
   props: ['route'],
@@ -63,40 +34,10 @@ export default {
   },
   computed: {
     currentFragment () {
-      return this.$root.fragmentCache && this.route && this.route.uri && this.$root.fragmentCache[this.route.uri]
+      return this.$root.fragments && this.route && this.route.uri && this.$root.fragments[this.route.uri]
     }
   },
   methods: {
-    fetch (url) {
-      let $root = this.$root
-      url = namespaceUndoer(url)
-      window.fetch(url, {redirect: 'follow'}).then(function (response) {
-        return response.json()
-      }).then(function (body) {
-        if (!body) {
-          return console.warn('no data in response')
-        }
-        if (typeof body !== 'object') {
-          return console.warn('no object in data of response')
-        }
-        if (!$root.fragmentCache) {
-          console.log('creating store')
-          $root.$set('fragmentCache', {})
-        }
-        if (body.length && body[0]) {
-          for (let s of body) {
-            if (s['@id']) {
-              s = namespaceMinifier(s)
-              $root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
-            }
-          }
-        } else if (body['@id']) {
-          let s = namespaceMinifier(body)
-          $root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
-        }
-        console.log($root.fragmentCache)
-      })
-    },
     unfocus () {
       var uid = this.focusIds.pop()
       this.$broadcast('unfocus', uid)
@@ -108,14 +49,15 @@ export default {
       if (key === 27) {
         window.alert('esc')
       }
+      console.log(this.$root)
     }
   },
   events: {
     fetch (url) {
       url = url['@id']
-      let full = namespaceUndoer(url)
+      let full = this.$root.ns.undo(url)
       console.log('  needs', url, full)
-      this.fetch(url)
+      this.$root.fetch(url)
     },
     objectFocused (uid) {
       this.focusIds.push(uid)
@@ -126,23 +68,13 @@ export default {
       console.log('unfocus', uid, this.focusIds.length)
     }
   },
-  init () {
-    this.$root.ns = {
-      minify: namespaceMinifier,
-      undo: namespaceUndoer
-    }
-    if (!this.$root.fragmentCache) {
-      console.log('creating init store')
-      this.$root.$set('fragmentCache', {})
-    }
-  },
   ready () {
     // console.info(window.location)
     // console.log('edit', this.$route.path)
 
-    this.fetch('projects:ldeditor')
-    this.fetch('invoices:1')
-    this.fetch('orgs:thomasg')
+    this.$root.fetch('projects:ldeditor')
+    this.$root.fetch('invoices:1')
+    this.$root.fetch('orgs:thomasg')
     this.route.uri = window.location.hash.substr(2)
   },
   attached () {
