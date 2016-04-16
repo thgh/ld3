@@ -19,6 +19,10 @@
       </label>
       <!-- <div v-show="hasPlugin" :is="fragment['@type']" :a="fragment">test</div> -->
     </article>
+
+    <p class="fragment-cta">
+      <button class="btn btn-save" :class="{'btn-save':savable,'btn-soft':!savable}" @click="sync">Sync</button>
+    </p>
   </div>
 </template>
 
@@ -29,13 +33,19 @@ import Invoice from './plugins/Invoice'
 
 var plugins = {'Invoice': true}
 
+function json (response) {
+  return response.text()
+}
+
 export default {
   props: ['fragment', 'uri'],
   data () {
     return {
       'addPropShow': false,
       'addPropSearch': '',
-      'addPropValue': ''
+      'addPropValue': '',
+      'syncAgo': 0,
+      'interval': 0
     }
   },
   computed: {
@@ -44,12 +54,40 @@ export default {
     },
     props () {
       return this.fragment
+    },
+    savable () {
+      return this.syncAgo > 5
     }
   },
   methods: {
     loadProps () {
       this.addPropShow = true
+    },
+    checkSave () {
+      this.syncAgo++
+    },
+    sync () {
+      let $this = this
+      let fragment = JSON.parse(JSON.stringify($this.fragment))
+      fragment['@id'] = this.$root.ns.undo($this.fragment['@id'])
+      window.fetch(fragment['@id'] + '?secret=insecure', {
+        method: 'put',
+        body: JSON.stringify(fragment)
+      }).then(json).then(function (body) {
+        if (!body.success) {
+          console.warn(body)
+        }
+        $this.syncAgo = 0
+      }).catch(function (body) {
+        console.warn(body)
+      })
     }
+  },
+  attached () {
+    this.interval = setInterval(this.checkSave, 1000)
+  },
+  detached () {
+    clearInterval(this.interval)
   },
   ready () {
     // console.log('FE', this.fragment['schema:name'], this.fragment)
