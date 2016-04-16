@@ -43,13 +43,19 @@ export default {
       this.$broadcast('unfocus', uid)
       console.log('unfocus', uid, this.focusIds.length)
     },
-    keyup (evt) {
+    keydown (evt) {
       let key = evt.which || evt.keyCode
       // esc
       if (key === 27) {
         window.alert('esc')
       }
-      console.log(this.$root)
+      // ctrl+s
+      if ((evt.ctrlKey || evt.metaKey) && String.fromCharCode(evt.which).toLowerCase() === 's') {
+        evt.preventDefault()
+        if (this.route && this.route.uri) {
+          this.$root.sync(this.currentFragment)
+        }
+      }
     }
   },
   events: {
@@ -73,10 +79,10 @@ export default {
   },
   attached () {
     // Editor shortcuts
-    window.addEventListener('keyup', this.keyup, false)
+    window.addEventListener('keydown', this.keydown, false)
   },
   detached () {
-    window.removeEventListener('keyup', this.keyup, false)
+    window.removeEventListener('keydown', this.keydown, false)
   },
   watch: {
     focusIds (val) {
