@@ -68,30 +68,33 @@ export default {
   },
   methods: {
     fetch (url) {
+      let $root = this.$root
       url = namespaceUndoer(url)
-      this.$http.get(url).then(function (res) {
-        if (!res.data) {
+      window.fetch(url, {redirect: 'follow'}).then(function (response) {
+        return response.json()
+      }).then(function (body) {
+        if (!body) {
           return console.warn('no data in response')
         }
-        if (typeof res.data !== 'object') {
+        if (typeof body !== 'object') {
           return console.warn('no object in data of response')
         }
-        if (!this.$root.fragmentCache) {
+        if (!$root.fragmentCache) {
           console.log('creating store')
-          this.$root.$set('fragmentCache', {})
+          $root.$set('fragmentCache', {})
         }
-        if (res.data.length && res.data[0]) {
-          for (let s of res.data) {
+        if (body.length && body[0]) {
+          for (let s of body) {
             if (s['@id']) {
               s = namespaceMinifier(s)
-              this.$root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
+              $root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
             }
           }
-        } else if (res.data['@id']) {
-          let s = namespaceMinifier(res.data)
-          this.$root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
+        } else if (body['@id']) {
+          let s = namespaceMinifier(body)
+          $root.$set('fragmentCache[\'' + s['@id'] + '\']', s)
         }
-        console.log(this.$root.fragmentCache)
+        console.log($root.fragmentCache)
       })
     },
     unfocus () {
