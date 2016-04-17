@@ -81,7 +81,7 @@ export default {
     setTimeout(function () {
       $root.fetch('invoices:1')
     }, 3000)
-    this.route.uri = window.location.hash.substr(2)
+    this.route.uri = this.$root.ns.min(window.location.hash.substr(2))
   },
   attached () {
     // Editor shortcuts

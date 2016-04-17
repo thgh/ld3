@@ -47,7 +47,7 @@ export default {
         } else {
           console.log('goto ', hash)
           this.route.view = 'edit'
-          this.route.uri = hash
+          this.route.uri = this.$root.ns.min(hash)
           window.document.title = 'ld3:edit ' + this.route.uri
         }
       } else {
