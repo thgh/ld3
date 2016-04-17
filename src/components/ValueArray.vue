@@ -7,11 +7,12 @@
 
 <script>
 import ValueObject from './ValueObject'
+import ValueReference from './ValueReference'
 
 export default {
   props: ['fragment', 'prop'],
   computed: {
-    renderType (o) {
+    renderType () {
       return this.fragment[this.prop].map(function (o) {
         return typeof o !== 'object' ? console.log('ErrorType') : o['@id'] && o['@id'].charAt(0) !== '_' ? 'ValueReference' : 'ValueObject'
       })
@@ -31,7 +32,8 @@ export default {
     }
   },
   components: {
-    ValueObject
+    ValueObject,
+    ValueReference
   }
 }
 </script>
