@@ -6,6 +6,7 @@ var namespaces = [
   {ns: 'store:', url: 'dev:store/public/'},
   {ns: 'projects:', url: 'store:projects/'},
   {ns: 'invoices:', url: 'store:invoices/'},
+  {ns: 'ppl:', url: 'store:ppl/'},
   {ns: 'orgs:', url: 'store:orgs/'}
 ]
 
@@ -32,6 +33,15 @@ var ns = {
   }
 }
 
+function checkStatus (response) {
+  if (response.status < 400) {
+    return response
+  }
+  console.warn(response.status)
+  var error = new Error(response.statusText)
+  error.response = response
+  throw error
+}
 function json (response) {
   return response.json()
 }
@@ -82,7 +92,7 @@ export default {
       fetching[uri] = true
       window.fetch(uri, {
         redirect: 'follow'
-      }).then(json).then(function (body) {
+      }).then(checkStatus).then(json).then(function (body) {
         if (!body) {
           return console.warn('no data in response')
         }
@@ -101,8 +111,16 @@ export default {
           $this.$set('fragments[\'' + s['@id'] + '\']', s)
         }
         console.log(inert($this.fragments))
+      }).catch(function (body) {
+        console.error('Store.fetch didnt retrieve', uri, body)
+        let s = ns.minF({
+          '@id': uri
+        })
+        $this.$set('fragments[\'' + s['@id'] + '\']', s)
       })
-      return 'blub'
+      return {
+        '@id': uri
+      }
     }
   },
   init () {

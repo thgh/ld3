@@ -71,10 +71,16 @@ export default {
   ready () {
     // console.info(window.location)
     // console.log('edit', this.$route.path)
-
-    this.$root.fetch('projects:ldeditor')
-    this.$root.fetch('invoices:1')
-    this.$root.fetch('orgs:thomasg')
+    let $root = this.$root
+    setTimeout(function () {
+      $root.fetch('orgs:thomasg')
+    }, 1000)
+    setTimeout(function () {
+      $root.fetch('projects:ldeditor')
+    }, 2000)
+    setTimeout(function () {
+      $root.fetch('invoices:1')
+    }, 3000)
     this.route.uri = window.location.hash.substr(2)
   },
   attached () {
