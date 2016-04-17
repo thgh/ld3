@@ -109,6 +109,15 @@ export default {
         } else if (body['@id']) {
           let s = ns.minF(body)
           $this.$set('fragments[\'' + s['@id'] + '\']', s)
+        } else if (body['@graph']) {
+          console.log(body)
+          for (let s of body['@graph']) {
+            console.log(s)
+            if (s['@id']) {
+              s = ns.minF(s)
+              $this.$set('fragments[\'' + s['@id'] + '\']', s)
+            }
+          }
         }
         console.log(inert($this.fragments))
       }).catch(function (body) {
