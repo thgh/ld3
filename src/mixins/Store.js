@@ -1,6 +1,8 @@
 var namespaces = [
-  {ns: '::', url: 'https://schema.org/'},
-  {ns: '::', url: 'http://schema.org/'},
+  {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
+  {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
+  {ns: 'schema:', url: 'https://schema.org/'},
+  {ns: 'schema:', url: 'http://schema.org/'},
   {ns: 'dev:', url: 'https://ld.dev/'},
   {ns: 'dev:', url: 'http://ld.dev/'},
   {ns: 'store:', url: 'dev:store/public/'},
@@ -22,6 +24,9 @@ var ns = {
     return s
   },
   undo (s) {
+    if (s.endsWith('#id')) {
+      s = s.slice(0, -3)
+    }
     for (var i = namespaces.length - 1; i >= 0; i--) {
       s = s.replace(namespaces[i].ns, namespaces[i].url)
     }
