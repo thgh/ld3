@@ -1,7 +1,7 @@
 <template>
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
     <span v-if="ref">=></span>
-    <subtle-input :model="value" :placeholder="value['@id'] || 'Unnamed'"></subtle-input>
+    <subtle-input :model.sync="value['schema:name']" :placeholder="value['@id'] || 'Unnamed'"></subtle-input>
     <span class="ld-propclass">{{ value['@type'] }}</span> 
     <props-list v-if="focus && value" :fragmentprops.sync="value"></props-list>
   </div>
