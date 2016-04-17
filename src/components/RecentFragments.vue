@@ -6,7 +6,7 @@
     </div>
     <div v-for="(uri, fragment) in list | filterBy search" transition="staggered">
       <a href="#!{{uri}}" class="a-fragment">
-        {{ fragment['schema:name'] || fragment['dcterms:title'] || 'Unnamed' }}
+        {{ fragment['schema:name'] || label || fragment['dcterms:title'] || 'Unnamed' }}
         <small>{{ uri }}</small>
       </a>
     </div>
@@ -18,6 +18,11 @@ export default {
   props: ['list'],
   data: {
     search: ''
+  },
+  computed: {
+    label () {
+      return Array.isArray(this.fragment['rdfs:label']) ? this.fragment['rdfs:label'][0]['@value'] : this.fragment['rdfs:label']['@value']
+    }
   },
   ready () {
     // console.log('recent', this.$route.path)

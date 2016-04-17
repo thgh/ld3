@@ -1,8 +1,10 @@
 <template>
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
     <span v-if="ref">=></span>
-    <subtle-input :model.sync="value['schema:name']" :placeholder="value['@id'] || 'Unnamed'"></subtle-input>
-    <span class="ld-propclass">{{ value['@type'] }}</span> 
+    <subtle-input v-if="value['@value']" :model.sync="value['@value']"></subtle-input>
+    <span v-if="!value['@value']&&label" v-text="label || 'Woops, no label after all'"></span>
+    <subtle-input v-if="!value['@value']&&!label" :model.sync="value['schema:name']" :placeholder="value['@id'] || 'Unnamed'"></subtle-input>
+    <span class="ld-propclass" v-if="value['@type']">{{ value['@type'] }}</span> 
     <props-list v-if="focus && value" :fragmentprops.sync="value"></props-list>
   </div>
 </template>
@@ -22,6 +24,9 @@ export default {
   computed: {
     value () {
       return typeof this.prop !== 'string' ? this.fragment : typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
+    },
+    label () {
+      return Array.isArray(this.value['rdfs:label']) ? this.value['rdfs:label'][2]['@value'] : this.value['rdfs:label']['@value']
     },
     list () {
       console.log('list', this.value)
