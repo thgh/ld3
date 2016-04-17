@@ -9,9 +9,11 @@ export default {
   attached () {
     var textarea = this.$el
     textarea.oninput = function () {
-      textarea.style.height = ''
+      // 25px happens to work best
+      textarea.style.height = '25px'
       textarea.style.height = 1 + Math.min(textarea.scrollHeight, 500) + 'px'
     }
+    textarea.oninput()
   }
 }
 </script>
