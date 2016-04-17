@@ -113,3 +113,11 @@
 		}
 	}
 }
+
+.inp-search {
+	margin-bottom: 10px;
+	>input {
+		padding-left: 10px;
+		background-color: transparentize(white, .8);
+	}
+}
