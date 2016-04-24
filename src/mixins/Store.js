@@ -1,15 +1,24 @@
 var namespaces = [
-  {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
-  {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
+  // Official
   {ns: 'schema:', url: 'https://schema.org/'},
   {ns: 'schema:', url: 'http://schema.org/'},
+  {ns: 'rdf:', url: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'},
+  {ns: 'rdfs:', url: 'http://www.w3.org/2000/01/rdf-schema#'},
+  {ns: 'dcterms:', url: 'http://purl.org/dc/terms/'},
+
+  // Personal
   {ns: 'dev:', url: 'https://ld.dev/'},
   {ns: 'dev:', url: 'http://ld.dev/'},
   {ns: 'store:', url: 'dev:store/public/'},
   {ns: 'projects:', url: 'store:projects/'},
   {ns: 'invoices:', url: 'store:invoices/'},
   {ns: 'ppl:', url: 'store:ppl/'},
-  {ns: 'orgs:', url: 'store:orgs/'}
+  {ns: 'orgs:', url: 'store:orgs/'},
+
+  // Converted
+  {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
+  {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
+  {ns: 'schema:', url: 'store:schema/'}
 ]
 
 var ns = {
