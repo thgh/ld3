@@ -1,15 +1,18 @@
 <template>
   <div class="props-list" :class="{active:blurry}">
-    <prop v-for="(prop, value) in fragmentprops" v-if="prop[0]!=='@'" :fragment.sync="fragmentprops" :prop="prop"></prop>
+    <prop v-for="(prop, value) in fragment" v-if="prop[0]!=='@'" :fragment.sync="fragment" :prop="prop"></prop>
+    <prop-add :fragment.sync="fragment"></prop-add>
   </div>
 </template>
 
 <script>
+import PropAdd from './PropAdd'
+
 export default {
   name: 'props-list',
   props: {
     blurry: false,
-    fragmentprops: {
+    fragment: {
       default: {
         'schema:name': 'fuckthis'
       }
@@ -19,6 +22,9 @@ export default {
     cancel () {
       this.blurry = false
     }
+  },
+  components: {
+    PropAdd
   }
 }
 </script>
@@ -28,6 +34,8 @@ export default {
 .props-list {
   position: relative;
   margin-left: -1rem!important;
+  flex-basis: 100%;
+  flex-shrink: 0;
 }
 .prop .props-list {
   position: absolute;
@@ -35,7 +43,7 @@ export default {
   left: 0;
   right: 0;
   margin-left: 0!important;
-  padding: .5rem 0;
+  padding: 0 0 .5rem;
   background-color: $bg;
   // outline: 1px solid purple;
   transition: background 0.3s;

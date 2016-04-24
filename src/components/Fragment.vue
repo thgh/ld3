@@ -11,12 +11,7 @@
     </header>
 
     <article>
-      <props-list :fragmentprops.sync="fragment"></props-list>
-      <label class="inp-text label-prop">
-        <button v-if="!addPropShow" class="btn-add" @click="addPropShow=1">Add</button>
-        <input v-if="addPropShow" v-model="addPropSearch" placeholder="property..." @change="loadProps" @focus="addPropShow=1;loadProps()" class="inp-prop" required>
-        <input v-if="addPropShow" v-model="addPropValue" placeholder="value..." @change="guessProp" @focus="addPropShow=0" required>
-      </label>
+      <props-list :fragment.sync="fragment"></props-list>
       <!-- <div v-show="hasPlugin" :is="fragment['@type']" :a="fragment">test</div> -->
     </article>
 
@@ -29,7 +24,6 @@
 <script>
 import SubtleInput from './SubtleInput'
 import PropsList from './PropsList'
-import Invoice from './plugins/Invoice'
 
 var plugins = {'Invoice': true}
 

@@ -116,8 +116,4 @@ export default {
   z-index: 11;
   //outline: 1px solid orange;
 }
-.props-list {
-  flex-basis: 100%;
-  flex-shrink: 0;
-}
 </style>

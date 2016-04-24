@@ -5,7 +5,7 @@
     <span v-if="!value['@value']&&label" v-text="label || 'Woops, no label after all'"></span>
     <subtle-input v-if="!value['@value']&&!label" :model.sync="value['schema:name']" :placeholder="value['@id'] || 'Unnamed'"></subtle-input>
     <span class="ld-propclass" v-if="value['@type']">{{ value['@type'] }}</span> 
-    <props-list v-if="focus && value" :fragmentprops.sync="value"></props-list>
+    <props-list v-if="focus && value" :fragment.sync="value"></props-list>
   </div>
 </template>
 

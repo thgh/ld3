@@ -84,15 +84,11 @@
 	flex: 100 0 auto;
 	margin-left: 1em;
 }
-.label-prop>.inp-prop {
-	flex: 0 0 8em;
-	margin-right: 2em;
-}
 
 .inp-subtle {
 	position: relative;
 	display: inline-block;
-	min-width: 50px;
+	min-width: 30px;
 	height: 10px;
 	color: rgba(0,0,0,0);
 	white-space: pre;
@@ -101,9 +97,10 @@
 		top: 0;
 		left: 0;
 		width: 100%;
-		border: 0;
+		border: inherit;
+		padding: inherit;
 		font: inherit;
-		line-height: 1.4em;
+		line-height: inherit;
 		background: none;
 		color: $fg;
 		&:focus {

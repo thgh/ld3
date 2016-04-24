@@ -39,7 +39,4 @@ export default {
 </script>
 
 <style lang="scss">
-.focus-prop .btn-add {
-  opacity: 0
-}
 </style>
