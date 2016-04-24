@@ -15,14 +15,16 @@
 
 <script>
 export default {
+  name: 'recent-fragments',
   props: ['list'],
-  data: {
-    search: ''
+  data () {
+    return {
+      search: ''
+    }
   },
   methods: {
     label (fragment) {
-      console.log(typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value'])
-      return typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
+      return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
     }
   },
   ready () {

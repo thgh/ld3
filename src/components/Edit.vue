@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import RecentFragments from './RecentFragments'
 import Fragment from './Fragment'
 // import LdContext from '../libs/LdContext'
 // LdContext.init()
@@ -98,7 +97,6 @@ export default {
     }
   },
   components: {
-    RecentFragments,
     Fragment
   }
 }

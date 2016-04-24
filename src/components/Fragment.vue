@@ -56,12 +56,24 @@ export default {
     }
   },
   ready () {
+    var vm = this
+    setTimeout(function (argument) {
+      var script = document.createElement('script')
+      script.onload = function (argument) {
+        console.log('check invoice', window.Invoice.prototype)
+        vm.$options.components['invoice'] = vm.$root.extend(window.Invoice)
+      }
+      script.src = '/static/invoice.js'
+      document.head.appendChild(script)
+    }, 1000)
     // console.log('FE', this.fragment['schema:name'], this.fragment)
+    // window.fetch().then(function (argument) {
+    //   console.log('check invoice')
+    // })
   },
   components: {
     SubtleInput,
-    PropsList,
-    Invoice
+    PropsList
   }
 }
 </script>

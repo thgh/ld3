@@ -1,5 +1,6 @@
 <template>
-  <component :is="route.view" :route="route"></component>
+<div>
+  <component :is="route.view" :route="route"></component></div>
 </template>
 
 <script>

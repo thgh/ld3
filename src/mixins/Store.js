@@ -66,10 +66,12 @@ function inert (s) {
 var fetching = {}
 
 export default {
-  data: {
-    fragments: {},
-    syncAgo: 0,
-    interval: 0
+  data () {
+    return {
+      fragments: {},
+      syncAgo: 0,
+      interval: 0
+    }
   },
   methods: {
     checkSave () {

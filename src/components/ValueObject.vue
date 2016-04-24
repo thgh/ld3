@@ -26,7 +26,8 @@ export default {
       return typeof this.prop !== 'string' ? this.fragment : typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
     },
     label () {
-      return Array.isArray(this.value['rdfs:label']) ? this.value['rdfs:label'][2]['@value'] : this.value['rdfs:label']['@value']
+      var fragment = this.value
+      return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
     },
     list () {
       console.log('list', this.value)

@@ -1,5 +1,7 @@
 <template>
-  <value-object :fragment.sync="actualFragment" :ref="1"></value-object>
+  <div>
+    <value-object :fragment.sync="actualFragment" :ref="1"></value-object>
+  </div>
 </template>
 
 <script>

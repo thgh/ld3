@@ -112,6 +112,9 @@ export default {
       pri.print()
     }
   },
+  created () {
+    console.log('Invoice compnent created')
+  },
   filters: {
     'date' () {
       return 'date'
