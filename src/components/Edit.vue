@@ -40,13 +40,13 @@ export default {
     unfocus () {
       var uid = this.focusIds.pop()
       this.$broadcast('unfocus', uid)
-      console.log('unfocus', uid, this.focusIds.length)
+      // console.log('unfocus', uid, this.focusIds.length)
     },
     keydown (evt) {
       let key = evt.which || evt.keyCode
       // esc
       if (key === 27) {
-        window.alert('esc')
+        this.unfocus()
       }
       // ctrl+s
       if ((evt.ctrlKey || evt.metaKey) && String.fromCharCode(evt.which).toLowerCase() === 's') {
@@ -60,11 +60,11 @@ export default {
   events: {
     objectFocused (uid) {
       this.focusIds.push(uid)
-      console.log('  focus', uid, this.focusIds.length)
+      // console.log('  focus', uid, this.focusIds.length)
     },
     siblingUnfocused (uid) {
       this.focusIds.splice(this.focusIds.indexOf(uid), 1)
-      console.log('unfocus', uid, this.focusIds.length)
+      // console.log('unfocus', uid, this.focusIds.length)
     }
   },
   ready () {

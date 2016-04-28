@@ -1,32 +1,3 @@
-.inp-text {
-	position: relative;
-}
-.inp-text>label {
-	width: 8rem;
-	margin-bottom: 0;
-	float: left;
-}
-.inp-text>input,
-.inp-text>textarea,
-.inp-text>select {
-	display: block;
-	margin-left: 8.5rem;
-	border: 0;
-	border-bottom: 1px solid #ccc;
-	padding: 0;
-	padding-left: 4px;
-	width: calc(100% - 8.5rem);
-	font: inherit;
-	color: inherit;
-	&:focus {
-		outline-offset: 0;
-		outline: 3px solid transparentize(white, .8);
-		background-color: transparentize(white, .8);
-	}
-}
-.inp-text>select {
-	width: auto;
-}
 .inp-nav>input {
 	color: white;
 }
@@ -46,6 +17,7 @@
 	opacity: .7;
 }
 .inp-text {
+	position: relative;
 	flex-grow: 1;
 	display: flex;
 	align-items: stretch;
@@ -63,11 +35,23 @@
 	}
 	&>input,
 	&>textarea {
+		display: block;
 		flex: 10 0 50px;
 		margin-left: 0;
+		border: 0;
+		border-bottom: 1px solid transparent;
+		padding: 0;
+		padding-left: 4px;
+    resize: none;
+		font: inherit;
+		color: inherit;
 		width: auto;
 		background: none;
-		border-bottom: 1px solid transparent;
+		&:focus {
+			outline-offset: 0;
+			outline: 3px solid transparentize(white, .8);
+			background-color: transparentize(white, .8);
+		}
 		&:invalid {
 			border-bottom: 1px dashed $warning;
 			font-style: italic;

@@ -12,6 +12,8 @@ import ValueObject from './ValueObject'
 import ValueArray from './ValueArray.vue'
 import ValueReference from './ValueReference.vue'
 
+import Value from '../libs/Value.js'
+
 export default {
   name: 'prop',
   props: ['fragment', 'prop'],
@@ -23,8 +25,7 @@ export default {
   },
   computed: {
     renderType () {
-      let o = this.fragment[this.prop]
-      return typeof o !== 'object' ? (typeof o === 'boolean' ? 'ValueString' : typeof o === 'number' ? 'ValueString' : o.length > 50 ? 'ValueText' : 'ValueString') : Array.isArray(o) ? 'ValueArray' : o['@id'] && o['@id'].charAt(0) !== '_' ? 'ValueReference' : 'ValueObject'
+      return Value.getType(this.fragment[this.prop])
     }
   },
   events: {
@@ -33,7 +34,7 @@ export default {
       return true
     },
     propFocus (val) {
-      console.log('pf', val, this._uid)
+      // console.log('pf', val, this._uid)
       this.focus = val
       if (!val) {
         this.focusFrom = val
