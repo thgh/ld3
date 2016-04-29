@@ -12,12 +12,14 @@
 
     <article>
       <props-list :fragment.sync="fragment"></props-list>
-      <!-- <div v-show="hasPlugin" :is="fragment['@type']" :a="fragment">test</div> -->
     </article>
 
     <p class="fragment-cta">
       <button class="btn btn-save" :class="{'btn-save':savable,'btn-soft':!savable}" @click="sync">Sync</button>
+      <button class="btn btn-soft">Resolve</button>
     </p>
+
+    <div v-if="loadPlugin(fragment['@type'])&&resolved" :is="fragment['@type']" :a="resolved" :options="options">test</div>
   </div>
 </template>
 
@@ -25,26 +27,30 @@
 import SubtleInput from './SubtleInput'
 import PropsList from './PropsList'
 
-var plugins = {'Invoice': true}
+import PluginSystem from '../mixins/PluginSystem'
 
 export default {
-  props: ['fragment', 'uri'],
+  props: ['fragment'],
   data () {
     return {
-      'addPropShow': false,
-      'addPropSearch': '',
-      'addPropValue': ''
+      options: {
+        resolve: 0
+      },
+      resolved: null,
+      addPropShow: false,
+      addPropSearch: '',
+      addPropValue: ''
     }
   },
   computed: {
-    hasPlugin () {
-      return this.fragment['@type'] in plugins
-    },
     props () {
       return this.fragment
     },
     savable () {
       return this.$root.syncAgo > 5
+    },
+    resolved () {
+      return this.$root.resolve(this.fragment, this.options.resolve)
     }
   },
   methods: {
@@ -55,22 +61,7 @@ export default {
       this.$root.sync(this.fragment)
     }
   },
-  ready () {
-    var vm = this
-    setTimeout(function (argument) {
-      var script = document.createElement('script')
-      script.onload = function (argument) {
-        console.log('check invoice', window.Invoice.prototype)
-        vm.$options.components['invoice'] = vm.$root.extend(window.Invoice)
-      }
-      script.src = '/static/invoice.js'
-      document.head.appendChild(script)
-    }, 1000)
-    // console.log('FE', this.fragment['schema:name'], this.fragment)
-    // window.fetch().then(function (argument) {
-    //   console.log('check invoice')
-    // })
-  },
+  mixins: [PluginSystem],
   components: {
     SubtleInput,
     PropsList

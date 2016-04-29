@@ -62,6 +62,22 @@ function json (response) {
 function inert (s) {
   return JSON.parse(JSON.stringify(s))
 }
+function hideSchema (obj) {
+  // Hide in current object
+  for (let prop in obj) {
+    if (prop.startsWith('schema:')) {
+      obj[prop.slice(7)] = obj[prop]
+      delete obj[prop]
+    }
+  }
+  // Hide nested props
+  for (let prop in obj) {
+    if (typeof obj[prop] === 'object' && Object.keys(obj[prop]).length > 1) {
+      obj[prop] = hideSchema(obj[prop])
+    }
+  }
+  return obj
+}
 
 var fetching = {}
 
@@ -146,6 +162,31 @@ export default {
       return {
         '@id': uri
       }
+    },
+    resolve (uri, options) {
+      options = options || 0
+      if (!this.fragments) {
+        return console.warn('No fragments in storage..')
+      }
+      if (typeof uri === 'object') {
+        uri = uri['@id']
+      }
+      if (!uri) {
+        return // console.warn('This uri is falsy', uri)
+      }
+      uri = ns.min(uri)
+      if (!this.fragments[uri]) {
+        return // console.warn(uri, 'was not found in storage')
+      }
+      var obj = inert(this.fragments[uri])
+      for (let prop in obj) {
+        // Recursive
+        if (options > 0 && typeof obj[prop] === 'object' && Object.keys(obj[prop]).length === 1 && obj[prop]['@id']) {
+          obj[prop] = this.resolve(obj[prop]['@id'], options - 1)
+        }
+      }
+      obj = hideSchema(obj)
+      return obj
     }
   },
   init () {

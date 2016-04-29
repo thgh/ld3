@@ -16,14 +16,14 @@
   },
   "css": {
     "allowed_file_extensions": ["css", "scss", "sass", "less", "styl"],
-    "newline_between_rules": false,,
+    "newline_between_rules": false,
     "indent_with_tabs": false,
     "indent_char": " ",
     "indent_size": 2,
     "max_preserve_newlines": 1,
     "preserve_newlines": true
   },
-  "newline_between_rules": false,,
+  "newline_between_rules": false,
   "indent_with_tabs": false,
   "indent_char": " ",
   "indent_size": 2,

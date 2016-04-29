@@ -37,109 +37,7 @@ header {
 	display: flex;
 	align-items: flex-end;
 }
-h1 {
-	margin: 0;
-	font-size: 2em;
-	font-weight: 300;
-	line-height: 1.1;
-}
-.page h2 {
-	margin: 0;
-	font-size: 1.5em;
-	font-weight: 400;
-	opacity: .5;
-}
-.page h3 {
-	margin: 0;
-	font-size: 1.125em;
-	font-weight: 500;
-	line-height: 1.6rem;
-	&+p {
-		margin: 0;
-		opacity: .8;
-	}
-}
-address>div {
-	white-space: nowrap;
-}
-.summary {
-	// position: absolute;
-	// z-index: 2;
-	// right: 2cm;
-	// top: 2cm;
-	background: #eee;
-	display: flex;
-	justify-content: space-between;
-	flex-wrap: wrap;
-	padding: 1cm 2cm;
-}
-.summary-item {
-	font-size: 1.25rem;
-}
-.summary-label {
-	display: block;
-	text-transform: uppercase;
-	font-size: 12px;
-	font-weight: normal;
-}
-.badge {
-	padding: .3em .5em;
-	line-height: 1.2em;
-	background: #888;
-	color: #FFF;
-	text-transform: uppercase;
-	font-size: 1.5em;
-	text-align: center;
-}
-.number {
-	display: block;
-}
-.details {
-	padding-top: 1em;
-	margin-bottom: 1em;
-}
-.list {
-	margin-top: 1em;
-	padding-bottom: 1em;
-}
-.taxes {
-	text-align: right;
-}
-.tbl {
-	border: 0;
-	border-collapse: collapse;
-	text-align: left;
-}
-.tbl td,
-.tbl th {
-	line-height: 1.4em;
-	// padding-left: .5em;
-	// padding-right: .5em;
-}
-.tbl-orders {
-	width: 100%;
-	td {
-		border-bottom: 1px solid #ccc;
-		padding-top: .5em;
-		padding-bottom: .5em;
-	}
-	th {
-		border-bottom: 1px solid #ccc;
-		padding-top: .5em;
-		padding-bottom: 1em;
-		font-size: 12px;
-		font-weight: 400;
-		text-transform: uppercase;
-		color: #666;
-	}
-}
-.tbl-calc {
-	float: right;
-	margin-top: .5em;
-	.e {
-		padding-left: 3em;
-	}
-}
+
 .tbl-hover {
 	position: relative;
 	tbody>tr:hover {
@@ -158,12 +56,6 @@ address>div {
 			cursor: pointer;
 		}
 	}
-}
-.tbl .e {
-	text-align: right;
-	padding-left: 2em;
-	white-space: nowrap;
-	vertical-align: top;
 }
 .bold {
 	font-weight: bold;

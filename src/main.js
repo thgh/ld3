@@ -25,7 +25,7 @@ new Vue({
     }
   },
   methods: {
-    extend: Vue.extend
+    extend: comp => Vue.extend(comp)
   },
   mixins: [Store],
   components: { App }
