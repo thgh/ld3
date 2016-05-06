@@ -21,7 +21,7 @@ export default {
         vm.$options.components[name] = vm.$root.extend(window[name])
         vm.plugins.loaded.push(name)
       }
-      script.src = '/static/plugins/' + name + '.js'
+      script.src = './static/plugins/' + name + '.js'
       document.body.appendChild(script)
       return false
     }
