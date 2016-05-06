@@ -1,16 +1,21 @@
 <template>
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
     <span v-if="ref">=></span>
-    <subtle-input v-if="value['@value']" :model.sync="value['@value']"></subtle-input>
-    <span v-if="!value['@value']&&label" v-text="label || 'Woops, no label after all'"></span>
-    <subtle-input v-if="!value['@value']&&!label" :model.sync="value['schema:name']" :placeholder="value['@id'] || 'Unnamed'"></subtle-input>
+    <span v-if="value['@value']">
+      <input-subtle :model.sync="value['@value']" placeholder="Just a value"></input-subtle>
+    </span>
+    <span v-else>
+      <span v-if="label" v-text="label"></span>
+      <input-reference :model.sync="value" :placeholder="placeholder" @click.prevent.stop></input-reference>
+    </span>
     <span class="ld-propclass" v-if="value['@type']">{{ value['@type'] }}</span> 
     <props-list v-if="focus && value" :fragment.sync="value"></props-list>
   </div>
 </template>
 
 <script>
-import SubtleInput from './SubtleInput'
+import InputReference from './InputReference'
+import InputSubtle from './InputSubtle'
 import PropsList from './PropsList'
 
 export default {
@@ -18,7 +23,8 @@ export default {
   props: ['fragment', 'prop', 'index', 'ref'],
   data () {
     return {
-      focus: false
+      focus: false,
+      search: ''
     }
   },
   computed: {
@@ -29,9 +35,8 @@ export default {
       var fragment = this.value
       return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
     },
-    list () {
-      console.log('list', this.value)
-      return this.focus ? 'propsList' : ''
+    placeholder () {
+      return this.label || this.value['schema:name'] || this.value['@id'] || 'Unnamed'
     }
   },
   methods: {
@@ -69,7 +74,8 @@ export default {
     }
   },
   components: {
-    SubtleInput,
+    InputReference,
+    InputSubtle,
     PropsList
   }
 }

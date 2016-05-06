@@ -2,7 +2,7 @@
   <div class="fragment">
     <header>
       <h1 class="fragment-h1">
-        <subtle-input :model.sync="fragment['schema:name']" :placeholder="fragment['@id']||'Fatal error'"></subtle-input>
+        <input-subtle :model.sync="fragment['schema:name']" :placeholder="fragment['@id']||'Fatal error'"></input-subtle>
         <span class="ld-propclass" v-if="fragment['@type']" v-text="fragment['@type']"></span> <small><small><small style="opacity:.5">{{fragment['@id']}}</small></small></small>
       </h1>
       <div class="fragment-json mdi mdi-12px mdi-code-braces">
@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import SubtleInput from './SubtleInput'
+import InputSubtle from './InputSubtle'
 import PropsList from './PropsList'
 
 import PluginSystem from '../mixins/PluginSystem'
@@ -63,7 +63,7 @@ export default {
   },
   mixins: [PluginSystem],
   components: {
-    SubtleInput,
+    InputSubtle,
     PropsList
   }
 }

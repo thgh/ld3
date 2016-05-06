@@ -4,7 +4,7 @@
     <div class="inp-text inp-search">
       <input type="text" v-model="search" placeholder="Search...">
     </div>
-    <div v-for="(uri, fragment) in list | filterBy search" transition="staggered">
+    <div class="a-recent" v-for="(uri, fragment) in list | filterBy search" transition="staggered">
       <a href="#!{{uri}}" class="a-fragment">
         {{ fragment['schema:name'] || label(fragment) || fragment['dcterms:title'] || 'Unnamed' }}
         <small>{{ uri }}</small>
@@ -34,11 +34,12 @@ export default {
 </script>
 
 <style>
-.staggered-transition {
-  transition: all .5s ease;
-  overflow: hidden;
-  margin: 0;
+.a-recent {
   height: 3em;
+}
+.staggered-transition {
+  transition: opacity .5s ease, height .5s ease;
+  overflow: hidden;
 }
 .staggered-enter, .staggered-leave {
   opacity: 0;

@@ -21,8 +21,10 @@ var proxyTable = {
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath,
   stats: {
+    chunks: false,
     colors: true,
-    chunks: false
+    hash: false,
+    version: false
   }
 })
 

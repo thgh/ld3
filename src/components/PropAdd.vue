@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <label class="inp-text label-prop" v-if="show.prop">
-      <subtle-input :model.sync="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></subtle-input>
+      <input-subtle :model.sync="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
       <input v-model="value" placeholder="value..." @blur="submit" @keydown.enter="submit">
     </label>
     <label class="inp-text label-prop" v-if="prop||!show.prop">
@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import SubtleInput from './SubtleInput'
+import InputSubtle from './InputSubtle'
 
 export default {
   props: ['fragment'],
@@ -57,7 +57,7 @@ export default {
     }
   },
   components: {
-    SubtleInput
+    InputSubtle
   }
 }
 </script>
