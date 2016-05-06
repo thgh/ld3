@@ -29,6 +29,7 @@ export default {
   },
   computed: {
     value () {
+      if (!this.fragment) return {}
       return typeof this.prop !== 'string' ? this.fragment : typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
     },
     label () {
