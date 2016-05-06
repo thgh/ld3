@@ -1,3 +1,5 @@
+import throttle from '../libs/throttle'
+
 var namespaces = [
   // Official
   {ns: 'schema:', url: 'https://schema.org/'},
@@ -9,6 +11,7 @@ var namespaces = [
   // Personal
   {ns: 'dev:', url: 'https://ld.dev/'},
   {ns: 'dev:', url: 'http://ld.dev/'},
+  {ns: 'dev:', url: window.location.hostname.indexOf('localhost') === -1 ? 'https://thomasg.be/ld/' : 'http://ld.dev/'},
   {ns: 'store:', url: 'dev:store/public/'},
   {ns: 'projects:', url: 'store:projects/'},
   {ns: 'invoices:', url: 'store:invoices/'},
@@ -79,12 +82,21 @@ function hideSchema (obj) {
   return obj
 }
 
+var storeLocally = throttle(function (fragments) {
+  window.fragments = inert(fragments)
+  window.localStorage['fragments'] = JSON.stringify(fragments)
+}, 5000)
+
 var fetching = {}
 
 export default {
   data () {
+    var fragments
+    try {
+      fragments = JSON.parse(window.localStorage['fragments'])
+    } catch (e) {}
     return {
-      fragments: {},
+      fragments: fragments || {},
       syncAgo: 0,
       interval: 0
     }
@@ -111,14 +123,15 @@ export default {
       }).catch(function (body) {
         console.warn(body)
       })
+      this.syncLocal()
     },
-    fetch (uri) {
+    fetch (uri, force) {
       let $this = this
       if (typeof uri !== 'string') {
         return console.error('Store.fetch expects string, but got', typeof uri)
       }
       uri = ns.undo(uri)
-      if (fetching[uri]) {
+      if (fetching[uri] && !force) {
         return console.log(' cancel', uri)
       }
       fetching[uri] = true
@@ -151,7 +164,7 @@ export default {
             }
           }
         }
-        console.log(inert($this.fragments))
+        $this.syncLocal()
       }).catch(function (body) {
         console.error('Store.fetch didnt retrieve', uri, body)
         let s = ns.minF({
@@ -187,6 +200,9 @@ export default {
       }
       obj = hideSchema(obj)
       return obj
+    },
+    syncLocal () {
+      storeLocally(this.fragments)
     }
   },
   init () {
@@ -194,8 +210,10 @@ export default {
   },
   attached () {
     this.interval = setInterval(this.checkSave, 1000)
+    this.syncInterval = setInterval(this.syncLocal, 1000)
   },
   detached () {
     clearInterval(this.interval)
+    clearInterval(this.syncInterval)
   }
 }

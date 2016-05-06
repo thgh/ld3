@@ -72,7 +72,7 @@ export default {
     // console.log('edit', this.$route.path)
     let $root = this.$root
     setTimeout(function () {
-      $root.fetch('orgs:thomasg')
+      $root.fetch('store:orgs')
     }, 1000)
     setTimeout(function () {
       $root.fetch('projects:ldeditor')
