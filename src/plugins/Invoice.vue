@@ -224,7 +224,7 @@
               <header v-if="a.provider">
                 <h1 class="h1">{{a.provider.name}}</h1>
                 <!-- <h2 class="h2">{{a.customer.roleName}}</h2> -->
-                <address>
+                <address v-if="a.provider.address">
                   <div>{{a.provider.address.streetAddress}}</div>
                   <div>{{a.provider.address.postalCode}} {{a.provider.address.addressLocality}}</div>
                 </address>
