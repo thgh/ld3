@@ -69,6 +69,7 @@ export default {
   attached () {
     // Start routing
     window.addEventListener('hashchange', this.hashchange, false)
+    this.route.uri = this.$root.ns.min(window.location.hash.substr(2))
   },
   detached () {
     // Stop routing

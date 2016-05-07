@@ -1,28 +1,53 @@
 import throttle from '../libs/throttle'
+import ls from 'local-storage'
 
-var namespaces = [
-  // Official
-  {ns: 'schema:', url: 'https://schema.org/'},
-  {ns: 'schema:', url: 'http://schema.org/'},
-  {ns: 'rdf:', url: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'},
-  {ns: 'rdfs:', url: 'http://www.w3.org/2000/01/rdf-schema#'},
-  {ns: 'dcterms:', url: 'http://purl.org/dc/terms/'},
+var fragments = ls.get('fragments')
+var namespaces = ls.get('namespaces')
+var workspaces = ls.get('workspaces')
+var workspaceActive = ls.get('workspaceActive')
 
-  // Personal
-  {ns: 'dev:', url: 'https://ld.dev/'},
-  {ns: 'dev:', url: 'http://ld.dev/'},
-  {ns: 'dev:', url: window.location.hostname.indexOf('localhost') === -1 ? 'https://thomasg.be/ld/' : 'http://ld.dev/'},
-  {ns: 'store:', url: 'dev:store/public/'},
-  {ns: 'projects:', url: 'store:projects/'},
-  {ns: 'invoices:', url: 'store:invoices/'},
-  {ns: 'ppl:', url: 'store:ppl/'},
-  {ns: 'orgs:', url: 'store:orgs/'},
+if (!namespaces) {
+  console.log('ls: default namespaces')
+  namespaces = [
+    // Official
+    {ns: 'schema:', url: 'https://schema.org/'},
+    {ns: 'schema:', url: 'http://schema.org/'},
+    {ns: 'rdf:', url: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'},
+    {ns: 'rdfs:', url: 'http://www.w3.org/2000/01/rdf-schema#'},
+    {ns: 'dcterms:', url: 'http://purl.org/dc/terms/'},
 
-  // Converted
-  {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
-  {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
-  {ns: 'schema:', url: 'store:schema/'}
-]
+    // Personal
+    {ns: 'dev:', url: 'https://ld.dev/'},
+    {ns: 'dev:', url: 'http://ld.dev/'},
+    {ns: 'dev:', url: window.location.hostname.indexOf('localhost') === -1 ? 'https://thomasg.be/ld/' : 'http://ld.dev/'},
+    {ns: 'store:', url: 'dev:store/public/'},
+    {ns: 'projects:', url: 'store:projects/'},
+    {ns: 'invoices:', url: 'store:invoices/'},
+    {ns: 'ppl:', url: 'store:ppl/'},
+    {ns: 'orgs:', url: 'store:orgs/'},
+
+    // Converted
+    {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
+    {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
+    {ns: 'schema:', url: 'store:schema/'}
+  ]
+  ls.set('namespaces', namespaces)
+}
+
+if (!workspaces) {
+  console.log('ls: default workspaces')
+  workspaces = [{
+    name: 'Default workspace',
+    fetch: [
+      'store:projects',
+      'store:invoices',
+      'store:orgs',
+      'store:ppl'
+    ]
+  }]
+  ls.set('workspaces', workspaces)
+  ls.set('workspaceActive', 0)
+}
 
 var ns = {
   min (s) {
@@ -84,19 +109,18 @@ function hideSchema (obj) {
 
 var storeLocally = throttle(function (fragments) {
   window.fragments = inert(fragments)
-  window.localStorage['fragments'] = JSON.stringify(fragments)
+  ls('fragments', fragments)
 }, 5000)
 
 var fetching = {}
 
 export default {
   data () {
-    var fragments
-    try {
-      fragments = JSON.parse(window.localStorage['fragments'])
-    } catch (e) {}
     return {
       fragments: fragments || {},
+      namespaces: namespaces || [],
+      workspaces: workspaces || [],
+      workspaceActive: workspaceActive || 0,
       syncAgo: 0,
       interval: 0
     }
@@ -108,7 +132,7 @@ export default {
     sync (fragment) {
       let $this = this
       if (typeof fragment !== 'object') {
-        return console.error('Store.fetch expects object, but got', typeof fragment)
+        return console.error('Store.sync expects object, but got', typeof fragment)
       }
       fragment = inert(fragment)
       ns.undoF(fragment)
@@ -133,6 +157,9 @@ export default {
       uri = ns.undo(uri)
       if (fetching[uri] && !force) {
         return console.log(' cancel', uri)
+      }
+      if (uri.slice(0, 4) !== 'http') {
+        return console.log(' this aint no uri', uri)
       }
       fetching[uri] = true
       window.fetch(uri, {
@@ -201,6 +228,10 @@ export default {
       obj = hideSchema(obj)
       return obj
     },
+    setWorkspace (index) {
+      this.workspaceActive = index
+      ls.set('workspaceActive', index)
+    },
     syncLocal () {
       storeLocally(this.fragments)
     }
@@ -215,5 +246,14 @@ export default {
   detached () {
     clearInterval(this.interval)
     clearInterval(this.syncInterval)
+  },
+  ready () {
+    // Load workspace
+    if (!this.workspaces || !this.workspaces.length || !this.workspaces[this.workspaceActive] || !this.workspaces[this.workspaceActive].fetch) {
+      return console.warn('Store.ready failed to load workspace')
+    }
+    for (let ws of this.workspaces[this.workspaceActive].fetch) {
+      this.fetch(ws)
+    }
   }
 }

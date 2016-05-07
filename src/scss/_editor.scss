@@ -1,29 +1,3 @@
-.section-editor {
-	//background: white;
-	h1 {
-		margin: 0 0 .5em;
-		font-size: 1.5em;
-		line-height: 1.4em;
-		font-weight: 400;
-	}
-	h2 {
-		margin: 2em 0 0;
-		opacity: .5;
-		font-size: 1em;
-		text-transform: uppercase;
-		&:first-child {
-			padding-top: 0;
-		}
-		small {
-			text-transform: none;
-			font-weight: normal;
-			font-size: 14px;
-			&::before {
-				content: '\2014  ';
-			}
-		}
-	}
-}
 .fragment-sync {
 	float: right;
 	margin-left: 8px;

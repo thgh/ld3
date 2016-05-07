@@ -1,6 +1,6 @@
 <template>
   <main>
-    <section class="section section-browser">
+    <section class="section-browser">
       <p>
         <a href="#!home">home</a>
         <a href="#!conf">config</a>
@@ -9,7 +9,7 @@
       </p>
       <recent-fragments :list="$root.fragments" :route="route"></recent-fragments>
     </section>
-    <section class="section section-editor">
+    <section class="section-editor">
       <fragment v-if="currentFragment" :fragment.sync="currentFragment"></fragment>
     </section>
     <div class="backdrop" :class="{active:this.focusIds.length}" @click.prevent.stop="unfocus"></div>
@@ -70,17 +70,6 @@ export default {
   ready () {
     // console.info(window.location)
     // console.log('edit', this.$route.path)
-    let $root = this.$root
-    setTimeout(function () {
-      $root.fetch('store:orgs')
-    }, 1000)
-    setTimeout(function () {
-      $root.fetch('projects:ldeditor')
-    }, 2000)
-    setTimeout(function () {
-      $root.fetch('invoices:1')
-    }, 3000)
-    this.route.uri = this.$root.ns.min(window.location.hash.substr(2))
   },
   attached () {
     // Editor shortcuts

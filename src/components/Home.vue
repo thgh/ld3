@@ -1,6 +1,6 @@
 <template>
   <main>
-    <section class="section section-browser">
+    <section class="section-browser">
       <p>
         <a href="#!home">home</a>
         <a href="#!conf">config</a>
@@ -17,7 +17,7 @@
 
     <!-- Intro -->
 
-    <section class="section section-editor section-intro">
+    <section class="section-content section-intro">
       <div class="hero">
         <h1>Linked Data editor</h1>
         <p>

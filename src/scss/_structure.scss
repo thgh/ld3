@@ -54,6 +54,10 @@ a{
 	margin-left: 16em;
 	max-width: 50em;
 }
+.section-content {
+	padding: 2rem;
+	margin-left: 16em;
+}
 .section-intro {
 	font-size: 16px;
 	a {
@@ -65,5 +69,31 @@ a{
 	}
 	.hero {
 		padding: 2rem 0 2rem;
+	}
+}
+
+/* Type */
+
+h1 {
+	margin: 0 0 .5em;
+	font-size: 1.5em;
+	line-height: 1.4em;
+	font-weight: 400;
+}
+h2 {
+	margin: 2em 0 0;
+	opacity: .5;
+	font-size: 1em;
+	text-transform: uppercase;
+	&:first-child {
+		padding-top: 0;
+	}
+	small {
+		text-transform: none;
+		font-weight: normal;
+		font-size: 14px;
+		&::before {
+			content: '\2014  ';
+		}
 	}
 }
