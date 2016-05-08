@@ -15,21 +15,16 @@ if (!namespaces) {
     {ns: 'rdf:', url: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'},
     {ns: 'rdfs:', url: 'http://www.w3.org/2000/01/rdf-schema#'},
     {ns: 'dcterms:', url: 'http://purl.org/dc/terms/'},
+    {ns: 'foaf:', url: 'http://xmlns.com/foaf/0.1/'},
 
     // Personal
-    {ns: 'dev:', url: 'https://ld.dev/'},
-    {ns: 'dev:', url: 'http://ld.dev/'},
-    {ns: 'dev:', url: window.location.hostname.indexOf('localhost') === -1 ? 'https://thomasg.be/ld/' : 'http://ld.dev/'},
-    {ns: 'store:', url: 'dev:store/public/'},
-    {ns: 'projects:', url: 'store:projects/'},
-    {ns: 'invoices:', url: 'store:invoices/'},
-    {ns: 'ppl:', url: 'store:ppl/'},
-    {ns: 'orgs:', url: 'store:orgs/'},
+    {ns: 'dev:', url: 'https://ld.dev/store/public/'},
+    {ns: 'thomasg:', url: 'https://thomasg.be/ld/store/public/'},
 
     // Converted
     {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
     {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
-    {ns: 'schema:', url: 'store:schema/'}
+    {ns: 'schema:', url: 'dev:schema/'}
   ]
   ls.set('namespaces', namespaces)
 }
@@ -37,16 +32,27 @@ if (!namespaces) {
 if (!workspaces) {
   console.log('ls: default workspaces')
   workspaces = [{
-    name: 'Default workspace',
+    name: 'Empty workspace',
+    fetch: []
+  }, {
+    name: 'Dev workspace',
     fetch: [
-      'store:projects',
-      'store:invoices',
-      'store:orgs',
-      'store:ppl'
+      'dev:projects',
+      'dev:invoices',
+      'dev:orgs',
+      'dev:ppl'
+    ]
+  }, {
+    name: 'Production workspace',
+    fetch: [
+      'thomasg:projects',
+      'thomasg:invoices',
+      'thomasg:orgs',
+      'thomasg:ppl'
     ]
   }]
   ls.set('workspaces', workspaces)
-  ls.set('workspaceActive', 0)
+  ls.set('workspaceActive', 1)
 }
 
 var ns = {
@@ -136,6 +142,9 @@ export default {
       }
       fragment = inert(fragment)
       ns.undoF(fragment)
+      if (fragment['@fake']) {
+        delete fragment['@fake']
+      }
       window.fetch(fragment['@id'] + '?secret=insecure', {
         method: 'put',
         body: JSON.stringify(fragment)
@@ -182,9 +191,7 @@ export default {
           let s = ns.minF(body)
           $this.$set('fragments[\'' + s['@id'] + '\']', s)
         } else if (body['@graph']) {
-          console.log(body)
           for (let s of body['@graph']) {
-            console.log(s)
             if (s['@id']) {
               s = ns.minF(s)
               $this.$set('fragments[\'' + s['@id'] + '\']', s)
@@ -229,11 +236,25 @@ export default {
       return obj
     },
     setWorkspace (index) {
+      console.log('set workspace')
+      this.fragments = {}
       this.workspaceActive = index
       ls.set('workspaceActive', index)
+      this.loadWorkspace()
+    },
+    loadWorkspace () {
+      if (!this.workspaces || !this.workspaces.length || !this.workspaces[this.workspaceActive] || !this.workspaces[this.workspaceActive].fetch) {
+        return console.warn('Store.ready failed to load workspace')
+      }
+      for (let ws of this.workspaces[this.workspaceActive].fetch) {
+        this.fetch(ws, true)
+      }
     },
     syncLocal () {
       storeLocally(this.fragments)
+    },
+    clearCache () {
+      ls.clear()
     }
   },
   init () {
@@ -248,12 +269,6 @@ export default {
     clearInterval(this.syncInterval)
   },
   ready () {
-    // Load workspace
-    if (!this.workspaces || !this.workspaces.length || !this.workspaces[this.workspaceActive] || !this.workspaces[this.workspaceActive].fetch) {
-      return console.warn('Store.ready failed to load workspace')
-    }
-    for (let ws of this.workspaces[this.workspaceActive].fetch) {
-      this.fetch(ws)
-    }
+    this.loadWorkspace()
   }
 }

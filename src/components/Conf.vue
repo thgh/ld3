@@ -11,26 +11,29 @@
     </section>
     <section class="section-content">
       <h1>conf</h1>
-      qsdf  
+      <p>
+        <button type="button" class="btn btn-save" @click="forceCache">Cache fragments</button>
+        <button type="button" class="btn btn-save" @click="$root.clearCache()">Clear cache</button>
+      </p>
       <h2>Workspaces</h2>
-      <table style="max-width:100%;">
+      <table class="tbl-conf" style="max-width:100%;">
         <thead>
-          <tr align="left">
+          <tr>
             <th>Workspace</th>
             <th>fetch</th>
           </tr>
         </thead>
         <tbody>
-          <tr v-for="ns in $root.workspaces">
+          <tr v-for="ns in $root.workspaces" :class="{active:$root.workspaceActive==$index}" @click="$root.setWorkspace($index)">
             <td style="padding-right:1em;">{{ ns.name }}</td>
             <td style="white-space:pre-wrap;">{{ ns.fetch.join('\n') }}</td>
           </tr>
         </tbody>
       </table>
       <h2>Namespaces</h2>
-      <table style="min-width:300px;max-width:100%;">
+      <table class="tbl-conf" style="min-width:300px">
         <thead>
-          <tr align="left">
+          <tr>
             <th>Namespace</th>
             <th>URL</th>
           </tr>
@@ -44,9 +47,9 @@
       </table>
       <h2>Local Storage</h2>
       <p>Volgende instellingen worden bewaard in {{ browser }}:</p>
-      <table style="min-width:300px;max-width:100%;">
+      <table class="tbl-conf" style="min-width:300px">
         <thead>
-          <tr align="left">
+          <tr>
             <th>#</th>
             <th>Item</th>
             <th>Size</th>
@@ -65,16 +68,10 @@
           </tr>
         </tbody>
       </table>
-      <p>
-        
-      </p>
-      <p>
-        <button type="button" class="btn btn-save" @click="forceCache">Force cache</button>
-      </p>
       <h2>Memory</h2>
-      <table style="min-width:300px;max-width:100%;">
+      <table class="tbl-conf" style="min-width:300px">
         <thead>
-          <tr align="left">
+          <tr>
             <th>#</th>
             <th>Item</th>
             <th>Size</th>
@@ -119,7 +116,7 @@ export default {
         // Special cases
         usage.push({
           key: key,
-          count: key === 'fragments' ? Object.keys(JSON.parse(window.localStorage[key])).length || 'error' : '',
+          count: key === 'fragments' ? Object.keys(JSON.parse(window.localStorage.getItem(key))).length || 'error' : '',
           size: window.localStorage[key].length
         })
       }
@@ -145,4 +142,17 @@ export default {
 </script>
 
 <style lang="scss">
+.tbl-conf {
+  margin-left: -5px;
+  border: 0;
+  border-collapse: collapse;
+  max-width: 100%;
+  th, td {
+    text-align: left;
+    padding: 3px 5px;
+  }
+}
+.tbl-conf .active {
+  background-color: rgba(255,255,255,.2)
+}
 </style>
