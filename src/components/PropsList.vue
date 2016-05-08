@@ -53,7 +53,7 @@ export default {
   transition: background 0.2s;
 }
 .focus-from .props-list {
-  background: #090909;
+  background: $bgNav;
   z-index: 12;
 }
 .focus-from .focus-prop .props-list {

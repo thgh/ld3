@@ -1,19 +1,8 @@
 <template>
-  <main>
-    <section class="section-browser">
-      <p>
-        <a href="#!home">home</a>
-        <a href="#!conf">config</a>
-        <a href="#!dataset/wut">dataset/wut</a>
-        <a href="#!projects:dekastart">projects:dekastart</a>
-      </p>
-      <recent-fragments :list="$root.fragments" :route="route"></recent-fragments>
-    </section>
-    <section class="section-editor">
+    <section class="section-content section-editor">
       <fragment v-if="currentFragment" :fragment.sync="currentFragment"></fragment>
+      <div class="backdrop" :class="{active:this.focusIds.length}" @click.prevent.stop="unfocus"></div>
     </section>
-    <div class="backdrop" :class="{active:this.focusIds.length}" @click.prevent.stop="unfocus"></div>
-  </main>
 </template>
 
 <script>
@@ -91,7 +80,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
+@import '../scss/app.scss';
+
 .backdrop {
   position: fixed;
   z-index: 10;

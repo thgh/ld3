@@ -1,8 +1,4 @@
-.section-browser {
-	line-height: 16px;
-	font-size: 14px;
-	padding: 2rem 1rem 1rem;
-	word-break: break-word;
+.nav-content {
 	h2 {
 		flex-shrink: 0;
 		margin: 0;
@@ -17,9 +13,6 @@
 	&:after {
 		content: "";
 		display: table;
-	}
-	&::-webkit-scrollbar {
-		display: none;
 	}
 }
 .browser-item {
@@ -101,20 +94,38 @@
 	color: #f66;
 }
 
-.small-11 {
+/* List of fragments in nav */
+
+.nav-fragments {
+	column-width: 11em;
+	padding-bottom: 0.5rem;
+	.a-recent,
+	.inp-text {
+		break-inside: avoid;
+	}
 }
 .a-fragment {
-	display:block;
-	margin-bottom: 10px;
+	display: block;
+	padding-bottom: 10px;
 	text-decoration: none;
-	color: white;
+	color: $fgNav;
 	opacity: 1;
 	&:hover {
 		text-decoration: underline;
 	}
 	small {
-		display:block;
+		display: block;
 		font-size: 12px;
-		opacity: .7;
+		color: transparentize($fgNav, .4);
+	}
+}
+@media (min-width: 940px) {
+	.nav-fragments {
+		transition: opacity 0.3s 3s;
+		opacity: 0;
+		nav:hover & {
+			transition: none;
+			opacity: 1;
+		}
 	}
 }

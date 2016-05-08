@@ -1,9 +1,14 @@
 import Vue from 'vue'
-import App from './App'
+
+// Pages
+import Home from './components/Home'
+import Conf from './components/Conf'
+import Edit from './components/Edit'
 
 import Prop from './components/Prop'
 import RecentFragments from './components/RecentFragments'
 
+import Router from './mixins/Router.js'
 import Store from './mixins/Store'
 
 // Fix recursive initializing bug: PropsList > Prop > ValueObject > PropsList > Prop > ...
@@ -27,6 +32,10 @@ new Vue({
   methods: {
     extend: comp => Vue.extend(comp)
   },
-  mixins: [Store],
-  components: { App }
+  mixins: [Router, Store],
+  components: {
+    Home,
+    Conf,
+    Edit
+  }
 })

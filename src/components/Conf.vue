@@ -1,14 +1,4 @@
 <template>
-  <main>
-    <section class="section-browser">
-      <p>
-        <a href="#!home">home</a>
-        <a href="#!conf">config</a>
-        <a href="#!dataset/wut">dataset/wut</a>
-        <a href="#!projects:dekastart">projects:dekastart</a>
-      </p>
-      <recent-fragments :list="$root.fragments"></recent-fragments>
-    </section>
     <section class="section-content">
       <h1>conf</h1>
       <p>
@@ -86,7 +76,6 @@
         </tbody>
       </table>
     </section>
-  </main>
 </template>
 
 <script>

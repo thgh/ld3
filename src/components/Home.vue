@@ -1,22 +1,4 @@
 <template>
-  <main>
-    <section class="section-browser">
-      <p>
-        <a href="#!home">home</a>
-        <a href="#!conf">config</a>
-        <a href="#!dataset/wut">dataset/wut</a>
-        <a href="#!projects:dekastart">projects:dekastart</a>
-
-      </p>
-      <recent-fragments :list="fragments" :route="route"></recent-fragments>
-      <p>
-      {{blub}}
-      </p>
-
-    </section>
-
-    <!-- Intro -->
-
     <section class="section-content section-intro">
       <div class="hero">
         <h1>Linked Data editor</h1>
@@ -51,7 +33,6 @@
         <br>Intro &mdash; Back to this page.
       </p>
     </section>
-  </main>
 </template>
 
 <script>

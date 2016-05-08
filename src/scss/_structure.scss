@@ -25,50 +25,111 @@
 /* Main structure */
 
 body {
-	min-width: 500px;
-	background: $bg;
-	color: $fg;
-	transition: background 0.3s, color 0.3s;
-}
-.focused {
-	background:#111;
-}
-a{
-  color: $fgNav;
-  opacity: .7;
-}
-.main {
-}
-.section-browser {
-	position: fixed;
-	top: 0;
-	left: 0;
-	bottom: 0;
-  max-width: 16em;
-	overflow-y: auto;
 	background: $bgNav;
 	color: $fgNav;
+	transition: background 0.3s, color 0.3s;
 }
-.section-editor {
-	padding: 2rem;
-	margin-left: 16em;
-	max-width: 50em;
+a {
+	color: $fgNav;
+	opacity: .7;
 }
+
+/* Structure > nav */
+
+.nav-content {
+	color: $fgNav;
+	line-height: 16px;
+	font-size: 14px;
+	padding: 1rem 1rem 0;
+	word-break: break-word;
+	.inp-text {
+		padding-right: 0;
+	}
+}
+
+/* Structure > content */
+
 .section-content {
-	padding: 2rem;
-	margin-left: 16em;
+	padding: 1rem;
+	min-height: 100vh;
+	background: $bg;
+	color: $fg;
+	.focused>& {
+		background: $bgNav;
+	}
 }
-.section-intro {
-	font-size: 16px;
-	a {
-		color: hsl(hue(#099), 100, 50);
-		font-weight: 500;
+
+/* Structure > Tablet */
+
+@media (min-width: 500px) and (max-width: 939px) {
+	.nav-links {
+		float: right;
+		margin: 0.5rem 0 0 0.5rem;
+		line-height: 24px;
+		background-color: $bg;
+		a {
+			padding: 0 0.5rem;
+			text-decoration: none;
+		}
 	}
-	a:visited {
-		color: hsl(hue(#099), 100, 90);
+}
+
+/* Structure > Computer */
+
+@media (min-width: 940px) {
+	.nav-pane {
+		position: fixed;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		width: 16rem;
+		overflow: hidden;
 	}
-	.hero {
-		padding: 2rem 0 2rem;
+	.nav-content {
+		padding-right: 0;
+		width: calc(100% + 30px);
+		max-height: 100%;
+		overflow: hidden;
+		overflow-y: scroll;
+	}
+	.nav-fixwidth {
+		width: 14rem;
+	}
+	.section-content {
+		padding: 2rem;
+		margin-left: 16rem;
+	}
+	.section-editor {
+		max-width: 50rem;
+	}
+	.section-intro {
+		font-size: 16px;
+		a {
+			color: hsl(hue(#099), 100, 50);
+			font-weight: 500;
+		}
+		a:visited {
+			color: hsl(hue(#099), 100, 90);
+		}
+		.hero {
+			padding: 2rem 0 2rem;
+		}
+	}
+}
+
+/* Structure > Center layout */
+
+@media (min-width: 82rem) {
+	.nav-pane {
+		width: calc(100vw / 2 - 25rem);
+	}
+	.nav-fixwidth {
+		width: calc(100vw / 2 - 27rem);
+	}
+	.section-content {
+		margin: 1rem;
+		margin-left: calc(100vw / 2 - 25rem);
+		min-height: calc(100vh - 2rem);
 	}
 }
 

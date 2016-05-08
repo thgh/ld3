@@ -5,7 +5,6 @@
       <input-subtle :model.sync="value['@value']" placeholder="Just a value"></input-subtle>
     </span>
     <span v-else>
-      <span v-if="label" v-text="label"></span>
       <input-reference :model.sync="value" :placeholder="placeholder" @click.prevent.stop></input-reference>
     </span>
     <span class="ld-propclass" v-if="value['@type']">{{ value['@type'] }}</span> 

@@ -1,14 +1,15 @@
 <template>
   <section>
-    <h2>Fragments</h2>
     <div class="inp-text inp-search">
-      <input type="text" v-model="search" placeholder="Search...">
+      <input type="text" v-model="search" placeholder="Search fragments...">
     </div>
-    <div class="a-recent" v-for="(uri, fragment) in list | filterBy search" transition="staggered">
-      <a href="#!{{uri}}" class="a-fragment">
-        {{ fragment['schema:name'] || label(fragment) || fragment['dcterms:title'] || 'Unnamed' }}
-        <small>{{ uri }}</small>
-      </a>
+    <div class="nav-fragments">
+      <div class="a-recent" v-for="(uri, fragment) in list | filterBy search">
+        <a href="#!{{uri}}" class="a-fragment">
+          {{ fragment['schema:name'] || label(fragment) || fragment['dcterms:title'] || 'Unnamed' }}
+          <small>{{ uri }}</small>
+        </a>
+      </div>
     </div>
   </section>
 </template>
@@ -33,10 +34,7 @@ export default {
 }
 </script>
 
-<style>
-.a-recent {
-  height: 3em;
-}
+<style lang="scss">
 .staggered-transition {
   transition: opacity .5s ease, height .5s ease;
   overflow: hidden;

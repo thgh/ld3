@@ -42,15 +42,15 @@
 		border-bottom: 1px solid transparent;
 		padding: 0;
 		padding-left: 4px;
-    resize: none;
+		resize: none;
 		font: inherit;
 		color: inherit;
 		width: auto;
 		background: none;
 		&:focus {
 			outline-offset: 0;
-			outline: 3px solid transparentize(white, .8);
-			background-color: transparentize(white, .8);
+			outline: 3px solid transparentize($fg, .8);
+			background-color: transparentize($fg, .8);
 		}
 		&:invalid {
 			border-bottom: 1px dashed $warning;
@@ -68,12 +68,12 @@
 	flex: 100 0 auto;
 	margin-left: 1em;
 }
-
 .inp-subtle {
 	position: relative;
 	display: inline-block;
 	min-width: 30px;
-	color: rgba(0,0,0,0);
+	max-width: 100%;
+	color: rgba(0, 0, 0, 0);
 	white-space: pre;
 	>input {
 		position: absolute;
@@ -86,18 +86,25 @@
 		line-height: inherit;
 		background: none;
 		color: $fg;
+		&::-webkit-input-placeholder {
+			color: inherit;
+		}
 		&:focus {
 			outline-offset: 0;
-			outline: 3px solid transparentize(white, .8);
-			background-color: transparentize(white, .8);
+			outline: 3px solid transparentize($fg, .8);
+			background-color: transparentize($fg, .8);
 		}
 	}
 }
-
 .inp-search {
 	margin-bottom: 10px;
 	>input {
 		padding-left: 10px;
-		background-color: transparentize(white, .8);
+		color: $fg;
+		background-color: transparentize($bg, .7)!important;
+		outline: none!important;
+		&::-webkit-input-placeholder {
+			color: transparentize($fg, .3);
+		}
 	}
 }

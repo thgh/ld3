@@ -1,6 +1,6 @@
 <template>
-  <div class="inp-text prop" :class="{'focus-prop':focus&&!focusFrom,'focus-from':focusFrom}" title="{placeholder}" @click.stop>
-    <label class="inp-label" :for="_uid">{{prop}}</label>
+  <div class="inp-text prop" :class="{'focus-prop':focus&&!focusFrom,'focus-from':focusFrom}" @click.stop>
+    <label class="inp-label" :for="_uid" :title="prop">{{niceProp}}</label>
     <component :is="renderType" :fragment.sync="fragment" :prop="prop" :id="_uid"></component>
   </div>
 </template>
@@ -26,6 +26,9 @@ export default {
   computed: {
     renderType () {
       return Value.getType(this.fragment[this.prop])
+    },
+    niceProp () {
+      return this.prop.substr(this.prop.indexOf(':') + 1)
     }
   },
   events: {
@@ -66,6 +69,9 @@ export default {
 
 .prop {
   transition: opacity 0.3s, background 0.3s;
+  &:hover {
+    z-index: 11;
+  }
 }
 // > normal
 .inp-label {
@@ -78,19 +84,20 @@ export default {
 }
 
 .focus-from {
-  background: #090909;
+  background: $bgNav;
 }
 
 // .focus-prop > normal
 .focus-prop{
-  color: white;
+  z-index: 11;
+  color: $fg;
   background: $bg;
 }
 
 .focus-prop:hover{
-  color: white;
+  color: $fg;
   background: $bg;
-  transition: opacity 0.3s, background 0.2s;
+  //transition: opacity 0.3s, background 0.2s;
 }
 .focus-from.prop,
 .focus-prop.prop {
@@ -114,7 +121,6 @@ export default {
 
 // .focus-prop .focus-object .focus-prop > normal
 .focus-prop {
-  z-index: 11;
   //outline: 1px solid orange;
 }
 </style>

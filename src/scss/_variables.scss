@@ -3,12 +3,12 @@
 $border:1px solid #bbb;
 $fg: white;
 $bg: #134;
-$fgNav: white;
-$bgNav: rgba(0, 0, 0, .5);
+$fgNav: mix($fg, $bg, 80%);
+$bgNav: darken($bg, 10);
 $bgNest: #345;
 // $fg: black;
 // $bg: white;
 // $fgNav: black;
-// $bgNav: rgba(0, 0, 0, .1);
+// $bgNav: darken($bg, 10);
 $warning: orange;
 $info: #0ff;
