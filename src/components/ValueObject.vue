@@ -1,12 +1,8 @@
 <template>
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
-    <span v-if="ref">=></span>
-    <span v-if="value['@value']">
-      <input-subtle :model.sync="value['@value']" placeholder="Just a value"></input-subtle>
-    </span>
-    <span v-else>
-      <input-reference :model.sync="value" :placeholder="placeholder" @click.prevent.stop></input-reference>
-    </span>
+    <span v-if="ref" class="value-ref-icon">=></span>
+    <input-subtle v-if="value['@value']" :model.sync="value['@value']" placeholder="Just a value"></input-subtle>
+    <input-reference v-else :model.sync="value" :placeholder="placeholder" @click.prevent.stop></input-reference>
     <span class="ld-propclass" v-if="value['@type']">{{ value['@type'] }}</span> 
     <props-list v-if="focus && value" :fragment.sync="value"></props-list>
   </div>

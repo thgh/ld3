@@ -52,7 +52,7 @@ if (!workspaces) {
     ]
   }]
   ls.set('workspaces', workspaces)
-  ls.set('workspaceActive', 1)
+  ls.set('workspaceActive', 0)
 }
 
 var ns = {

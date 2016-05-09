@@ -1,5 +1,5 @@
 <template>
-  <span class="inp-subtle">{{model||placeholder}} <input type="text" v-model="model" :placeholder="placeholder"></span> 
+  <span class="inp-subtle"><span class="inp-subtle-span" v-text="model||placeholder"></span> <input type="text" v-model="model" :placeholder="placeholder"></span> 
 </template>
 
 <script>

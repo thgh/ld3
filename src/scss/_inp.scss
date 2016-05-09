@@ -70,11 +70,8 @@
 }
 .inp-subtle {
 	position: relative;
-	display: inline-block;
-	min-width: 30px;
-	max-width: 100%;
-	color: rgba(0, 0, 0, 0);
-	white-space: pre;
+	display: inline;
+	line-height: 0;
 	>input {
 		position: absolute;
 		top: 0;
@@ -96,12 +93,21 @@
 		}
 	}
 }
+.inp-subtle-span {
+	display: inline-block;
+	min-width: 30px;
+	max-width: 100%;
+	color: transparent;
+	white-space: pre;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 .inp-search {
 	margin-bottom: 10px;
 	>input {
 		padding-left: 10px;
 		color: $fg;
-		background-color: transparentize($bg, .7)!important;
+		background-color: transparentize($bg, .3)!important;
 		outline: none!important;
 		&::-webkit-input-placeholder {
 			color: transparentize($fg, .3);

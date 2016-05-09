@@ -42,10 +42,6 @@
           .bolder {
             font-weight: bolder;
           }
-          header {
-            position: relative;
-            flex-grow: 1;
-          }
           .method {
             flex-basis: 100%;
             margin: 1cm 0 0
@@ -85,6 +81,10 @@
           }
           .invoice address>div {
             white-space: nowrap;
+          }
+          .invoice header {
+            position: relative;
+            flex-grow: 1;
           }
           .invoice .summary {
             background: #eee;

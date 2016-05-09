@@ -57,6 +57,7 @@ export default {
           this.route.view = 'edit'
           this.route.uri = this.$root.ns.min(hash)
           window.document.title = 'ld3:edit ' + this.route.uri
+          document.querySelector('.section-content').scrollIntoView(true)
         }
       } else {
         console.log('changed hash to ', hash)

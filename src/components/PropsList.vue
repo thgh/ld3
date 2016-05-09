@@ -33,7 +33,8 @@ export default {
 @import '../scss/variables';
 .props-list {
   position: relative;
-  margin-left: -1rem!important;
+  margin-left: -1rem;
+  margin-right: -1rem;
   flex-basis: 100%;
   flex-shrink: 0;
 }
@@ -42,7 +43,8 @@ export default {
   top: 100%;
   left: 0;
   right: 0;
-  margin-left: 0!important;
+  margin-left: 0;
+  margin-right: 0;
   padding: 0 0 .5rem;
   background-color: $bg;
   // outline: 1px solid purple;

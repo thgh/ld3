@@ -1,0 +1,15 @@
+{
+  "lang": "en",
+  "dir": "ltr",
+	"short_name": "ldms",
+	"name": "ldms",
+	"display": "fullscreen",
+	"orientation": "portrait",
+	"start_url": "/ld3/#!conf",
+	"theme_color": "#134",
+	"background_color": "#134",
+	"icons": [{
+		"src": "/ld3/static/favicon.png",
+		"sizes": "64x64"
+	}]
+}

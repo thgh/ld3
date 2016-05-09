@@ -3,7 +3,7 @@
     <header>
       <h1 class="fragment-h1">
         <input-subtle :model.sync="fragment['schema:name']" :placeholder="fragment['@id']||'Fatal error'"></input-subtle>
-        <span class="ld-propclass" v-if="fragment['@type']" v-text="fragment['@type']"></span> <small><small><small style="opacity:.5">{{fragment['@id']}}</small></small></small>
+        <span class="ld-propclass" v-if="fragment['@type']" v-text="fragment['@type']"></span>
       </h1>
       <div class="fragment-json mdi mdi-12px mdi-code-braces">
         <pre class="fragment-pre">{{fragment|json}}</pre>

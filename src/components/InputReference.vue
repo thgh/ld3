@@ -1,5 +1,5 @@
 <template>
-  <form class="inp-subtle" @submit.prevent.stop="submit" @keydown="keydown">{{term||placeholder}} <input type="text" v-model="term" :placeholder="placeholder" @blur="blur" @input="input"><div class="ref-select" v-if="options">
+  <form class="inp-subtle" @submit.prevent.stop="submit" @keydown="keydown"><span class="inp-subtle-span" v-text="term||placeholder"></span> <input type="text" v-model="term" :placeholder="placeholder" @blur="blur" @input="input"><div class="ref-select" v-if="options">
       <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item+' '+opt.score" track-by="item" @mouseenter="ghost=$index" @click="confirm(opt.item)" transition="staggered"></div>
     </div>
   </form> 
