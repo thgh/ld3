@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section :class="{'nav-muted':!search}">
     <div class="inp-text inp-search">
       <input type="text" v-model="search" placeholder="Search fragments...">
     </div>

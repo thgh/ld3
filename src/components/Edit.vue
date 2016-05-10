@@ -44,6 +44,11 @@ export default {
           this.$root.sync(this.currentFragment)
         }
       }
+      // ctrl+s
+      if (key === 114 || (evt.ctrlKey || evt.metaKey) && key === 70) {
+        evt.preventDefault()
+        document.querySelector('nav input').focus()
+      }
     }
   },
   events: {
