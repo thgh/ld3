@@ -1,6 +1,6 @@
 <template>
   <form class="inp-subtle" @submit.prevent.stop="submit" @keydown="keydown"><span class="inp-subtle-span" v-text="term||placeholder"></span> <input type="text" v-model="term" :placeholder="placeholder" @blur="blur" @input="input"><div class="ref-select" v-if="options">
-      <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item+' '+opt.score" track-by="item" @mouseenter="ghost=$index" @click="confirm(opt.item)" transition="staggered"></div>
+      <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item+' '+opt.score" track-by="item" @mouseenter="ghost=$index" @mousedown="confirm(opt.item)" transition="staggered"></div>
     </div>
   </form> 
 </template>
@@ -76,9 +76,11 @@ export default {
     },
     confirm (uri) {
       if (typeof uri === 'string') {
-        console.log('confirming', uri, this.$root.fragments[uri])
-      } else if (!uri) {
-        console.log('confirming', this.ghost, this.$root.fragments[this.options[this.ghost].item])
+        this.model = {'@id': uri}
+        this.blur()
+      } else if (!uri && this.options) {
+        this.model = {'@id': this.options[this.ghost].item}
+        this.blur()
       } else {
         console.log('confirming but dont know what', uri)
       }
