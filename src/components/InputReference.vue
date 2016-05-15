@@ -104,7 +104,7 @@ export default {
 @import '../scss/variables';
 .ref-select {
   position: absolute;
-  z-index: 2;
+  z-index: 20;
   top: 100%;
   left: -3px;
   margin-top: 3px;
