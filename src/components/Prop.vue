@@ -68,7 +68,7 @@ export default {
 @import '../scss/variables';
 
 .prop {
-  transition: opacity 0.3s, background 0.3s;
+  transition: opacity 0.3s;
   &:hover {
     z-index: 11;
   }
