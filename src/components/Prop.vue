@@ -75,7 +75,8 @@ export default {
 }
 // > normal
 .inp-label {
-  padding-left: 1rem!important;
+  // padding-left: 1rem!important;
+  padding-left: 1rem;
 }
 
 // .focused > low

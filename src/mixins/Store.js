@@ -1,4 +1,5 @@
 import throttle from '../libs/throttle'
+import U from '../libs/util'
 import ls from 'local-storage'
 
 var fragments = ls.get('fragments')
@@ -24,7 +25,7 @@ if (!namespaces) {
     // Converted
     {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
     {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
-    {ns: 'schema:', url: 'dev:schema/'}
+    {ns: 'schema:', url: 'thomasg:schema/'}
   ]
   ls.set('namespaces', namespaces)
 }
@@ -171,9 +172,7 @@ export default {
         return console.log(' this aint no uri', uri)
       }
       fetching[uri] = true
-      window.fetch(uri, {
-        redirect: 'follow'
-      }).then(checkStatus).then(json).then(function (body) {
+      window.fetch(uri, U.getJson).then(checkStatus).then(json).then(function (body) {
         if (!body) {
           return console.warn('no data in response')
         }
@@ -209,6 +208,23 @@ export default {
       return {
         '@id': uri
       }
+    },
+    copy (uri, to) {
+      if (!this.fragments[uri]) {
+        return console.warn('Store.rename: cant find', uri)
+      }
+      if (this.fragments[to]) {
+        return console.warn('Store.rename: overwriting is disabled', to)
+      }
+      var temp = inert(this.fragments[uri])
+      temp['@id'] = to
+      this.setFragment(temp)
+      console.log('copied', uri, 'to', to)
+      return to
+    },
+    setFragment (f) {
+      f = ns.minF(f)
+      this.$set('fragments[\'' + f['@id'] + '\']', f)
     },
     resolve (uri, options) {
       options = options || 0

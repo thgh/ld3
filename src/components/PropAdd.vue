@@ -1,8 +1,8 @@
 <template>
   <form @submit.prevent="submit">
-    <label class="inp-text label-prop" v-if="show.prop">
+    <label class="inp-text label-prop" :class="special" v-if="show.prop">
       <input-subtle :model.sync="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
-      <input v-model="value" placeholder="value..." @blur="submit" @keydown.enter="submit">
+      <input v-model="value" placeholder="value..." @blur="submit" @keyup.enter="submit">
     </label>
     <label class="inp-text label-prop" v-if="prop||!show.prop">
       <button class="btn-add" @click="start">Add</button>
@@ -26,6 +26,18 @@ export default {
   },
   computed: {
     props () {
+      return this.fragment
+    },
+    special () {
+      if (!this.prop) {
+        return
+      }
+      if (this.prop[0] === '@') {
+        return {'inp-alert': true}
+      }
+      if (this.prop.indexOf(':') === -1) {
+        return {'inp-urify': true}
+      }
       return this.fragment
     }
   },
@@ -64,7 +76,7 @@ export default {
 
 <style>
 .label-prop {
-  margin-left: 1em;
+  padding-left: 1em;
 }
 .label-prop>.inp-subtle {
   margin-right: .75em;

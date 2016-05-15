@@ -6,7 +6,10 @@
         <span class="ld-propclass" v-if="fragment['@type']" v-text="fragment['@type']"></span>
       </h1>
       <div class="fragment-json mdi mdi-12px mdi-code-braces">
-        <pre class="fragment-pre">{{fragment|json}}</pre>
+        <p class="fragment-collapse" style="float:right">
+          <input type="text" :value="fragment['@id']" @blur="copy">
+        </p>
+        <pre class="fragment-collapse fragment-pre">{{fragment|json}}</pre>
       </div>
     </header>
 
@@ -16,7 +19,6 @@
 
     <p class="fragment-cta">
       <button class="btn btn-save" :class="{'btn-save':savable,'btn-soft':!savable}" @click="sync">Sync</button>
-      <button class="btn btn-soft">Resolve</button>
     </p>
 
     <div v-if="loadPlugin(fragment['@type'])&&resolved" :is="fragment['@type']" :a="resolved" :options="options">test</div>
@@ -56,6 +58,12 @@ export default {
   methods: {
     loadProps () {
       this.addPropShow = true
+    },
+    copy (evt) {
+      var uri = this.$root.copy(this.fragment['@id'], evt.target.value)
+      if (uri) {
+        window.location.href = '#' + uri
+      }
     },
     sync () {
       this.$root.sync(this.fragment)

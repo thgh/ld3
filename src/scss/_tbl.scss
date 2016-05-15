@@ -1,0 +1,57 @@
+.tbl-conf {
+	margin-left: -5px;
+	border: 0;
+	border-collapse: collapse;
+	max-width: 100%;
+	overflow: hidden;
+	th,
+	td {
+		text-align: left;
+		padding: 3px 5px;
+	}
+}
+.tbl-conf .active {
+	background-color: transparentize($fg, .8);
+}
+
+/* Somewhat conf related: auth */
+
+.auth {
+	text-align: center;
+	.btn-save:disabled {
+		opacity: 0;
+		pointer-events: none;
+	}
+}
+.auth-feedback {
+	clear: both;
+	margin-top: 2em;
+	min-height: 2em;
+	color: $warning;
+}
+.inp-auth {
+	float: left;
+	>.inp-label {
+		padding: 0 0.5em 0 0;
+	}
+	>input {
+		max-width: 6em;
+	}
+}
+@media (max-width: 939px) {
+	.auth {
+		.btn-save {
+			margin-top: 0.25rem;
+			font-size: 0.81rem;
+		}
+	}
+}
+@media (min-width: 940px) {
+	.auth {
+		font-size: 2rem;
+		.btn-save {
+			margin-top: 0.25rem;
+			font-size: 1.45rem;
+		}
+	}
+}

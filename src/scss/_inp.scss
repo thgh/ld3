@@ -1,3 +1,5 @@
+$focusStrength: .95;
+
 .inp-nav>input {
 	color: white;
 }
@@ -11,25 +13,25 @@
 	padding: 0 1em 0 0;
 	margin: 0;
 	width: auto;
-	font-size: 14px;
-	opacity: 1;
-	font-size: 16px;
+	// font-size: 14px;
+	// opacity: 1;
+	font: inherit;
+	height: 1.5em;
 	opacity: .7;
 }
 .inp-text {
 	position: relative;
 	flex-grow: 1;
 	display: flex;
-	align-items: stretch;
 	margin: 0;
 	padding: 7px 8px 7px 0;
-	line-height: 24px;
+	line-height: 1.5em;
 	&:hover {
 		//background: white;
 	}
 	&>label {
 		flex: 0 0 auto;
-		padding: 0 1em 0 0;
+		padding: 0 1em;
 		width: auto;
 		opacity: .7;
 	}
@@ -42,15 +44,17 @@
 		border-bottom: 1px solid transparent;
 		padding: 0;
 		padding-left: 4px;
+		min-width: 2em;
 		resize: none;
 		font: inherit;
+		height: 1.5em;
 		color: inherit;
 		width: auto;
 		background: none;
 		&:focus {
 			outline-offset: 0;
-			outline: 3px solid transparentize($fg, .8);
-			background-color: transparentize($fg, .8);
+			outline: 3px solid transparentize($fg, $focusStrength);
+			background-color: transparentize($fg, $focusStrength);
 		}
 		&:invalid {
 			border-bottom: 1px dashed $warning;
@@ -62,6 +66,9 @@
 		margin-left: .5em;
 		padding-top: 2px;
 		padding-bottom: 2px;
+	}
+	&>.btn {
+		flex: 1 0 auto;
 	}
 }
 .inp-fake {
@@ -88,8 +95,8 @@
 		}
 		&:focus {
 			outline-offset: 0;
-			outline: 3px solid transparentize($fg, .8);
-			background-color: transparentize($fg, .8);
+			outline: 3px solid transparentize($fg, $focusStrength);
+			background-color: transparentize($fg, $focusStrength);
 		}
 	}
 }
@@ -113,4 +120,12 @@
 			color: transparentize($fg, .3);
 		}
 	}
+}
+
+.inp-alert {
+	background-color: transparentize(red, .5);
+}
+.inp-error>input {
+	background-color: transparentize(red, .7);
+	outline: 3px solid transparentize(red, .7);
 }

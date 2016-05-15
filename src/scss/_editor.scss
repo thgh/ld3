@@ -12,6 +12,7 @@
 	}
 }
 .fragment-json {
+	transition: top 1s, right 1s;
 	position: absolute;
 	right: 0;
 	top: 0;
@@ -20,27 +21,30 @@
 	color: #888;
 	background-color: $fg;
 	&:hover {
-		z-index: 2;
-		background: rgba(0, 0, 0, .1);
+		position: fixed;
+		z-index: 10;
+		top: 1rem;
+		left: 1rem;
+		right: 1rem;
+		max-height: calc(100vh - 2rem);
+		overflow: auto;
+		background: grayscale($bg);
+		color: grayscale($fg);
+		box-shadow: 0 0 5px rgba(0, 0, 0, .5);
+		>.fragment-collapse {
+			display: block;
+		}
 	}
-	&:hover>.fragment-pre {
-		display: block;
+}
+.fragment-collapse {
+	display: none;
+	&p {
+		float: right;
 	}
 }
 .fragment-pre {
-	display: none;
-	position: fixed;
-	z-index: 10;
-	top: 1rem;
-	left: 1rem;
-	right: 1rem;
-	max-height: calc(100vh - 2rem);
 	font-size: 1rem;
 	line-height: 1.2rem;
-	background: #000;
-	color: #fff;
-	box-shadow: 0 0 5px rgba(0, 0, 0, .5);
-	overflow: auto;
 }
 .ld-nested {
 	margin-bottom: 1em;

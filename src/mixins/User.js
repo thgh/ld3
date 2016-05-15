@@ -1,0 +1,77 @@
+import U from '../libs/util'
+import ls from 'local-storage'
+
+export const LD3_PROFILES = 'http://id.thomasg.be/ld3-profiles/'
+
+export const LD3_PERSON = {'@type': 'schema:Person', '@id': 'ld3:anonymous', 'schema:name': 'Anonymous person'}
+export const LD3_SERVER = [{'@id': 'http://id.thomasg.be/'}]
+
+export const LD3_USER = {
+  '@type': 'ld3:Profile',
+  '@id': null,
+  person: LD3_PERSON,
+  server: LD3_SERVER,
+  workspace: []
+}
+
+const user = ls.get('user') || U.inert(LD3_USER)
+user.auth = false
+
+export default {
+  data: {
+    user: user
+  },
+  methods: {
+    userLoad (uri) {
+      if (!uri.startsWith('http')) {
+        uri = LD3_PROFILES + uri
+      }
+      return window.fetch(uri, U.getJson).then(U.checkStatus).then(U.json).then(function (body) {
+        console.log('ahrrrr', U.inert(body))
+        user.auth = true
+        for (let key in body) {
+          user[key] = body[key]
+        }
+        ls.set('user', user)
+        return user
+      }).catch(function (error) {
+        console.log('ahrrrr', error)
+        if (error.status === 404) {
+          user.auth = false
+          user.org = null
+          user.person = null
+          user.workspace = null
+          ls.set('user', user)
+        }
+        throw error
+      })
+    },
+    userAdd (uri) {
+      if (!uri.startsWith('http')) {
+        uri = LD3_PROFILES + uri
+      }
+      var data = U.inert(LD3_USER)
+      data['@id'] = uri
+      return window.fetch(uri + '?secret=insecure', U.putJson(data))
+      .then(U.checkStatus)
+      .then(U.json)
+      .then(function (body) {
+        user.auth = true
+        user.org = body.org || null
+        user.person = body.person || null
+        user.workspace = body.workspace || null
+        body.status = 200
+        return body
+      }).catch(function (error) {
+        if (error.status !== 404) {
+          return error.response
+        }
+        user.auth = false
+        user.org = null
+        user.person = null
+        user.workspace = null
+        return error.response
+      })
+    }
+  }
+}

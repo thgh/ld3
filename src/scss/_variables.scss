@@ -11,4 +11,5 @@ $bgNest: #345;
 // $fgNav: black;
 // $bgNav: darken($bg, 10);
 $warning: orange;
+$warning: mix(orange, $fg, 85%);
 $info: #0ff;

@@ -1,9 +1,10 @@
 <template>
-    <section class="section-content">
+    <section class="section-content section-editor">
       <h1>conf</h1>
       <p>
         <button type="button" class="btn btn-save" @click="forceCache">Cache fragments</button>
         <button type="button" class="btn btn-save" @click="$root.clearCache()">Clear cache</button>
+        <button type="button" class="btn btn-save" @click="user.auth=false">logout</button>
       </p>
       <h2>Workspaces</h2>
       <table class="tbl-conf" style="max-width:100%;">
@@ -129,19 +130,3 @@ export default {
   }
 }
 </script>
-
-<style lang="scss">
-.tbl-conf {
-  margin-left: -5px;
-  border: 0;
-  border-collapse: collapse;
-  max-width: 100%;
-  th, td {
-    text-align: left;
-    padding: 3px 5px;
-  }
-}
-.tbl-conf .active {
-  background-color: rgba(255,255,255,.2)
-}
-</style>
