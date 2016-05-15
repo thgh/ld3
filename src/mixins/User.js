@@ -11,11 +11,13 @@ export const LD3_USER = {
   '@id': null,
   person: LD3_PERSON,
   server: LD3_SERVER,
-  workspace: []
+  workspace: [{
+    url: 'http://id.thomasg.be/ppl'
+  }]
 }
 
 const user = ls.get('user') || U.inert(LD3_USER)
-user.auth = false
+user.auth = !!user['@id']
 
 export default {
   data: {
@@ -26,8 +28,10 @@ export default {
       if (!uri.startsWith('http')) {
         uri = LD3_PROFILES + uri
       }
-      return window.fetch(uri, U.getJson).then(U.checkStatus).then(U.json).then(function (body) {
-        console.log('ahrrrr', U.inert(body))
+      return window.fetch(uri, U.getJson)
+      .then(U.checkStatus)
+      .then(U.json)
+      .then(function (body) {
         user.auth = true
         for (let key in body) {
           user[key] = body[key]
@@ -35,7 +39,6 @@ export default {
         ls.set('user', user)
         return user
       }).catch(function (error) {
-        console.log('ahrrrr', error)
         if (error.status === 404) {
           user.auth = false
           user.org = null
@@ -52,7 +55,7 @@ export default {
       }
       var data = U.inert(LD3_USER)
       data['@id'] = uri
-      return window.fetch(uri + '?secret=insecure', U.putJson(data))
+      return U.putJson(data)
       .then(U.checkStatus)
       .then(U.json)
       .then(function (body) {

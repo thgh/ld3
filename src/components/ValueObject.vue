@@ -1,6 +1,6 @@
 <template>
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
-    <span v-if="ref" class="value-ref-icon">=></span>
+    <span v-if="ref" class="value-ref-icon">&rarr;</span>
     <input-subtle v-if="value['@value']" :model.sync="value['@value']" placeholder="Just a value"></input-subtle>
     <input-reference v-else :model.sync="model" :placeholder="placeholder" @click.prevent.stop></input-reference>
     <span class="ld-propclass" v-if="value['@type']">{{ value['@type'] }}</span> 
@@ -9,6 +9,8 @@
 </template>
 
 <script>
+import U from '../libs/util'
+
 import InputReference from './InputReference'
 import InputSubtle from './InputSubtle'
 import PropsList from './PropsList'
@@ -39,16 +41,16 @@ export default {
         return this.ref || this.value
       },
       set (ref) {
-        console.log('set model', ref)
+        console.log('set model', U.inert(ref))
         if (typeof this.ref === 'object') {
           this.ref = ref
         } else if (typeof this.prop !== 'string') {
-          console.warn('not supported')
+          console.warn('obj: not supported')
         } else if (typeof this.index === 'number') {
-          console.warn('array set index')
+          console.warn('obj: array set index')
           this.fragment[this.prop][this.index] = ref
         } else {
-          console.warn('normal')
+          console.warn('obj: normal')
           this.fragment[this.prop] = ref
         }
       }
@@ -131,5 +133,8 @@ export default {
 
 .value-ref-icon {
   vertical-align: top;
+  font-size: 1.8em;
+  line-height: .74em;
+  opacity: .5;
 }
 </style>

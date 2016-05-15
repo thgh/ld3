@@ -16,13 +16,16 @@ export default {
         return typeof this.prop !== 'string' ? this.fragment : typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
       },
       set (obj) {
+        if (this.fragment && this.fragment['@temp']) {
+          console.error('ref: setting a @temp fragment is a bad idea')
+        }
         if (typeof this.prop !== 'string') {
           console.warn('ref: not supported')
         } else if (typeof this.index === 'number') {
           console.warn('ref: array set index')
           this.fragment[this.prop][this.index] = obj
         } else {
-          console.warn('ref: normal')
+          console.warn('ref: normal', this.fragment['@temp'], this.fragment[this.prop]['@temp'])
           this.fragment[this.prop] = obj
         }
       }

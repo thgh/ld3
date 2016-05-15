@@ -3,57 +3,27 @@ import U from '../libs/util'
 import ls from 'local-storage'
 
 var fragments = ls.get('fragments')
-var namespaces = ls.get('namespaces')
-var workspaces = ls.get('workspaces')
-var workspaceActive = ls.get('workspaceActive')
 
-if (!namespaces) {
-  console.log('ls: default namespaces')
-  namespaces = [
-    // Official
-    {ns: 'schema:', url: 'https://schema.org/'},
-    {ns: 'schema:', url: 'http://schema.org/'},
-    {ns: 'rdf:', url: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#'},
-    {ns: 'rdfs:', url: 'http://www.w3.org/2000/01/rdf-schema#'},
-    {ns: 'dcterms:', url: 'http://purl.org/dc/terms/'},
-    {ns: 'foaf:', url: 'http://xmlns.com/foaf/0.1/'},
-
-    // Personal
-    {ns: 'dev:', url: 'https://ld.dev/store/public/'},
-    {ns: 'thomasg:', url: 'https://thomasg.be/ld/store/public/'},
-
-    // Converted
-    {ns: 'https://opencorporates.com/companies/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/https://opencorporates.com/companies/'},
-    {ns: 'http://data.kbodata.be/', url: 'http://rdf-translator.appspot.com/convert/detect/json-ld/http://data.kbodata.be/'},
-    {ns: 'schema:', url: 'thomasg:schema/'}
-  ]
-  ls.set('namespaces', namespaces)
+// TODO: get this context from actual server, can be found in user object
+export const STORE_CONTEXT = {
+  'dce': 'http://purl.org/dc/elements/1.1/',
+  'dcterms': 'http://purl.org/dc/terms/',
+  'foaf': 'http://xmlns.com/foaf/0.1/',
+  'ld3': 'http://ld3.link/',
+  'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+  'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
+  'schema': 'http://schema.org/',
+  'skos': 'http://www.w3.org/2004/02/skos/core#',
+  'xsd': 'http://www.w3.org/2001/XMLSchema#'
 }
 
-if (!workspaces) {
-  console.log('ls: default workspaces')
-  workspaces = [{
-    name: 'Empty workspace',
-    fetch: []
-  }, {
-    name: 'Dev workspace',
-    fetch: [
-      'dev:projects',
-      'dev:invoices',
-      'dev:orgs',
-      'dev:ppl'
-    ]
-  }, {
-    name: 'Production workspace',
-    fetch: [
-      'thomasg:projects',
-      'thomasg:invoices',
-      'thomasg:orgs',
-      'thomasg:ppl'
-    ]
-  }]
-  ls.set('workspaces', workspaces)
-  ls.set('workspaceActive', 0)
+// TODO: sort namespaces in a way that subnamespaces still work
+const namespaces = []
+for (let ns in STORE_CONTEXT) {
+  namespaces.push({
+    ns: ns + ':',
+    url: STORE_CONTEXT[ns]
+  })
 }
 
 var ns = {
@@ -82,21 +52,6 @@ var ns = {
   }
 }
 
-function checkStatus (response) {
-  if (response.status < 400) {
-    return response
-  }
-  console.warn(response.status)
-  var error = new Error(response.statusText)
-  error.response = response
-  throw error
-}
-function json (response) {
-  return response.json()
-}
-function inert (s) {
-  return JSON.parse(JSON.stringify(s))
-}
 function hideSchema (obj) {
   // Hide in current object
   for (let prop in obj) {
@@ -115,7 +70,7 @@ function hideSchema (obj) {
 }
 
 var storeLocally = throttle(function (fragments) {
-  window.fragments = inert(fragments)
+  window.fragments = U.inert(fragments)
   ls('fragments', fragments)
 }, 5000)
 
@@ -126,10 +81,14 @@ export default {
     return {
       fragments: fragments || {},
       namespaces: namespaces || [],
-      workspaces: workspaces || [],
-      workspaceActive: workspaceActive || 0,
       syncAgo: 0,
       interval: 0
+    }
+  },
+  computed: {
+    fragmentCount () {
+      console.log('counting fragments')
+      return Object.keys(this.fragments).length
     }
   },
   methods: {
@@ -141,15 +100,14 @@ export default {
       if (typeof fragment !== 'object') {
         return console.error('Store.sync expects object, but got', typeof fragment)
       }
-      fragment = inert(fragment)
+      fragment = U.inert(fragment)
       ns.undoF(fragment)
-      if (fragment['@fake']) {
-        delete fragment['@fake']
+      if (fragment['@temp']) {
+        delete fragment['@temp']
       }
-      window.fetch(fragment['@id'] + '?secret=insecure', {
-        method: 'put',
-        body: JSON.stringify(fragment)
-      }).then(json).then(function (body) {
+      U.putJson(fragment)
+      .then(U.json)
+      .then(function (body) {
         if (!body.success) {
           console.warn(body)
         }
@@ -172,7 +130,10 @@ export default {
         return console.log(' this aint no uri', uri)
       }
       fetching[uri] = true
-      window.fetch(uri, U.getJson).then(checkStatus).then(json).then(function (body) {
+      window.fetch(uri, U.getJson)
+      .then(U.checkStatus)
+      .then(U.json)
+      .then(function (body) {
         if (!body) {
           return console.warn('no data in response')
         }
@@ -205,9 +166,10 @@ export default {
         })
         $this.$set('fragments[\'' + s['@id'] + '\']', s)
       })
-      return {
+      return this.setFragment({
+        '@temp': true,
         '@id': uri
-      }
+      })
     },
     copy (uri, to) {
       if (!this.fragments[uri]) {
@@ -216,7 +178,7 @@ export default {
       if (this.fragments[to]) {
         return console.warn('Store.rename: overwriting is disabled', to)
       }
-      var temp = inert(this.fragments[uri])
+      var temp = U.inert(this.fragments[uri])
       temp['@id'] = to
       this.setFragment(temp)
       console.log('copied', uri, 'to', to)
@@ -225,6 +187,7 @@ export default {
     setFragment (f) {
       f = ns.minF(f)
       this.$set('fragments[\'' + f['@id'] + '\']', f)
+      return f
     },
     resolve (uri, options) {
       options = options || 0
@@ -241,7 +204,7 @@ export default {
       if (!this.fragments[uri]) {
         return // console.warn(uri, 'was not found in storage')
       }
-      var obj = inert(this.fragments[uri])
+      var obj = U.inert(this.fragments[uri])
       for (let prop in obj) {
         // Recursive
         if (options > 0 && typeof obj[prop] === 'object' && Object.keys(obj[prop]).length === 1 && obj[prop]['@id']) {
@@ -250,21 +213,6 @@ export default {
       }
       obj = hideSchema(obj)
       return obj
-    },
-    setWorkspace (index) {
-      console.log('set workspace')
-      this.fragments = {}
-      this.workspaceActive = index
-      ls.set('workspaceActive', index)
-      this.loadWorkspace()
-    },
-    loadWorkspace () {
-      if (!this.workspaces || !this.workspaces.length || !this.workspaces[this.workspaceActive] || !this.workspaces[this.workspaceActive].fetch) {
-        return console.warn('Store.ready failed to load workspace')
-      }
-      for (let ws of this.workspaces[this.workspaceActive].fetch) {
-        this.fetch(ws, true)
-      }
     },
     syncLocal () {
       storeLocally(this.fragments)
@@ -283,8 +231,5 @@ export default {
   detached () {
     clearInterval(this.interval)
     clearInterval(this.syncInterval)
-  },
-  ready () {
-    this.loadWorkspace()
   }
 }

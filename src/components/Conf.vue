@@ -6,21 +6,6 @@
         <button type="button" class="btn btn-save" @click="$root.clearCache()">Clear cache</button>
         <button type="button" class="btn btn-save" @click="user.auth=false">logout</button>
       </p>
-      <h2>Workspaces</h2>
-      <table class="tbl-conf" style="max-width:100%;">
-        <thead>
-          <tr>
-            <th>Workspace</th>
-            <th>fetch</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="ns in $root.workspaces" :class="{active:$root.workspaceActive==$index}" @click="$root.setWorkspace($index)">
-            <td style="padding-right:1em;">{{ ns.name }}</td>
-            <td style="white-space:pre-wrap;">{{ ns.fetch.join('\n') }}</td>
-          </tr>
-        </tbody>
-      </table>
       <h2>Namespaces</h2>
       <table class="tbl-conf" style="min-width:300px">
         <thead>

@@ -38,6 +38,10 @@ export default {
           return console.warn('weird, the profile is not complete')
         }
         self.$root.fetch(user['@id'], true)
+        for (var i = 0; i < user.workspace.length; i++) {
+          console.log(user.workspace[i])
+          self.$root.fetch(user.workspace[i].url, true)
+        }
         window.location.href = '#!' + user['@id']
       }).catch(function (error) {
         self.status = error.status

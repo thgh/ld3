@@ -6,14 +6,15 @@ export default {
     }
   },
   putJson (data) {
-    return {
+    return window.fetch(data['@id'], {
       method: 'put',
       body: JSON.stringify(data),
       redirect: 'follow',
       headers: {
-        Accept: 'application/json'
+        Accept: 'application/json',
+        Authorization: 'insecure'
       }
-    }
+    })
   },
   checkStatus (response) {
     if (response.status < 400) {
@@ -26,7 +27,6 @@ export default {
     throw error
   },
   json (response) {
-    console.log(response)
     return response.json()
   },
   inert (obj) {

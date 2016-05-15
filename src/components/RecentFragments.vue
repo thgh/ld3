@@ -1,7 +1,7 @@
 <template>
   <section :class="{'nav-muted':!search}">
     <div class="inp-text inp-search">
-      <input type="text" v-model="search" placeholder="Search fragments...">
+      <input type="text" v-model="search" placeholder="Search through {{$root.fragmentCount}} fragments...">
     </div>
     <div class="nav-fragments">
       <div class="a-recent" v-for="(uri, fragment) in list | filterBy search">
