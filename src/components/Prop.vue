@@ -12,7 +12,7 @@ import ValueObject from './ValueObject'
 import ValueArray from './ValueArray.vue'
 import ValueReference from './ValueReference.vue'
 
-import Value from '../libs/Value.js'
+import U from '../libs/util.js'
 
 export default {
   name: 'prop',
@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     renderType () {
-      return Value.getType(this.fragment[this.prop])
+      return U.valueType(this.fragment[this.prop])
     },
     niceProp () {
       return this.prop.substr(this.prop.indexOf(':') + 1)

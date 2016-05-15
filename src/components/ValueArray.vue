@@ -6,6 +6,8 @@
 </template>
 
 <script>
+import U from '../libs/util'
+
 import ValueObject from './ValueObject'
 import ValueReference from './ValueReference'
 
@@ -21,13 +23,10 @@ export default {
   methods: {
     push () {
       var a = this.fragment[this.prop]
-      if (!a || !a[a.length - 1]) {
-        this.fragment[this.prop].push({
-          '@type': 'schema:Thing',
-          '@id': '_:' + Date.now() % 1000000
-        })
+      var b = !a || !a[a.length - 1] ? {} : U.inert(a[a.length - 1])
+      if (U.valueType(b) === 'ValueReference') {
+        b = U.inert(this.$root.fragments[b['@id']])
       }
-      var b = JSON.parse(JSON.stringify(a[a.length - 1]))
       b['@id'] = '_:' + Date.now() % 1000000
       b['@type'] = b['@type'] || 'schema:Thing'
       this.fragment[this.prop].push(b)

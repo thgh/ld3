@@ -126,8 +126,11 @@ export default {
       if (fetching[uri] && !force) {
         return console.log(' cancel', uri)
       }
-      if (uri.slice(0, 4) !== 'http') {
+      if (!uri.startsWith('http')) {
         return console.log(' this aint no uri', uri)
+      }
+      if (uri.endsWith('anonymous')) {
+        return this.setFragment({'@type': 'schema:Person', '@id': 'ld3:anonymous', 'schema:name': 'Anonymous person'})
       }
       fetching[uri] = true
       window.fetch(uri, U.getJson)
@@ -218,6 +221,7 @@ export default {
       storeLocally(this.fragments)
     },
     clearCache () {
+      this.fragments = {}
       ls.clear()
     }
   },

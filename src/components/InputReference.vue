@@ -122,4 +122,13 @@ export default {
 .ref-ghost {
   background-color: #555;
 }
+
+.staggered-transition {
+  transition: opacity .5s ease, height .5s ease;
+  overflow: hidden;
+}
+.staggered-enter, .staggered-leave {
+  opacity: 0;
+  height: 0;
+}
 </style>

@@ -4,7 +4,7 @@ import ls from 'local-storage'
 export const LD3_PROFILES = 'http://id.thomasg.be/ld3-profiles/'
 
 export const LD3_PERSON = {'@type': 'schema:Person', '@id': 'ld3:anonymous', 'schema:name': 'Anonymous person'}
-export const LD3_SERVER = [{'@id': 'http://id.thomasg.be/'}]
+export const LD3_SERVER = [{'@id': 'http://id.thomasg.be/#server'}]
 
 export const LD3_USER = {
   '@type': 'ld3:Profile',
@@ -12,7 +12,8 @@ export const LD3_USER = {
   person: LD3_PERSON,
   server: LD3_SERVER,
   workspace: [{
-    url: 'http://id.thomasg.be/ppl'
+    'schema:name': 'LBLOD test data',
+    url: 'http://id.thomasg.be/lblod'
   }]
 }
 
