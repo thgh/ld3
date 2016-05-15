@@ -38,6 +38,7 @@ export default {
       let hash = window.location.hash
       if (hash.length === 0) {
         console.log('no hash')
+        this.route.view = 'home'
       } else if (hash.length === 1 && hash !== '#') {
         console.warn('not much hash but umm', hash)
       } else if (hash.length === 2) {
