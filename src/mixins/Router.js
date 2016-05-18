@@ -1,5 +1,7 @@
 var hostPaths = {
   '//thomasg.be': '/ld3/',
+  '//thgh.github.io/ld3/dist': '/ld3/dist/',
+  '//thgh.github.io/ld3': '/ld3/',
   '//localhost/open/ld3/dist': '/open/ld3/dist/'
 }
 
