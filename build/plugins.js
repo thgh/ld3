@@ -4,6 +4,7 @@ env.NODE_ENV = 'production';
 
 var glob = require('glob');
 var webpack = require('webpack');
+var HtmlWebpackPlugin = require('html-webpack-plugin')
 
 webpack({
   watch: true,
@@ -23,7 +24,20 @@ webpack({
       loader: 'babel!eslint',
       exclude: /node_modules/
     }]
-  }
+  },
+  plugins: [
+    new webpack.DefinePlugin({
+      'process.env': {
+        NODE_ENV: '"production"'
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress: {
+        warnings: false
+      }
+    }),
+    new webpack.optimize.OccurenceOrderPlugin()
+  ]
 }, function(err, stats) {
   if (err) throw err;
   process.stdout.write(stats.toString({
