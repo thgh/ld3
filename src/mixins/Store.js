@@ -151,6 +151,7 @@ export default {
             }
           }
         } else if (body['@id']) {
+          $this.loadLocalContext(body)
           let s = ns.minF(body)
           $this.$set('fragments[\'' + s['@id'] + '\']', s)
         } else if (body['@graph']) {
@@ -217,12 +218,26 @@ export default {
       obj = hideSchema(obj)
       return obj
     },
+    loadLocalContext (body) {
+      if (body['@type'] === 'ld3:LocalContext') {
+        for (let ns of body['ld3:namespaces']) {
+          // TODO: filter out duplicates
+          namespaces.push({
+            ns: ns['ld3:prefix'] + ':',
+            url: ns['@id']
+          })
+          this.$nextTick(function () {
+            this.fetch(ns['@id'])
+          })
+        }
+      }
+    },
     syncLocal () {
       storeLocally(this.fragments)
     },
     clearCache () {
       this.fragments = {}
-      ls.clear()
+      ls.remove('fragments')
     }
   },
   init () {
@@ -235,5 +250,11 @@ export default {
   detached () {
     clearInterval(this.interval)
     clearInterval(this.syncInterval)
+  },
+  ready () {
+    // it would be easier to just save the local context in localstorage
+    for (let f in this.fragments) {
+      this.loadLocalContext(this.fragments[f])
+    }
   }
 }

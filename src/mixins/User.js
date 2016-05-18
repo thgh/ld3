@@ -25,7 +25,7 @@ export default {
     user: user
   },
   methods: {
-    userLoad (uri) {
+    userFetch (uri) {
       if (!uri.startsWith('http')) {
         uri = LD3_PROFILES + uri
       }
@@ -76,6 +76,13 @@ export default {
         user.workspace = null
         return error.response
       })
+    },
+    userLoad () {
+      var root = this.$root
+      root.fetch(user['@id'], true)
+      for (var i = 0; i < user.workspace.length; i++) {
+        root.fetch(user.workspace[i].url, true)
+      }
     }
   }
 }

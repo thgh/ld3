@@ -7,7 +7,11 @@
       </h1>
       <div class="fragment-json mdi mdi-12px mdi-code-braces">
         <p class="fragment-collapse" style="float:right">
+          Copy fragment to:
           <input type="text" :value="fragment['@id']" @blur="copy">
+          <br>
+          <br>
+          <button type="button" @click="$root.fetch(fragment['@id'], true)">refetch</button>
         </p>
         <pre class="fragment-collapse fragment-pre">{{fragment|json}}</pre>
       </div>
