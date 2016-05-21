@@ -48,7 +48,7 @@ export default {
         hash = hash.substr(2)
         if (hash.indexOf(':') === -1) {
           console.log('page', hash)
-          if (hash !== 'conf' && hash !== 'home' && hash !== 'edit') {
+          if (hash !== 'conf' && hash !== 'home' && hash !== 'edit' && hash !== 'auth') {
             console.log('  or', hash)
             hash = 'home'
           }

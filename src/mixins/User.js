@@ -13,16 +13,20 @@ export const LD3_USER = {
   server: LD3_SERVER,
   workspace: [{
     'schema:name': 'LBLOD test data',
-    url: 'http://id.thomasg.be/lblod'
+    'schema:url': 'http://id.thomasg.be/lblod/'
   }]
 }
 
 const user = ls.get('user') || U.inert(LD3_USER)
-user.auth = !!user['@id']
 
 export default {
   data: {
     user: user
+  },
+  computed: {
+    auth () {
+      return this.user['@id']
+    }
   },
   methods: {
     userFetch (uri) {
@@ -33,7 +37,6 @@ export default {
       .then(U.checkStatus)
       .then(U.json)
       .then(function (body) {
-        user.auth = true
         for (let key in body) {
           user[key] = body[key]
         }
@@ -41,7 +44,6 @@ export default {
         return user
       }).catch(function (error) {
         if (error.status === 404) {
-          user.auth = false
           user.org = null
           user.person = null
           user.workspace = null
@@ -60,7 +62,6 @@ export default {
       .then(U.checkStatus)
       .then(U.json)
       .then(function (body) {
-        user.auth = true
         user.org = body.org || null
         user.person = body.person || null
         user.workspace = body.workspace || null
@@ -70,7 +71,6 @@ export default {
         if (error.status !== 404) {
           return error.response
         }
-        user.auth = false
         user.org = null
         user.person = null
         user.workspace = null
@@ -79,15 +79,32 @@ export default {
     },
     userLoad () {
       var root = this.$root
-      root.fetch(user['@id'], true)
+      for (let ns of user.workspace) {
+        // Backwards compatibility
+        ns['schema:url'] = ns['schema:url'] || ns.url
+        // stop
+        root.$nextTick(function () {
+          root.fetch(ns['schema:url'])
+        })
+        if (!ns['ld3:prefix']) {
+          continue
+        }
+        let dup = root.namespaces.findIndex(n => n.ns === ns['ld3:prefix'] + ':')
+        if (dup >= 0) {
+          root.namespaces.splice(dup, 1)
+        }
+        root.namespaces.push({
+          ns: ns['ld3:prefix'] + ':',
+          url: ns['schema:url']
+        })
+      }
       for (var i = 0; i < user.workspace.length; i++) {
-        root.fetch(user.workspace[i].url, true)
+        root.fetch(user.workspace[i]['schema:url'], true)
       }
     },
     userLogout () {
       ls.remove('user')
       this.user = U.inert(LD3_USER)
-      this.user.auth = false
     }
   }
 }

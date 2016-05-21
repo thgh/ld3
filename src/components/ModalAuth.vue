@@ -34,7 +34,7 @@ export default {
       var self = this
       this.userFetch(this.name).then(function (user) {
         self.status = null
-        if (!user || !user.auth || !user['@id']) {
+        if (!user || !user['@id']) {
           return console.warn('weird, the profile is not complete')
         }
         self.userLoad()

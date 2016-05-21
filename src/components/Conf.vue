@@ -3,9 +3,9 @@
       <h1>conf</h1>
       <p>
         <button type="button" class="btn btn-save" @click="forceCache">Cache fragments</button>
-        <button type="button" class="btn btn-save" @click="$root.clearCache()">Clear cache</button>
+        <button type="button" class="btn btn-save" @click="clearCache">Clear cache</button>
         <button type="button" class="btn btn-save" @click="$root.userLoad()">Load workspace</button>
-        <button type="button" class="btn btn-save" @click="$root.userLogout()">logout</button>
+        <a href="#!auth" class="btn btn-save" @click="$root.userLogout()">logout</a>
       </p>
       <h2>Namespaces</h2>
       <table class="tbl-conf" style="min-width:300px">
@@ -29,19 +29,18 @@
           <tr>
             <th>#</th>
             <th>Item</th>
-            <th>Size</th>
+            <th class="right">Size</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="u in usage">
             <td>{{ u.count }}</td>
             <td>{{ u.key }}</td>
-            <td align="right">{{ u.size&&u.size.toLocaleString() }} b</td>
+            <td class="right">{{ u.size&&u.size.toLocaleString() }} b</td>
           </tr>
           <tr>
-            <td> </td>
-            <td> </td>
-            <td align="right">{{ percent.toLocaleString() }}% of 5 MB</td>
+            <td>Total</td>
+            <td colspan="2" class="right">{{ percent.toLocaleString() }}% of 5 MB</td>
           </tr>
         </tbody>
       </table>
@@ -51,14 +50,14 @@
           <tr>
             <th>#</th>
             <th>Item</th>
-            <th>Size</th>
+            <th class="right">Size</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="u in memory">
             <td>{{ u.count }}</td>
             <td>{{ u.key }}</td>
-            <td>{{ u.size&&u.size.toLocaleString() }} bytes</td>
+            <td class="right">{{ u.size&&u.size.toLocaleString() }} b</td>
           </tr>
         </tbody>
       </table>
@@ -82,6 +81,10 @@ export default {
         key: 'fragments',
         count: Object.keys(this.$root.fragments).length,
         size: JSON.stringify(this.$root.fragments).length
+      }, {
+        key: 'user',
+        count: '',
+        size: JSON.stringify(this.$root.user).length
       }]
     }
   },
@@ -104,6 +107,10 @@ export default {
     },
     forceCache () {
       this.$root.syncLocal()
+      this.recalculate()
+    },
+    clearCache () {
+      this.$root.clearCache()
       this.recalculate()
     }
   },

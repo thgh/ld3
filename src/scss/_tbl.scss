@@ -9,6 +9,9 @@
 		text-align: left;
 		padding: 3px 5px;
 	}
+	.right {
+		text-align: right;
+	}
 }
 .tbl-conf .active {
 	background-color: transparentize($fg, .8);
