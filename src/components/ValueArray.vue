@@ -24,7 +24,7 @@ export default {
     push () {
       var a = this.fragment[this.prop]
       var b = !a || !a[a.length - 1] ? {} : U.inert(a[a.length - 1])
-      if (U.valueType(b) === 'ValueReference') {
+      if (U.valueType(b) === 'ValueReference' && this.$root.fragments[b['@id']]) {
         b = U.inert(this.$root.fragments[b['@id']])
       }
       b['@id'] = '_:' + Date.now() % 1000000
