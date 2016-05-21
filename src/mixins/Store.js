@@ -256,5 +256,10 @@ export default {
     for (let f in this.fragments) {
       this.loadLocalContext(this.fragments[f])
     }
+    // Fresh start, should probably start somewhere else
+    console.log(this.fragments, this.user.auth)
+    if (!Object.keys(this.fragments).length && this.user.auth) {
+      this.userLoad()
+    }
   }
 }

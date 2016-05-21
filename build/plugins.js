@@ -1,10 +1,4 @@
-// https://github.com/shelljs/shelljs
-require('shelljs/global');
-env.NODE_ENV = 'production';
-
-var glob = require('glob');
-var webpack = require('webpack');
-var HtmlWebpackPlugin = require('html-webpack-plugin')
+var webpack = require('webpack')
 
 webpack({
   watch: true,
@@ -38,8 +32,8 @@ webpack({
     }),
     new webpack.optimize.OccurenceOrderPlugin()
   ]
-}, function(err, stats) {
-  if (err) throw err;
+}, function (err, stats) {
+  if (err) throw err
   process.stdout.write(stats.toString({
     colors: true,
     children: false,
@@ -47,6 +41,6 @@ webpack({
     chunks: false,
     hash: false,
     modules: false,
-    version: false,
-  }) + '\n');
-});
+    version: false
+  }) + '\n')
+})
