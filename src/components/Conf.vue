@@ -5,7 +5,7 @@
         <button type="button" class="btn btn-save" @click="forceCache">Cache fragments</button>
         <button type="button" class="btn btn-save" @click="$root.clearCache()">Clear cache</button>
         <button type="button" class="btn btn-save" @click="$root.userLoad()">Load workspace</button>
-        <button type="button" class="btn btn-save" @click="user.auth=false">logout</button>
+        <button type="button" class="btn btn-save" @click="$root.userLogout()">logout</button>
       </p>
       <h2>Namespaces</h2>
       <table class="tbl-conf" style="min-width:300px">

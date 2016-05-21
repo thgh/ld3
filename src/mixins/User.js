@@ -83,6 +83,11 @@ export default {
       for (var i = 0; i < user.workspace.length; i++) {
         root.fetch(user.workspace[i].url, true)
       }
+    },
+    userLogout () {
+      ls.remove('user')
+      this.user = U.inert(LD3_USER)
+      this.user.auth = false
     }
   }
 }
