@@ -48,10 +48,10 @@ export default {
           console.warn('obj: not supported')
         } else if (typeof this.index === 'number') {
           console.warn('obj: array set index')
-          this.fragment[this.prop][this.index] = ref
+          this.$set('fragment[\'' + this.prop + '\'][\'' + this.index + '\']', ref)
         } else {
           console.warn('obj: normal')
-          this.fragment[this.prop] = ref
+          this.$set('fragment[\'' + this.prop + '\']', ref)
         }
       }
     }

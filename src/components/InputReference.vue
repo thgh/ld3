@@ -57,7 +57,7 @@ export default {
         return
       }
       this.options = this.index.search(needle).slice(0, 20)
-      this.ghost = Math.min(this.ghost, this.options.length - 1)
+      this.ghost = Math.min(this.ghost, (this.options.length || 1) - 1)
     },
     keydown (evt) {
       let key = evt.which || evt.keyCode
