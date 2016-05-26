@@ -43,7 +43,7 @@ export default {
       set (ref) {
         console.log('set model', U.inert(ref))
         if (typeof this.ref === 'object') {
-          this.ref = ref
+          this.ref = this.$root.ns.undoF(ref)
         } else if (typeof this.prop !== 'string') {
           console.warn('obj: not supported')
         } else if (typeof this.index === 'number') {

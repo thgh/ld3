@@ -1,7 +1,7 @@
 <template>
     <section class="section-content section-intro">
       <div class="hero">
-        <h1>Linked Data editor</h1>
+        <h1>ld3: Linked Data Driven Documents</h1>
         <p>
           This is a proof of concept for a generic Linked Data editor interface. <a href="https://schema.org">Schema.org</a> is loaded by default but should be replaceable by (and combinable with) any vocabulary.
         </p>
