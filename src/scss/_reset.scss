@@ -16,3 +16,38 @@ p {
 	margin: 1em 0;
 	max-width: 40em;
 }
+a {
+	color: inherit;
+}
+.btn-reset {
+	color: inherit;
+	border: 0;
+}
+
+/* Type */
+
+h1 {
+	margin: 0 0 .5em;
+	font-size: 1.5em;
+	line-height: 1.4em;
+	font-weight: 400;
+}
+h2 {
+	margin: 2rem 0 0;
+	opacity: .5;
+	font-size: 1em;
+	font-weight: 500;
+	text-transform: uppercase;
+	letter-spacing: .5px;
+	&:first-child {
+		padding-top: 0;
+	}
+	small {
+		text-transform: none;
+		font-weight: normal;
+		font-size: 14px;
+		&::before {
+			content: '\2014  ';
+		}
+	}
+}

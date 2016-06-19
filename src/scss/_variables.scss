@@ -1,15 +1,27 @@
 /* Variables */
 
 $border:1px solid #bbb;
+
+// Once upon a time
 $fg: white;
 $bg: #134;
 $fgNav: mix($fg, $bg, 80%);
 $bgNav: darken($bg, 10);
 $bgNest: #345;
-$fg: black;
-$bg: white;
-$fgNav: black;
+
+// Dev
+$fg: white;
+$bg: hsl(230, 30, 15);
+$fgNav: mix($fg, $bg, 80%);
 $bgNav: darken($bg, 10);
+
+// Official
+// $fg: black;
+// $bg: white;
+// $fgNav: black;
+// $bgNav: darken($bg, 10);
+
+$focus: #09c;
 $warning: orange;
 $warning: mix(orange, $fg, 85%);
 $info: #0ff;

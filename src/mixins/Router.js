@@ -1,26 +1,15 @@
-var hostPaths = {
-  '//thomasg.be': '/ld3/',
-  '//thgh.github.io/ld3/dist': '/ld3/dist/',
-  '//localhost/open/ld3/dist': '/open/ld3/dist/'
-}
+const routes = ['home', 'create', 'edit', 'conf']
 
 export default {
   data () {
     // Use homepage as default because it is lightweight
     var route = {
-      base: '/',
+      base: window.location.pathname,
       uri: '',
       view: 'home'
     }
     // Detect installation directory
     if (window.location.pathname !== '/') {
-      for (var host in hostPaths) {
-        console.log(window.location.href, host)
-        if (window.location.href.indexOf(host) !== -1) {
-          route.base = hostPaths[host]
-          continue
-        }
-      }
       // Replace url to get the router to start properly
       if (window.location.hash.length) {
         console.log('replace base url', route.base)
@@ -47,22 +36,24 @@ export default {
       } else if (hash.substr(0, 2) === '#!') {
         hash = hash.substr(2)
         if (hash.indexOf(':') === -1) {
-          console.log('page', hash)
-          if (hash !== 'conf' && hash !== 'home' && hash !== 'edit') {
-            console.log('  or', hash)
+          if (routes.indexOf(hash) === -1) {
+            console.log('Router.hashchange did not expect', hash)
             hash = 'home'
+            window.history.replaceState({}, 'Home - ld3', '#!home')
           }
           this.route.view = hash
-          window.document.title = 'ld3 ' + hash
+          window.document.title = hash + ' - ld3'
         } else {
-          console.log('goto ', hash)
           this.route.view = 'edit'
           this.route.uri = this.$root.ns.min(hash)
-          window.document.title = 'ld3:edit ' + this.route.uri
-          document.querySelector('.section-content').scrollIntoView(true)
+          window.document.title = this.route.uri + ' - ld3'
+          // Avoid forced layout
+          this.$nextTick(function () {
+            document.querySelector('.section-content').scrollIntoView(true)
+          })
         }
       } else {
-        console.log('changed hash to ', hash)
+        console.warn('changed hash to ', hash)
       }
     }
   },

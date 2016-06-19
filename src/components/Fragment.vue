@@ -2,11 +2,11 @@
   <div class="fragment">
     <header>
       <h1 class="fragment-h1">
-        <input-subtle :model.sync="fragment['schema:name']" :placeholder="fragment['@id']||'Fatal error'"></input-subtle>
-        <span class="ld-propclass" v-if="fragment['@type']" v-text="fragment['@type']"></span>
+        <textarea-subtle :model.sync="fragment['schema:name']" :placeholder="fragment['@id']||'Fatal error'"></textarea-subtle>
+        <input-class :model.sync="fragment['@type']" placeholder="wut"></input-class>
       </h1>
       <div class="fragment-json mdi mdi-12px mdi-code-braces">
-        <p class="fragment-collapse" style="float:right">
+        <p class="fragment-collapse" style="text-align:right">
           Copy fragment to:
           <input type="text" :value="fragment['@id']" @blur="copy">
           <br>
@@ -22,7 +22,7 @@
     </article>
 
     <p class="fragment-cta">
-      <button class="btn btn-save" :class="{'btn-save':savable,'btn-soft':!savable}" @click="sync">Sync</button>
+      <button class="btn" :class="{'btn-soft':!savable}" @click="sync">Sync</button>
     </p>
 
     <div v-if="loadPlugin(fragment['@type'])&&resolved" :is="fragment['@type']" :a="resolved" :options="options">test</div>
@@ -30,8 +30,9 @@
 </template>
 
 <script>
-import InputSubtle from './InputSubtle'
+import InputClass from './InputClass'
 import PropsList from './PropsList'
+import TextareaSubtle from './TextareaSubtle'
 
 import PluginSystem from '../mixins/PluginSystem'
 
@@ -49,24 +50,25 @@ export default {
     }
   },
   computed: {
+    niceType () {
+      var t = this.fragment['@type']
+      return t ? t.slice(t.lastIndexOf(':') + 1) : '?'
+    },
     props () {
       return this.fragment
     },
     savable () {
-      return this.$root.syncAgo > 5
+      return this.$root.syncAgo > 1
     },
     resolved () {
       return this.$root.resolve(this.fragment, this.options.resolve)
     }
   },
   methods: {
-    loadProps () {
-      this.addPropShow = true
-    },
     copy (evt) {
       var uri = this.$root.copy(this.fragment['@id'], evt.target.value)
       if (uri) {
-        window.location.href = '#' + uri
+        window.location.href = '#!' + uri
       }
     },
     sync () {
@@ -75,8 +77,9 @@ export default {
   },
   mixins: [PluginSystem],
   components: {
-    InputSubtle,
-    PropsList
+    InputClass,
+    PropsList,
+    TextareaSubtle
   }
 }
 </script>

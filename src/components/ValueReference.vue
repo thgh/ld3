@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="value-reference">
     <value-object :fragment.sync="actualFragment" :ref.sync="model"></value-object>
   </div>
 </template>
@@ -9,25 +9,17 @@ import ValueObject from './ValueObject'
 
 export default {
   name: 'value-reference',
-  props: ['fragment', 'prop', 'index'],
+  props: ['fragment'],
   computed: {
     model: {
       get () {
-        return typeof this.prop !== 'string' ? this.fragment : typeof this.index === 'number' ? this.fragment[this.prop][this.index] : this.fragment[this.prop]
+        return this.fragment
       },
-      set (obj) {
+      set (ref) {
         if (this.fragment && this.fragment['@temp']) {
           console.error('ref: setting a @temp fragment is a bad idea')
         }
-        if (typeof this.prop !== 'string') {
-          console.warn('ref: not supported')
-        } else if (typeof this.index === 'number') {
-          console.warn('ref: array set index')
-          this.fragment[this.prop][this.index] = obj
-        } else {
-          console.warn('ref: normal', this.fragment['@temp'], this.fragment[this.prop]['@temp'])
-          this.fragment[this.prop] = obj
-        }
+        this.$set('fragment', ref)
       }
     },
     actualFragment () {
@@ -39,3 +31,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.value-reference {
+  flex-grow: 1;
+  /* width: 100%; */
+}
+</style>

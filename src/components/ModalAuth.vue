@@ -4,7 +4,7 @@
       <form class="auth" @submit.prevent="submit">
         <label class="inp-text inp-auth" :class="{'inp-error':status}" @input="input">
           <div class="inp-label">Fill in your username:</div>
-          <input v-model="name" placeholder=". . . . . . . . . .">
+          <input class="inp-big-focus" v-model="name" placeholder=". . . . . . . . . .">
         </label>
         <button type="submit" class="btn btn-save" :disabled="!name">start</button>
         <div class="auth-feedback" v-if="status===404">
@@ -32,12 +32,12 @@ export default {
     },
     submit () {
       var self = this
-      this.userFetch(this.name).then(function (user) {
+      this.$root.userFetch(this.name).then(function (user) {
         self.status = null
         if (!user || !user.auth || !user['@id']) {
           return console.warn('weird, the profile is not complete')
         }
-        self.userLoad()
+        self.$root.userLoad()
         window.location.href = '#!' + user['@id']
       }).catch(function (error) {
         self.status = error.status
@@ -45,7 +45,7 @@ export default {
     },
     add () {
       var self = this
-      this.userAdd(this.name).then(function (response) {
+      this.$root.userAdd(this.name).then(function (response) {
         self.status = response.status
         self.feedback = response.status >= 400 ? 'Failed to create user' : null
         if (self.status < 400) {

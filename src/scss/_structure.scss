@@ -29,10 +29,6 @@ body {
 	color: $fgNav;
 	transition: background 0.3s, color 0.3s;
 }
-a {
-	color: $fgNav;
-	opacity: .7;
-}
 
 /* Structure > nav */
 
@@ -57,6 +53,15 @@ a {
 	color: $fg;
 	.focused>& {
 		background: $bgNav;
+	}
+}
+.section-intro {
+	a {
+		color: $focus;
+		font-weight: 500;
+	}
+	a:visited {
+		color: mix($focus, $fg, 60%);
 	}
 }
 
@@ -97,26 +102,17 @@ a {
 		width: 14rem;
 	}
 	.nav-links {
-		text-align: right;
+		display: flex;
+		justify-content: space-between;
 	}
 	.section-content {
 		padding: 2rem;
 		margin-left: 16rem;
-	}
-	.section-editor {
 		max-width: 50rem;
 	}
 	.section-intro {
-		font-size: 16px;
-		a {
-			color: hsl(hue(#099), 100, 50);
-			font-weight: 500;
-		}
-		a:visited {
-			color: hsl(hue(#099), 100, 90);
-		}
 		.hero {
-			padding: 2rem 0 2rem;
+			padding-bottom: 2rem;
 		}
 	}
 }
@@ -134,31 +130,5 @@ a {
 		margin: 1rem;
 		margin-left: calc(100vw / 2 - 25rem);
 		min-height: calc(100vh - 2rem);
-	}
-}
-
-/* Type */
-
-h1 {
-	margin: 0 0 .5em;
-	font-size: 1.5em;
-	line-height: 1.4em;
-	font-weight: 400;
-}
-h2 {
-	margin: 2em 0 0;
-	opacity: .5;
-	font-size: 1em;
-	text-transform: uppercase;
-	&:first-child {
-		padding-top: 0;
-	}
-	small {
-		text-transform: none;
-		font-weight: normal;
-		font-size: 14px;
-		&::before {
-			content: '\2014  ';
-		}
 	}
 }

@@ -4,6 +4,7 @@ import Vue from 'vue'
 import Home from './components/Home'
 import Conf from './components/Conf'
 import Edit from './components/Edit'
+import Create from './components/Create'
 
 // Modals
 import ModalAuth from './components/ModalAuth'
@@ -18,12 +19,6 @@ import User from './mixins/User'
 // Fix recursive initializing bug: PropsList > Prop > ValueObject > PropsList > Prop > ...
 Vue.component('Prop', Prop)
 Vue.component('RecentFragments', RecentFragments)
-
-// Share user data and methods over all components
-Vue.prototype.user = User.data.user
-for (let key in User.methods) {
-  Vue.prototype[key] = User.methods[key]
-}
 
 /* eslint-disable no-new */
 new Vue({
@@ -47,6 +42,7 @@ new Vue({
     Home,
     Conf,
     Edit,
+    Create,
     ModalAuth
   }
 })

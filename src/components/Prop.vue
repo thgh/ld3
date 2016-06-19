@@ -1,22 +1,23 @@
 <template>
   <div class="inp-text prop" :class="{'focus-prop':focus&&!focusFrom,'focus-from':focusFrom}" @click.stop>
     <label class="inp-label" :for="_uid" :title="prop">{{niceProp}}</label>
-    <component :is="renderType" :fragment.sync="fragment" :prop="prop" :id="_uid"></component>
+    <component :is="renderType" :fragment.sync="parent[prop]" :id="_uid"></component>
   </div>
 </template>
 
 <script>
-import ValueText from './ValueText'
-import ValueString from './ValueString'
-import ValueObject from './ValueObject'
 import ValueArray from './ValueArray.vue'
+import ValueLiteral from './ValueLiteral.vue'
+import ValueObject from './ValueObject'
 import ValueReference from './ValueReference.vue'
+import ValueString from './ValueString'
+import ValueText from './ValueText'
 
 import U from '../libs/util.js'
 
 export default {
   name: 'prop',
-  props: ['fragment', 'prop'],
+  props: ['parent', 'prop'],
   data () {
     return {
       focus: false,
@@ -25,10 +26,10 @@ export default {
   },
   computed: {
     renderType () {
-      return U.valueType(this.fragment[this.prop])
+      return U.valueType(this.parent[this.prop])
     },
     niceProp () {
-      return this.prop.substr(this.prop.indexOf(':') + 1)
+      return this.prop && this.prop.substr(this.prop.indexOf(':') + 1)
     }
   },
   events: {
@@ -55,11 +56,12 @@ export default {
     }
   },
   components: {
-    ValueText,
-    ValueString,
-    ValueObject,
     ValueArray,
-    ValueReference
+    ValueLiteral,
+    ValueObject,
+    ValueReference,
+    ValueString,
+    ValueText
   }
 }
 </script>

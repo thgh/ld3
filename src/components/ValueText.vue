@@ -1,43 +1,29 @@
 <template>
-  <textarea v-model="fragment[prop]" placeholder="{placeholder}"></textarea>
+  <div class="inp-subtle">
+    <span class="inp-subtle-span" v-text="(fragment||'')+'.'"></span>
+    <textarea class="inp-big-focus" :id="id" type="text" v-model="fragment" @focus="show=1" @blur="show=0"></textarea>
+    <span class="inp-actions" v-if="show" transition="opacity">
+      <button type="button" class="btn-reset fragment-type" @click="literal">+</button>
+    </span>
+  </div> 
 </template>
 
 <script>
 export default {
   name: 'value-text',
-  props: ['fragment', 'prop'],
-  attached () {
-    var textarea = this.$el
-    textarea.oninput = function () {
-      // 25px happens to work best
-      textarea.style.height = '25px'
-      var scroll = textarea.scrollHeight
-      if (textarea.parentNode.classList.contains('inp-block')) {
-        if (scroll < 30) {
-          textarea.parentNode.classList.remove('inp-block')
-          scroll = textarea.scrollHeight
-        }
-      } else if (scroll > 50) {
-        textarea.parentNode.classList.add('inp-block')
-        scroll = textarea.scrollHeight
-      }
-      textarea.style.height = 1 + Math.min(scroll, 500) + 'px'
+  props: ['fragment', 'id'],
+  data () {
+    return {
+      show: false
     }
-    textarea.oninput()
+  },
+  methods: {
+    literal () {
+      this.$set('fragment', {
+        '@type': '',
+        '@value': this.fragment || ''
+      })
+    }
   }
 }
 </script>
-
-<style>
-.inp-block {
-  display: block;
-}
-.inp-block>.inp-label {
-  float: none;
-}
-.inp-block>textarea {
-  margin-top: 8px;
-  margin-left: 12px;
-  width: calc(100% - 12px);
-}
-</style>

@@ -8,32 +8,39 @@ export const LD3_SERVER = [{'@id': 'http://id.thomasg.be/#server'}]
 
 export const LD3_USER = {
   '@type': 'ld3:Profile',
-  '@id': null,
+  '@id': 'ld3:no-user',
+  'schema:name': '',
   person: LD3_PERSON,
   server: LD3_SERVER,
   workspace: [{
     'schema:name': 'LBLOD test data',
+    'ld3:prefix': 'lblod',
     url: 'http://id.thomasg.be/lblod'
   }]
 }
 
 const user = ls.get('user') || U.inert(LD3_USER)
-user.auth = !!user['@id']
 
 export default {
   data: {
     user: user
+  },
+  computed: {
+    auth () {
+      return this.user['@id'] && this.user['@id'] !== 'ld3:no-user'
+    }
   },
   methods: {
     userFetch (uri) {
       if (!uri.startsWith('http')) {
         uri = LD3_PROFILES + uri
       }
+      var self = this
       return window.fetch(uri, U.getJson)
       .then(U.checkStatus)
       .then(U.json)
       .then(function (body) {
-        user.auth = true
+        self.setFragment(U.inert(body))
         for (let key in body) {
           user[key] = body[key]
         }
@@ -41,8 +48,7 @@ export default {
         return user
       }).catch(function (error) {
         if (error.status === 404) {
-          user.auth = false
-          user.org = null
+          user['@id'] = null
           user.person = null
           user.workspace = null
           ls.set('user', user)
@@ -60,34 +66,41 @@ export default {
       .then(U.checkStatus)
       .then(U.json)
       .then(function (body) {
-        user.auth = true
-        user.org = body.org || null
-        user.person = body.person || null
-        user.workspace = body.workspace || null
+        for (let key in body) {
+          user[key] = body[key] || null
+        }
         body.status = 200
         return body
       }).catch(function (error) {
         if (error.status !== 404) {
           return error.response
         }
-        user.auth = false
-        user.org = null
+        user['@id'] = null
         user.person = null
         user.workspace = null
         return error.response
       })
     },
     userLoad () {
-      var root = this.$root
-      root.fetch(user['@id'], true)
-      for (var i = 0; i < user.workspace.length; i++) {
-        root.fetch(user.workspace[i].url, true)
+      this.$root.loadWorkspace(user.workspace)
+      for (let w of user.workspace) {
+        this.$root.fetch(w.url, true)
       }
     },
     userLogout () {
       ls.remove('user')
-      this.user = U.inert(LD3_USER)
-      this.user.auth = false
+      let u = U.inert(LD3_USER)
+      u['@id'] = null
+      for (let key in u) {
+        user[key] = u[key] || null
+      }
     }
+  },
+  ready () {
+    if (!this.auth) {
+      return console.warn('User.ready', 'but not logged in')
+    }
+    this.userLoad()
+    console.log('User.ready', user.workspace && user.workspace.length, U.inert(user))
   }
 }

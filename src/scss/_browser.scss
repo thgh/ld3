@@ -119,13 +119,14 @@
 		color: transparentize($fgNav, .4);
 	}
 }
-@media (min-width: 940px) {
-	.nav-muted .nav-fragments {
-		transition: opacity 0.3s 3s;
-		opacity: 0;
-		nav:hover & {
-			transition: none;
-			opacity: 1;
-		}
-	}
-}
+// Hide nav when not in use
+// @media (min-width: 940px) {
+// 	.nav-muted .nav-fragments {
+// 		transition: opacity 0.3s 3s;
+// 		opacity: 0;
+// 		nav:hover & {
+// 			transition: none;
+// 			opacity: 1;
+// 		}
+// 	}
+// }

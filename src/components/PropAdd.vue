@@ -1,11 +1,8 @@
 <template>
   <form @submit.prevent="submit">
-    <label class="inp-text label-prop" :class="special" v-if="show.prop">
+    <label class="inp-text label-prop" :class="special">
       <input-subtle :model.sync="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
-      <input v-model="value" placeholder="value..." @blur="submit" @keyup.enter="submit">
-    </label>
-    <label class="inp-text label-prop" v-if="prop||!show.prop">
-      <button class="btn-add" @click="start">Add</button>
+      <input class="inp-big-focus" v-model="value" :placeholder="prop&&'value...'" @blur="submit" @keyup.enter="submit">
     </label>
   </form>
 </template>
@@ -13,15 +10,14 @@
 <script>
 import InputSubtle from './InputSubtle'
 
+const DEFAULT_NAMESPACE = 'schema:'
+
 export default {
   props: ['fragment'],
   data () {
     return {
       prop: '',
-      value: '',
-      show: {
-        prop: false
-      }
+      value: ''
     }
   },
   computed: {
@@ -43,14 +39,19 @@ export default {
   },
   methods: {
     start () {
-      this.show.prop = true
       this.$nextTick(function () {
         this.$el.querySelector('input').focus()
       })
     },
     submit () {
       if (!this.prop.length) {
+        if (this.$el.querySelector('.label-prop>input') === document.activeElement) {
+          this.$el.querySelector('input').focus()
+        }
         return
+      }
+      if (this.prop.indexOf(':') === -1 && this.prop[0] !== '@') {
+        this.prop = DEFAULT_NAMESPACE + this.prop
       }
       if (!this.value.length) {
         if (this.$el.querySelector('input') === document.activeElement) {
@@ -63,9 +64,6 @@ export default {
       this.value = ''
       this.$el.querySelector('input').focus()
       // Lookup
-    },
-    loadProps () {
-      this.addPropShow = true
     }
   },
   components: {

@@ -1,6 +1,6 @@
 <template>
   <div class="props-list" :class="{active:blurry}">
-    <prop v-for="(prop, value) in fragment" v-if="prop[0]!=='@'" :fragment.sync="fragment" :prop="prop"></prop>
+    <prop v-for="(prop, value) in fragment" v-if="prop[0]!=='@'" :parent.sync="fragment" :prop="prop"></prop>
     <prop-add :fragment.sync="fragment"></prop-add>
   </div>
 </template>

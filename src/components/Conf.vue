@@ -1,11 +1,15 @@
 <template>
-    <section class="section-content section-editor">
+    <section class="section-content">
       <h1>conf</h1>
       <p>
         <button type="button" class="btn btn-save" @click="forceCache">Cache fragments</button>
         <button type="button" class="btn btn-save" @click="$root.clearCache()">Clear cache</button>
         <button type="button" class="btn btn-save" @click="$root.userLoad()">Load workspace</button>
         <button type="button" class="btn btn-save" @click="$root.userLogout()">logout</button>
+      </p>
+      <h2>User</h2>
+      <p>
+        Logged in as {{$root.user['@id']|json}}
       </p>
       <h2>Namespaces</h2>
       <table class="tbl-conf" style="min-width:300px">
@@ -17,7 +21,7 @@
         </thead>
         <tbody>
           <tr v-for="ns in $root.namespaces">
-            <td>{{ ns.ns }}</td>
+            <td>{{ ns.prefix }}</td>
             <td>{{ ns.url }}</td>
           </tr>
         </tbody>

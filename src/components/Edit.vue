@@ -1,5 +1,5 @@
 <template>
-    <section class="section-content section-editor">
+    <section class="section-content">
       <fragment v-if="currentFragment" :fragment.sync="currentFragment"></fragment>
       <div class="backdrop" :class="{active:this.focusIds.length}" @click.prevent.stop="unfocus"></div>
     </section>

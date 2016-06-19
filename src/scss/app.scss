@@ -9,3 +9,12 @@
 @import 'btn';
 @import 'tbl';
 @import 'modal';
+@import 'transition';
+
+/* z-index scale 
+10 backdrop
+	11 prop-focus
+20 input suggestions
+30 JSON debugging overlay
+50 modal
+*/

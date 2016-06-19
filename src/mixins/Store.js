@@ -2,10 +2,12 @@ import throttle from '../libs/throttle'
 import U from '../libs/util'
 import ls from 'local-storage'
 
-var fragments = ls.get('fragments')
+const backup = {}
+const fragments = {}
+const namespaces = []
 
 // TODO: get this context from actual server, can be found in user object
-export const STORE_CONTEXT = {
+export const STORE_NAMESPACES = {
   'dce': 'http://purl.org/dc/elements/1.1/',
   'dcterms': 'http://purl.org/dc/terms/',
   'foaf': 'http://xmlns.com/foaf/0.1/',
@@ -17,19 +19,10 @@ export const STORE_CONTEXT = {
   'xsd': 'http://www.w3.org/2001/XMLSchema#'
 }
 
-// TODO: sort namespaces in a way that subnamespaces still work
-const namespaces = []
-for (let ns in STORE_CONTEXT) {
-  namespaces.push({
-    ns: ns + ':',
-    url: STORE_CONTEXT[ns]
-  })
-}
-
 var ns = {
   min (s) {
     for (var i = 0; i < namespaces.length; i++) {
-      s = s.replace(namespaces[i].url, namespaces[i].ns)
+      s = s.replace(namespaces[i].url, namespaces[i].prefix)
     }
     return s
   },
@@ -42,7 +35,7 @@ var ns = {
       s = s.slice(0, -3)
     }
     for (var i = namespaces.length - 1; i >= 0; i--) {
-      s = s.replace(namespaces[i].ns, namespaces[i].url)
+      s = s.replace(namespaces[i].prefix, namespaces[i].url)
     }
     return s
   },
@@ -69,9 +62,8 @@ function hideSchema (obj) {
   return obj
 }
 
-var storeLocally = throttle(function (fragments) {
-  window.fragments = U.inert(fragments)
-  ls('fragments', fragments)
+var storeLocally = throttle(function (f) {
+  ls('fragments', f)
 }, 5000)
 
 var fetching = {}
@@ -79,15 +71,15 @@ var fetching = {}
 export default {
   data () {
     return {
-      fragments: fragments || {},
-      namespaces: namespaces || [],
+      backup: backup,
+      fragments: fragments,
+      namespaces: namespaces,
       syncAgo: 0,
       interval: 0
     }
   },
   computed: {
     fragmentCount () {
-      console.log('counting fragments')
       return Object.keys(this.fragments).length
     }
   },
@@ -136,44 +128,42 @@ export default {
       window.fetch(uri, U.getJson)
       .then(U.checkStatus)
       .then(U.json)
-      .then(function (body) {
-        if (!body) {
-          return console.warn('no data in response')
-        }
-        if (typeof body !== 'object') {
-          return console.warn('no object in data of response')
-        }
-        if (body.length && body[0]) {
-          for (let s of body) {
-            if (s['@id']) {
-              s = ns.minF(s)
-              $this.$set('fragments[\'' + s['@id'] + '\']', s)
-            }
-          }
-        } else if (body['@id']) {
-          $this.loadLocalContext(body)
-          let s = ns.minF(body)
-          $this.$set('fragments[\'' + s['@id'] + '\']', s)
-        } else if (body['@graph']) {
-          for (let s of body['@graph']) {
-            if (s['@id']) {
-              s = ns.minF(s)
-              $this.$set('fragments[\'' + s['@id'] + '\']', s)
-            }
-          }
-        }
-        $this.syncLocal()
-      }).catch(function (body) {
+      .then(this.addGraph).catch(function (body) {
         console.error('Store.fetch didnt retrieve', uri, body)
-        let s = ns.minF({
-          '@id': uri
+        $this.setFragment({
+          '@id': uri,
+          'schema:name': 'Not found'
         })
-        $this.$set('fragments[\'' + s['@id'] + '\']', s)
       })
-      return this.setFragment({
+      return {
         '@temp': true,
-        '@id': uri
-      })
+        '@id': uri,
+        'schema:name': 'Temporary'
+      }
+    },
+    addGraph (body) {
+      if (!body) {
+        return console.warn('no data in response')
+      }
+      if (typeof body !== 'object') {
+        return console.warn('no object in data of response')
+      }
+      if (body.length && body[0]) {
+        for (let s of body) {
+          if (s['@id']) {
+            this.setFragment(s)
+          }
+        }
+      } else if (body['@id']) {
+        this.setFragment(body)
+      } else if (body['@graph']) {
+        for (let s of body['@graph']) {
+          if (s['@id']) {
+            this.setFragment(s)
+          }
+        }
+      }
+      this.syncLocal()
     },
     copy (uri, to) {
       if (!this.fragments[uri]) {
@@ -190,7 +180,11 @@ export default {
     },
     setFragment (f) {
       f = ns.minF(f)
+      if (f['@id'].endsWith(':')) {
+        return
+      }
       this.$set('fragments[\'' + f['@id'] + '\']', f)
+      backup[f['@id']] = U.inert(f)
       return f
     },
     resolve (uri, options) {
@@ -218,19 +212,25 @@ export default {
       obj = hideSchema(obj)
       return obj
     },
-    loadLocalContext (body) {
-      if (body['@type'] === 'ld3:LocalContext') {
-        for (let ns of body['ld3:namespaces']) {
-          // TODO: filter out duplicates
+    loadWorkspace (list) {
+      if (!list || !list.length) {
+        return console.warn('No workspaces to load!')
+      }
+      for (let ns of list) {
+        if (ns['ld3:prefix'] || ns.prefix) {
           namespaces.push({
-            ns: ns['ld3:prefix'] + ':',
-            url: ns['@id']
-          })
-          this.$nextTick(function () {
-            this.fetch(ns['@id'])
+            prefix: (ns['ld3:prefix'] || ns.prefix) + ':',
+            url: ns.url || ns['@id']
           })
         }
       }
+      // Reverse sort to allow efficient dedup and correct namespace minification
+      namespaces.sort((a, b) => b.url.localeCompare(a.url))
+      // Dedup
+      for (var last, i = namespaces.length - 1; i >= 0; i--) {
+        last = last === namespaces[i].url ? namespaces.splice(i, 1)[0].url : namespaces[i].url
+      }
+      console.log(Object.keys(this.fragments).filter(k => k.startsWith('http')))
     },
     syncLocal () {
       storeLocally(this.fragments)
@@ -243,23 +243,19 @@ export default {
   init () {
     this.ns = ns
   },
+  created () {
+    this.loadWorkspace(ls.get('namespaces') || STORE_NAMESPACES)
+    this.addGraph({'@graph': Object.values(ls.get('fragments') || {})})
+  },
   attached () {
-    this.interval = setInterval(this.checkSave, 1000)
-    this.syncInterval = setInterval(this.syncLocal, 1000)
+    this.interval = setInterval(this.checkSave, 5000)
+    this.syncInterval = setInterval(this.syncLocal, 5000)
   },
   detached () {
     clearInterval(this.interval)
     clearInterval(this.syncInterval)
   },
   ready () {
-    // it would be easier to just save the local context in localstorage
-    for (let f in this.fragments) {
-      this.loadLocalContext(this.fragments[f])
-    }
-    // Fresh start, should probably start somewhere else
-    console.log(this.fragments, this.user.auth)
-    if (!Object.keys(this.fragments).length && this.user.auth) {
-      this.userLoad()
-    }
+    console.log('Store.ready', Object.keys(this.fragments).length)
   }
 }

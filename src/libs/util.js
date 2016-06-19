@@ -20,7 +20,6 @@ export default {
     if (response.status < 400) {
       return response
     }
-    console.warn(response.status)
     var error = new Error(response.statusText)
     error.status = response.status
     error.response = response
@@ -35,6 +34,7 @@ export default {
   valueType (o) {
     return typeof o !== 'object'
       ? (typeof o === 'boolean' ? 'ValueString' : typeof o === 'number' ? 'ValueString' : 'ValueText')
-      : Array.isArray(o) ? 'ValueArray' : o['@id'] && o['@id'].charAt(0) !== '_' ? 'ValueReference' : 'ValueObject'
+      : Array.isArray(o) ? 'ValueArray' : o['@id'] && o['@id'].charAt(0) !== '_' ? 'ValueReference'
+        : typeof o['@value'] !== 'undefined' ? 'ValueLiteral' : 'ValueObject'
   }
 }

@@ -40,13 +40,13 @@
 }
 .btn-save {
 	margin-bottom: 4px;
-	border-color: #0aa;
-	background: #0aa;
+	border-color: $focus;
+	background: $focus;
 	color: white;
 	&:focus,
 	&:hover {
-		background-color: #088;
-		border-color: #088;
+		background-color: mix($focus, $fg);
+		border-color: mix($focus, $fg);
 		color: white;
 	}
 }

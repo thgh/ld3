@@ -1,12 +1,24 @@
 <template>
-  <form class="inp-subtle" @submit.prevent.stop="submit" @keydown="keydown"><span class="inp-subtle-span" v-text="term||placeholder"></span> <input class="inp-big-focus" type="text" v-model="term" :placeholder="placeholder" @blur="blur" @input="input"><div class="ref-select" v-if="options">
-      <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item+' '+opt.score" track-by="item" @mouseenter="ghost=$index" @mousedown="confirm(opt.item)" transition="staggered"></div>
+  <form class="inp-subtle inp-type fragment-type" :class="{'inp-type-active':options}" @submit.prevent.stop="submit" @keydown="keydown">
+    <span class="inp-subtle-span" v-text="term||model||placeholder"></span>
+    <input type="text" v-model="term" :placeholder="model||placeholder" @blur="blur" @input="input" @focus="input">
+    <div class="ref-select" v-if="options">
+      <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item" track-by="item" @mouseenter="ghost=$index" @mousedown="confirm(opt.item)"></div>
     </div>
   </form> 
 </template>
 
 <script>
 import Fuse from 'fuse.js'
+
+const Classes = [
+  {i: 'xsd:boolean'},
+  {i: 'xsd:date'},
+  {i: 'xsd:dateTime'},
+  {i: 'xsd:decimal'},
+  {i: 'xsd:integer'},
+  {i: 'xsd:string'}
+]
 
 var fuseOptions = {
   caseSensitive: false,
@@ -16,8 +28,8 @@ var fuseOptions = {
   threshold: 0.6,
   location: 0,
   distance: 100,
-  id: '@id',
-  keys: ['@id', 'schema:name', 'rdfs:label', 'dcterms:title', '@type', 'schema:description', 'schema:url']
+  id: 'i',
+  keys: ['i']
 }
 
 export default {
@@ -36,7 +48,7 @@ export default {
   },
   computed: {
     index () {
-      var fragments = Object.values(this.$root.fragments)
+      var fragments = Classes
       return new Fuse(fragments, fuseOptions)
     }
   },
@@ -56,7 +68,10 @@ export default {
         this.ghost = 0
         return
       }
-      this.options = this.index.search(needle).slice(0, 20)
+      this.options = this.index.search(needle).slice(0, 20).concat({
+        item: this.term,
+        score: ''
+      })
       this.ghost = Math.min(this.ghost, (this.options.length || 1) - 1)
     },
     keydown (evt) {
@@ -75,11 +90,12 @@ export default {
       return false
     },
     confirm (uri) {
+      console.log(uri)
       if (typeof uri === 'string') {
-        this.model = {'@id': uri}
+        this.model = uri
         this.blur()
       } else if (!uri && this.options) {
-        this.model = {'@id': this.options[this.ghost].item}
+        this.model = this.options[this.ghost].item
         this.blur()
       } else {
         console.log('confirming but dont know what', uri)
