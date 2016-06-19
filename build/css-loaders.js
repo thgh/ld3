@@ -5,15 +5,7 @@ module.exports = function (options) {
   // generate loader string to be used with extract text plugin
   function generateLoaders (loaders) {
     var sourceLoader = loaders.map(function (loader) {
-      var extraParamChar
-      if (/\?/.test(loader)) {
-        loader = loader.replace(/\?/, '-loader?')
-        extraParamChar = '&'
-      } else {
-        loader = loader + '-loader'
-        extraParamChar = '?'
-      }
-      return loader + (options.sourceMap ? extraParamChar + 'sourceMap' : '')
+      return loader + '-loader' + (options.sourceMap ? '?sourceMap' : '')
     }).join('!')
 
     if (options.extract) {
@@ -26,10 +18,6 @@ module.exports = function (options) {
   // http://vuejs.github.io/vue-loader/configurations/extract-css.html
   return {
     css: generateLoaders(['css']),
-    less: generateLoaders(['css', 'less']),
-    sass: generateLoaders(['css', 'sass?indentedSyntax']),
-    scss: generateLoaders(['css', 'sass']),
-    stylus: generateLoaders(['css', 'stylus']),
-    styl: generateLoaders(['css', 'stylus'])
+    scss: generateLoaders(['css', 'sass'])
   }
 }

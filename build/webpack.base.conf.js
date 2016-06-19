@@ -1,6 +1,6 @@
 var path = require('path')
 var cssLoaders = require('./css-loaders')
-var projectRoot = path.resolve(__dirname, '../')
+var projectRoot = path.resolve(__dirname, '../src/')
 
 module.exports = {
   entry: {
@@ -46,22 +46,22 @@ module.exports = {
         loader: 'babel',
         include: projectRoot,
         exclude: /node_modules/
-      },
-      {
-        test: /\.json$/,
-        loader: 'json'
-      },
-      {
-        test: /\.html$/,
-        loader: 'vue-html'
-      },
-      {
-        test: /\.(png|jpg|gif|svg|woff2?|eot|ttf)(\?.*)?$/,
-        loader: 'url',
-        query: {
-          limit: 10000,
-          name: '[name].[ext]?[hash:7]'
-        }
+      // },
+      // {
+      //   test: /\.json$/,
+      //   loader: 'json'
+      // },
+      // {
+      //   test: /\.html$/,
+      //   loader: 'vue-html'
+      // },
+      // {
+      //   test: /\.(png|jpg|gif|svg|woff2?|eot|ttf)(\?.*)?$/,
+      //   loader: 'url',
+      //   query: {
+      //     limit: 10000,
+      //     name: '[name].[ext]?[hash:7]'
+      //   }
       }
     ]
   },
