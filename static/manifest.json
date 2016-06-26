@@ -4,12 +4,11 @@
 	"short_name": "ldms",
 	"name": "ldms",
 	"display": "fullscreen",
-	"orientation": "portrait",
-	"start_url": "/ld3/#!conf",
-	"theme_color": "#134",
-	"background_color": "#134",
+	"start_url": "./",
+	"theme_color": "#1b1f32",
+	"background_color": "#1b1f32",
 	"icons": [{
-		"src": "/ld3/static/favicon.png",
+		"src": "static/favicon.png",
 		"sizes": "64x64"
 	}]
 }
