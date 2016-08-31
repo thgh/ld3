@@ -90,12 +90,17 @@ export default {
     },
     keydown (evt) {
       let key = evt.which || evt.keyCode
-      // key up&down
-      if (key === 9) {
+      if (key === 9 && !(this.term === null && this.ghost === 0)) {
+        // tab: submit if touched anything
         this.submit()
+      } else if (key === 13) {
+        // enter: form will submit, but should also blur
+        this.blur()
       } else if (key === 38) {
+        // arrow up
         this.changeGhost(-1)
       } else if (key === 40) {
+        // arrow down
         this.changeGhost(1)
       }
     },

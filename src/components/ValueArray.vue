@@ -1,6 +1,6 @@
 <template>
   <div class="value-array">
-    <component v-for="_nope in fragment" :is="renderType[$index]" :fragment.sync="fragment[$index]"></component>
+    <component v-for="_nope in fragment" :is="renderType[$index]" :fragment.sync="fragment[$index]" @splice="splice($index)"></component>
     <button class="btn-add" @click="push">Add</button>
   </div>
 </template>
@@ -21,6 +21,9 @@ export default {
     }
   },
   methods: {
+    splice (index) {
+      this.fragment.splice(index, 1)
+    },
     push () {
       var a = this.fragment
       var b = !a || !a[a.length - 1] ? {} : U.inert(a[a.length - 1])

@@ -3,7 +3,7 @@
     <span class="inp-subtle-span" v-text="term||model||placeholder"></span>
     <input type="text" v-model="term" :placeholder="model||placeholder" @blur="blur" @input="input" @focus="input">
     <div class="ref-select" v-if="options">
-      <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item" track-by="item" @mouseenter="ghost=$index" @mousedown="confirm(opt.item)"></div>
+      <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item||opt.action" track-by="item" @mouseenter="ghost=$index" @mousedown="confirm(opt.item)"></div>
     </div>
   </form> 
 </template>
@@ -59,17 +59,21 @@ export default {
         self.term = null
         self.options = null
         self.ghost = 0
+        self.$emit('blur')
       }, 100)
     },
     input () {
       var needle = this.term
       if (!needle) {
-        this.options = null
+        this.options = [{
+          action: 'Object',
+          score: ''
+        }]
         this.ghost = 0
         return
       }
       this.options = this.index.search(needle).slice(0, 20).concat({
-        item: this.term,
+        action: 'Object: ' + this.term,
         score: ''
       })
       this.ghost = Math.min(this.ghost, (this.options.length || 1) - 1)
@@ -95,7 +99,8 @@ export default {
         this.model = uri
         this.blur()
       } else if (!uri && this.options) {
-        this.model = this.options[this.ghost].item
+        // TODO: set smart default @type
+        this.model = this.options[this.ghost].item || this.term || 'schema:Person'
         this.blur()
       } else {
         console.log('confirming but dont know what', uri)

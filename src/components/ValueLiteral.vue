@@ -3,7 +3,7 @@
     <span class="inp-subtle-span" v-text="placeholder+'.'"></span>
     <input :id="id" v-if="type" :type="type" v-model="fragment['@value']">
     <textarea class="inp-big-focus" :id="id" v-else v-model="fragment['@value']"></textarea>
-    <input-type :model.sync="fragment['@type']" placeholder="wut"></input-type>
+    <input-type :model.sync="fragment['@type']" placeholder="wut" @blur="blur"></input-type>
   </div> 
 </template>
 
@@ -46,8 +46,8 @@ export default {
   methods: {
     blur () {
       if (acceptedTypes.indexOf(this.fragment['@type']) === -1) {
-        console.log(this.fragment['@value'])
-        this.$set('fragment', this.fragment['@value'])
+        console.log('to ValueObject')
+        this.$set('fragment[\'@value\']', undefined)
       }
     }
   },

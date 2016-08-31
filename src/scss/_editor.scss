@@ -33,6 +33,11 @@
 		}
 	}
 }
+@media (min-width: 52rem) {
+	.fragment-json:hover {
+		max-width: 50rem;
+	}
+}
 .fragment-collapse {
 	display: none;
 }

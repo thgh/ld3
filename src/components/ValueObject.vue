@@ -8,6 +8,7 @@
     </span>
     <span v-else v-text="placeholder"></span>
     <input-class :model.sync="fragment['@type']" placeholder="wut"></input-class>
+    <span class="icon-clear" @click="clear">&times;</span>
     <props-list v-if="focus && value" :fragment.sync="value"></props-list>
   </div>
 </template>
@@ -105,7 +106,15 @@ export default {
       } else {
         this.search = false
       }
-      return
+    },
+    clear () {
+      if (typeof this.$parent.renderType === 'object') {
+        this.$emit('splice')
+      } else if (this.ref) {
+        this.ref = this.fragment && (this.fragment['schema:name'] || this.fragment.name) || ' '
+      } else {
+        this.fragment = this.fragment && (this.fragment['schema:name'] || this.fragment.name) || ' '
+      }
     }
   },
   events: {
@@ -137,6 +146,13 @@ export default {
 .value-object {
   flex-grow: 1;
   cursor: pointer;
+  >.icon-clear {
+    visibility: hidden;
+    padding: 4px 8px;
+  }
+  &:hover>.icon-clear {
+    visibility: visible;
+  }
 }
 
 // > normal

@@ -46,6 +46,10 @@ var ns = {
 }
 
 function hideSchema (obj) {
+  // Collapse @value
+  if (typeof obj['@value'] !== 'undefined') {
+    return obj['@value']
+  }
   // Hide in current object
   for (let prop in obj) {
     if (prop.startsWith('schema:')) {
