@@ -47,6 +47,7 @@ export default {
     blur () {
       if (acceptedTypes.indexOf(this.fragment['@type']) === -1) {
         console.log('to ValueObject')
+        this.$set('fragment[\'schema:name\']', this.fragment['@value'])
         this.$set('fragment[\'@value\']', undefined)
       }
     }
