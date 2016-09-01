@@ -38,3 +38,7 @@ export default {
         : typeof o['@value'] !== 'undefined' ? 'ValueLiteral' : 'ValueObject'
   }
 }
+
+export function inert (x) {
+  return JSON.parse(JSON.stringify(x))
+}

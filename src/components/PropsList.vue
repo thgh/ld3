@@ -1,12 +1,14 @@
 <template>
   <div class="props-list" :class="{active:blurry}">
     <prop v-for="(prop, value) in fragment" v-if="prop[0]!=='@'" :parent.sync="fragment" :prop="prop"></prop>
+    <prop v-for="prop in stub" :parent.sync="fragment" :prop="prop"></prop>
     <prop-add :fragment.sync="fragment"></prop-add>
   </div>
 </template>
 
 <script>
 import PropAdd from './PropAdd'
+import {toStub} from '../libs/stub.js'
 
 export default {
   name: 'props-list',
@@ -16,6 +18,16 @@ export default {
       default: {
         'schema:name': 'fuckthis'
       }
+    }
+  },
+  data () {
+    return {
+      suggest: null
+    }
+  },
+  computed: {
+    stub () {
+      return toStub(this.fragment)
     }
   },
   methods: {
