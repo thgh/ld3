@@ -4,7 +4,7 @@
       <input type="text" v-model="search" placeholder="Search through {{$root.fragmentCount}} fragments...">
     </div>
     <div class="nav-fragments">
-      <div class="a-recent" v-for="(uri, fragment) in list | filterBy search" v-if="!fragment['@temp']">
+      <div class="a-recent" v-for="(uri, fragment) in list | filterBy search | order" v-if="!fragment['@temp']">
         <a href="#!{{uri}}" @mouseenter="enter(uri)" @mouseleave="leave" class="a-fragment">
           {{ fragment['schema:name'] || label(fragment) || fragment['dcterms:title'] || uri }}
           <small v-if="fragment['schema:name'] || label(fragment) || fragment['dcterms:title']">{{ uri }}</small>
@@ -38,6 +38,18 @@ export default {
     },
     label (fragment) {
       return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
+    }
+  },
+  filters: {
+    order (arr) {
+      if (!arr) {
+        return arr
+      }
+      const key = '@id'
+
+      return arr.slice().sort(function (a, b) {
+        return a['$value'][key] === b['$value'][key] ? 0 : a['$value'][key] > b['$value'][key] ? 1 : -1
+      })
     }
   },
   ready () {
