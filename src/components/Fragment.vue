@@ -23,6 +23,7 @@
 
     <p class="fragment-cta">
       <button class="btn" :class="{'btn-soft':!savable}" @click="sync">Sync</button>
+      <button class="btn btn-soft" @click="clear">Clear</button>
     </p>
 
     <div v-if="loadPlugin(fragment['@type'])&&resolved" :is="fragment['@type']" :a="resolved" :options="options">test</div>
@@ -73,6 +74,9 @@ export default {
     },
     sync () {
       this.$root.sync(this.fragment)
+    },
+    clear () {
+      delete this.$root.fragments[this.fragment['@id']]
     }
   },
   mixins: [PluginSystem],
