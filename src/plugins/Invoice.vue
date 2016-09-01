@@ -33,7 +33,23 @@
         }
       </style>
     </template>
-    <div id="printme" v-show="preview">
+    <style type="text/css">
+      #printme {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        padding: 3rem 0;
+        overflow: auto;
+        background-color: #888;
+        z-index: 60;
+      }
+      #printme>.invoice {
+        margin: 0 auto;
+      }
+    </style>
+    <div id="printme" v-show="preview" @click="preview=!preview">
       <div class="invoice invoice-page">
         <style>
           .bold {
@@ -225,8 +241,8 @@
                 <h1 class="h1">{{a.provider.name}}</h1>
                 <!-- <h2 class="h2">{{a.customer.roleName}}</h2> -->
                 <address v-if="a.provider.address">
-                  <div>{{a.provider.address.streetAddress}}</div>
-                  <div>{{a.provider.address.postalCode}} {{a.provider.address.addressLocality}}</div>
+                  <div>{{a.provider.address&&a.provider.address.streetAddress}}</div>
+                  <div>{{a.provider.address&&a.provider.address.postalCode}} {{a.provider.address&&a.provider.address.addressLocality}}</div>
                 </address>
                 <div><a href="mailto:{{a.provider.email}}">{{a.provider.email}}</a></div>
                 <div><a href="mailto:{{a.provider.url}}">{{a.provider.url}}</a></div>
@@ -236,8 +252,8 @@
                 Opgemaakt voor:
                 <div>{{a.customer.name}}</div>
                 <address>
-                  <div>{{a.customer.address.streetAddress}}</div>
-                  <div>{{a.customer.address.postalCode}} {{a.customer.address.addressLocality}}</div>
+                  <div>{{a.customer.address&&a.customer.address.streetAddress}}</div>
+                  <div>{{a.customer.address&&a.customer.address.postalCode}} {{a.customer.address&&a.customer.address.addressLocality}}</div>
                 </address>
                 <div><a href="mailto:{{a.customer.email}}">{{a.customer.email}}</a></div>
                 <div><a href="mailto:{{a.customer.url}}">{{a.customer.url}}</a></div>
@@ -246,7 +262,7 @@
             </div>
           </div>
           <section class="summary" v-if="a.dateCreated||a.url||a.paymentDueDate">
-            <div class="summary-item" v-if="a.url">
+            <div class="summary-item" v-if="invoiceNumber">
               <span class="summary-label">Factuurnr.</span>
               <div class="number" v-text="invoiceNumber">01 / 2015</div>
             </div>
@@ -283,9 +299,9 @@
                 </tr>
               </tbody>
             </table>
-            <table class="tbl tbl-calc" v-if="a.totalPaymentDue">
+            <table class="tbl tbl-calc" v-if="totalPaymentDue">
               <tbody>
-                <tr v-for="line in a.totalPaymentDue" :class="{bold:line.valueAddedTaxIncluded}">
+                <tr v-for="line in totalPaymentDue" track-by="$index" :class="{bold:line.valueAddedTaxIncluded}">
                   <td>{{line.name}}</td>
                   <td class="e" v-if="line.price!=undefined">{{line.price|currency '€ '}}</td>
                 </tr>
@@ -304,6 +320,23 @@
 </template>
 
 <script>
+import {inert} from '../libs/util.js'
+
+var defaultTax = {
+  btw0: {
+    text: 'BTW vrij',
+    percent: 0
+  },
+  btw6: {
+    text: 'BTW 6%',
+    percent: 6
+  },
+  btw21: {
+    text: 'BTW 21%',
+    percent: 21
+  }
+}
+
 export default {
   props: ['a', 'options'],
   data () {
@@ -313,11 +346,93 @@ export default {
   },
   computed: {
     invoiceNumber () {
-      if (!this.a.url) return ''
-      return this.a.url.substring(this.a.url.lastIndexOf('/') + 1)
+      console.log(inert(this.a))
+      if (this.a.url) {
+        return this.a.url.slice(this.a.url.lastIndexOf('/') + 1)
+      }
+      if (this.a['@id']) {
+        return this.a['@id'].slice(this.a['@id'].lastIndexOf(':') + 1)
+      }
+      return 'nope'
     },
     total () {
-      return this.a.totalPaymentDue[this.a.totalPaymentDue.length - 1].price
+      return this.totalPaymentDue[this.totalPaymentDue.length - 1].price
+    },
+    totalPaymentDue () {
+      if (this.a.totalPaymentDue) {
+        return this.a.totalPaymentDue
+      }
+
+      if (!this.a.referencesOrder) {
+        alert('no orders')
+        return
+      }
+
+      if (typeof this.a.referencesOrder !== 'object') {
+        alert('expected object but got ' +  this.a.referencesOrder)
+        return
+      }
+      if (!Array.isArray(this.a.referencesOrder)) {
+        this.a.referencesOrder = [this.a.referencesOrder]
+      }
+
+      var totalExcl = 0
+      var totalIncl = 0
+      var tax = inert(defaultTax)
+      this.a.referencesOrder.forEach(function(v, k) {
+
+        if (!v.orderedItem) return
+        if (!v.acceptedOffer) return
+
+        /* Get category */
+        var cat = v.orderedItem.category
+        if (cat === undefined) cat = 'btw21'
+        var taxcat = tax[cat]
+        if (taxcat === undefined) taxcat = tax['btw21']
+        if (!taxcat.vat) taxcat.vat = 0
+
+        /* Get the rest */
+        var pct = (taxcat.percent || 0) / 100
+        var price = parseInt(v.acceptedOffer.price) || 0
+        var incl = !!v.acceptedOffer.valueAddedTaxIncluded
+
+        /* Count */
+        var vat = price * (incl ? pct : (1 / (1 - pct) - 1))
+        totalExcl += incl ? price - vat : price
+        totalIncl += incl ? price : price + vat
+        taxcat.vat += vat
+        console.log(totalExcl)
+        console.log(totalIncl, vat)
+      })
+
+      /* Generate totalPaymentDue */
+      var due = [{
+        '@type': 'PriceSpecification',
+        price: totalExcl,
+        priceCurrency: 'EUR',
+        name: 'Totaal excl. BTW',
+        valueAddedTaxIncluded: false
+      }]
+      for (let key in tax) {
+        if (tax[key].vat) {
+          due.push({
+            '@type': 'PriceSpecification',
+            price: tax[key].vat,
+            priceCurrency: 'EUR',
+            name: tax[key].text
+          })
+        }
+      }
+
+      due.push({
+        '@type': 'PriceSpecification',
+        price: totalIncl,
+        priceCurrency: 'EUR',
+        name: 'Totaal incl. BTW',
+        valueAddedTaxIncluded: true
+      })
+
+      return due
     }
   },
   methods: {
