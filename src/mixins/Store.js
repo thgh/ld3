@@ -204,6 +204,7 @@ export default {
       }
       uri = ns.min(uri)
       if (!this.fragments[uri]) {
+        this.fetch(uri)
         return // console.warn(uri, 'was not found in storage')
       }
       var obj = U.inert(this.fragments[uri])
