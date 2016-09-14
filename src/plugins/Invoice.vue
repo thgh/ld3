@@ -346,14 +346,9 @@ export default {
   },
   computed: {
     invoiceNumber () {
-      console.log(inert(this.a))
-      if (this.a.url) {
-        return this.a.url.slice(this.a.url.lastIndexOf('/') + 1)
-      }
-      if (this.a['@id']) {
-        return this.a['@id'].slice(this.a['@id'].lastIndexOf(':') + 1)
-      }
-      return 'nope'
+      var n = this.a.url || this.a['@id'] || 'nope'
+      n = n.slice(n.lastIndexOf(':') + 1)
+      return n.slice(n.lastIndexOf('/') + 1)
     },
     total () {
       return this.totalPaymentDue[this.totalPaymentDue.length - 1].price
