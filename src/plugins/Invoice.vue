@@ -307,6 +307,9 @@
                 </tr>
               </tbody>
             </table>
+            <p v-if="taxExemptionRule" style="float:right;text-align:right;width:100%">
+              Bijzondere vrijstellingsregeling kleine ondernemingen   
+            </p>
           </section>
           <footer class="invoice-container" v-if="a.provider">
             <strong>{{a.provider.name}}</strong>
@@ -349,6 +352,9 @@ export default {
       var n = this.a.url || this.a['@id'] || 'nope'
       n = n.slice(n.lastIndexOf(':') + 1)
       return n.slice(n.lastIndexOf('/') + 1)
+    },
+    taxExemptionRule () {
+      return this.a.provider && this.a.provider['be:taxExemptionRule']
     },
     total () {
       return this.totalPaymentDue[this.totalPaymentDue.length - 1].price
@@ -399,6 +405,16 @@ export default {
         console.log(totalExcl)
         console.log(totalIncl, vat)
       })
+
+      if (this.taxExemptionRule) {
+        return [{
+          '@type': 'PriceSpecification',
+          price: totalExcl,
+          priceCurrency: 'EUR',
+          name: 'Totaal',
+          valueAddedTaxIncluded: true
+        }]
+      }
 
       /* Generate totalPaymentDue */
       var due = [{
