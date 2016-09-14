@@ -397,7 +397,7 @@ export default {
         var incl = !!v.acceptedOffer.valueAddedTaxIncluded
 
         /* Count */
-        var vat = price * (incl ? pct : (1 / (1 - pct) - 1))
+        var vat = price * pct / (incl ? 1 + pct : 1)
         totalExcl += incl ? price - vat : price
         totalIncl += incl ? price : price + vat
         taxcat.vat += vat
