@@ -20,6 +20,8 @@ import User from './mixins/User'
 Vue.component('Prop', Prop)
 Vue.component('RecentFragments', RecentFragments)
 
+window.ld3 = true
+
 /* eslint-disable no-new */
 new Vue({
   el: 'body',

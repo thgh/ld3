@@ -24,7 +24,11 @@
   <component :is="route.view" :route="route">
     <section class="section-content"></section>
   </component>
-  <!-- built files will be auto injected -->
+  <script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function(event) {
+    window.ld3 || (window.location.href = 'dist')
+  })
+  </script>
 </body>
 
 </html>
