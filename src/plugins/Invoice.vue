@@ -422,7 +422,8 @@ export default {
     invoiceNumber () {
       var n = this.a.url || this.a['@id'] || 'nope'
       n = n.slice(n.lastIndexOf(':') + 1)
-      return n.slice(n.lastIndexOf('/') + 1)
+      n = n.slice(n.lastIndexOf('/') + 1)
+      return n.indexOf('-') > 0 ? n.slice(0, n.indexOf('-')) : n
     },
     dateCreated () {
       if (!this.a.dateCreated) {

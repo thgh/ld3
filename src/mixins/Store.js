@@ -45,6 +45,21 @@ var ns = {
   }
 }
 
+function fromMin (obj) {
+  if (typeof obj !== 'object') {
+    return obj
+  }
+  // Undo @id
+  if (obj && typeof obj['@id'] === 'string') {
+    obj['@id'] = ns.undo(obj['@id'])
+  }
+  // Undo underlying objects
+  for (const prop in obj) {
+    obj[prop] = fromMin(obj[prop])
+  }
+  return obj
+}
+
 function hideSchema (obj) {
   // Collapse @value
   if (typeof obj['@value'] !== 'undefined') {
@@ -99,8 +114,7 @@ export default {
       if (typeof fragment !== 'object') {
         return console.error('Store.sync expects object, but got', typeof fragment)
       }
-      fragment = U.inert(fragment)
-      ns.undoF(fragment)
+      fragment = fromMin(U.inert(fragment))
       if (fragment['@temp']) {
         delete fragment['@temp']
       }
