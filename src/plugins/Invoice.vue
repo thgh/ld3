@@ -93,6 +93,9 @@
           .bolder {
             font-weight: bolder;
           }
+          .pre-wrap {
+            white-space: pre-wrap;
+          }
           .method {
             flex-basis: 100%;
             margin: 1cm 0 0
@@ -354,7 +357,7 @@
                 <tr v-for="order in orders">
                   <td>
                     <h3 v-if="order.orderedItem.name">{{order.orderedItem.name}}</h3>
-                    <p v-if="order.orderedItem.description">{{order.orderedItem.description}}</p>
+                    <p class="pre-wrap" v-if="order.orderedItem.description">{{order.orderedItem.description}}</p>
                   </td>
                   <td class="e">
                     <span v-if="order.acceptedOffer.price">
