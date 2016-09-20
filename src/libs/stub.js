@@ -13,6 +13,8 @@ function suggest (type) {
       return ['schema:name', 'schema:vatID', 'schema:address', 'schema:founder']
     case 'PostalAddress':
       return ['schema:name', 'schema:streetAddress', 'schema:addressLocality', 'schema:postalCode', 'schema:addressCountry']
+    case 'Invoice':
+      return ['schema:name', 'schema:description', 'schema:dateCreated', 'schema:paymentDueDate', 'schema:paymentMethod', 'schema:provider', 'schema:customer', 'schema:referencesOrder']
   }
   return ['schema:name', 'schema:description', 'schema:url']
 }

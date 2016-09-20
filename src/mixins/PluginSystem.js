@@ -9,8 +9,14 @@ export default {
   },
   methods: {
     loadPlugin (name) {
+      if (!name) {
+        return
+      }
+      if (name.startsWith('schema:')) {
+        name = name.slice(7)
+      }
       if (this.plugins.loaded.indexOf(name) > -1) {
-        return true
+        return name
       }
       if (this.plugins.list.indexOf(name) < 0) {
         return false

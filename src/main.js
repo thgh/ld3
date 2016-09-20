@@ -12,6 +12,9 @@ import ModalAuth from './components/ModalAuth'
 import Prop from './components/Prop'
 import RecentFragments from './components/RecentFragments'
 
+// Must be available in plugins
+import InputSingle from './components/InputSingle'
+
 import Router from './mixins/Router.js'
 import Store from './mixins/Store'
 import User from './mixins/User'
@@ -19,6 +22,7 @@ import User from './mixins/User'
 // Fix recursive initializing bug: PropsList > Prop > ValueObject > PropsList > Prop > ...
 Vue.component('Prop', Prop)
 Vue.component('RecentFragments', RecentFragments)
+Vue.component('InputSingle', InputSingle)
 
 window.ld3 = true
 

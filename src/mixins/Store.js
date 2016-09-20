@@ -93,6 +93,9 @@ export default {
     },
     sync (fragment) {
       let $this = this
+      if (typeof fragment === 'string') {
+        fragment = U.inert(this.fragments[ns.min(fragment)])
+      }
       if (typeof fragment !== 'object') {
         return console.error('Store.sync expects object, but got', typeof fragment)
       }

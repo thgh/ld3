@@ -46,7 +46,7 @@ export default {
       return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
     },
     placeholder () {
-      return this.label || this.value['schema:name'] || this.value['@id'] || 'Unnamed'
+      return this.label || this.value['schema:name'] || this.value['@id'] || this.value['@value'] || 'Unnamed'
     },
     name () {
       return this.fragment['dcterms:title'] || this.fragment['schema:name']

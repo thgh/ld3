@@ -244,3 +244,10 @@ form.inp-subtle {
 .ref-ghost {
 	background-color: mix($fg, $bg, 15%);
 }
+
+/* input-single */
+
+.inp-single {
+	display: block;
+	text-align:right;
+}

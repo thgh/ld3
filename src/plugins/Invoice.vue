@@ -27,6 +27,9 @@
           transform: none!important;
           transition: none;
         }
+        .print-hidden {
+          display: none;
+        }
         @page {
           size: A4;
           margin: 0;
@@ -40,16 +43,48 @@
         left: 0;
         right: 0;
         bottom: 0;
-        padding: 3rem 0;
+        padding: 0 0 3rem;
         overflow: auto;
-        background-color: #888;
+        background-color: #1b1f32;
         z-index: 60;
+      }
+      .print-hidden {
+        margin: 0 auto;
+        max-width: 28rem;
+        text-align: center;
       }
       #printme>.invoice {
         margin: 0 auto;
       }
+      .invoice-ctrl {
+        margin: 2rem auto;
+        display: block;
+      }
+      .invoice-ctrl input {
+        width: 14rem;
+      }
+      body {
+        overflow: auto;
+      }
     </style>
-    <div id="printme" v-show="preview" @click="preview=!preview">
+    <div id="printme" v-show="preview">
+      <div class="print-hidden">
+        <div class="invoice-ctrl">
+          <p>
+            Klik op 'Bewaren' nadat je verbeteringen aangebracht hebt.
+          </p>
+          <input-single :a="a" path="customer.name" label="Naam"></input-single>
+          <input-single :a="a" path="customer.address.streetAddress" label="Straat + nummer"></input-single>
+          <input-single :a="a" path="customer.address.postalCode" label="Postcode"></input-single>
+          <input-single :a="a" path="customer.address.addressLocality" label="Stad"></input-single>
+          <input-single :a="a" path="customer.email" label="E-mailadres"></input-single>
+          <input-single :a="a" path="customer.vatID" label="Ondernemingsnummer"></input-single>
+        </div>
+        <div class="invoice-ctrl">
+          <button class="btn" @click="$root.sync(a.customer['@id'] || a['@id'])">Bewaren</button>
+          <button class="btn" @click="print">Afdrukken</button>
+        </div>
+      </div>
       <div class="invoice invoice-page">
         <style>
           .bold {
@@ -62,22 +97,21 @@
             flex-basis: 100%;
             margin: 1cm 0 0
           }
-          .flex-top {
-            padding: 2cm 0 1cm;
-            display: flex;
-            align-items: flex-end;
-          }
           .invoice * {
             box-sizing: border-box;
           }
           .invoice a {
             color: inherit;
+            text-decoration: none;
+            border-bottom: 1px dashed #999;
+          }
+          .invoice a:hover {
+            border-bottom: 2px solid #000;
           }
           .invoice h1 {
             margin: 0;
-            font-size: 2em;
-            font-weight: 300;
-            line-height: 1.1;
+            font-size: 1.125em;
+            font-weight: 500;
           }
           .invoice h2 {
             margin: 0;
@@ -98,9 +132,33 @@
           .invoice address>div {
             white-space: nowrap;
           }
-          .invoice header {
+          .invoice-top {
+            padding: 2cm 0 1cm;
+          }
+          .invoice-parties {
+            display: flex;
+            align-items: flex-start;
+          }
+          .invoice-start {
+            text-transform: uppercase;
+            font-size: 2em;
+            font-weight: 700;
+            opacity: .4;
+            margin-bottom: 1em;
+          }
+          .invoice-to {
+            text-transform: uppercase;
+            font-size: 1.125em;
+            font-weight: 500;
+            opacity: .6;
+            margin-right: 1em;
+          }
+          .invoice .customer {
             position: relative;
             flex-grow: 1;
+          }
+          .invoice .provider {
+            color: #666;
           }
           .invoice .summary {
             background: #eee;
@@ -140,6 +198,10 @@
           }
           .invoice .taxes {
             text-align: right;
+          }
+          .invoice-asterisk {
+            font-weight: 900;
+            color: red;
           }
           .tbl {
             border: 0;
@@ -235,42 +297,45 @@
         </style>
         <div class="invoice-subpage">
           <div class="invoice-container" v-if="a.provider||a.customer">
-            <div class="flex-top">
-              <img :src="a.provider.logo||''" v-if="a.provider.logo">
-              <header v-if="a.provider">
-                <h1 class="h1">{{a.provider.name}}</h1>
-                <!-- <h2 class="h2">{{a.customer.roleName}}</h2> -->
-                <address v-if="a.provider.address">
-                  <div>{{a.provider.address&&a.provider.address.streetAddress}}</div>
-                  <div>{{a.provider.address&&a.provider.address.postalCode}} {{a.provider.address&&a.provider.address.addressLocality}}</div>
-                </address>
-                <div><a href="mailto:{{a.provider.email}}">{{a.provider.email}}</a></div>
-                <div><a href="mailto:{{a.provider.url}}">{{a.provider.url}}</a></div>
-                <div>{{a.provider.vatID}}</div>
-              </header>
-              <section class="customer" v-if="a.customer">
-                Opgemaakt voor:
-                <div>{{a.customer.name}}</div>
-                <address>
-                  <div>{{a.customer.address&&a.customer.address.streetAddress}}</div>
-                  <div>{{a.customer.address&&a.customer.address.postalCode}} {{a.customer.address&&a.customer.address.addressLocality}}</div>
-                </address>
-                <div><a href="mailto:{{a.customer.email}}">{{a.customer.email}}</a></div>
-                <div><a href="mailto:{{a.customer.url}}">{{a.customer.url}}</a></div>
-                <div>{{a.customer.vatID}}</div>
-              </section>
+            <div class="invoice-top">
+              <div class="invoice-start">Factuur</div>
+              <div class="invoice-parties">
+                <div class="invoice-to">aan</div>
+                <section class="customer" v-if="a.customer">
+                  <h1>{{a.customer.name}}</h1>
+                  <address>
+                    <div>{{a.customer.address&&a.customer.address.streetAddress}}</div>
+                    <div>{{a.customer.address&&a.customer.address.postalCode}} {{a.customer.address&&a.customer.address.addressLocality}}</div>
+                  </address>
+                  <div><a href="mailto:{{a.customer.email}}">{{a.customer.email}}</a></div>
+                  <div v-if="!a.customer.email"><a href="{{a.customer.url}}">{{a.customer.url}}</a></div>
+                  <div>{{a.customer.vatID}}</div>
+                </section>
+                <section class="provider" v-if="a.provider">
+                  <img :src="a.provider.logo||''" v-if="a.provider.logo">
+                  <h1>{{a.provider.name}}</h1>
+                  <!-- <h2 class="h2">{{a.customer.roleName}}</h2> -->
+                  <address v-if="a.provider.address">
+                    <div>{{a.provider.address&&a.provider.address.streetAddress}}</div>
+                    <div>{{a.provider.address&&a.provider.address.postalCode}} {{a.provider.address&&a.provider.address.addressLocality}}</div>
+                  </address>
+                  <div><a href="mailto:{{a.provider.email}}">{{a.provider.email}}</a></div>
+                  <div v-if="!a.provider.email"><a href="{{a.provider.url}}">{{a.provider.url}}</a></div>
+                  <div>{{a.provider.vatID}}</div>
+                </section>
+              </div>
             </div>
           </div>
-          <section class="summary" v-if="a.dateCreated||a.url||a.paymentDueDate">
+          <section class="summary" v-if="dateCreated||a.url||paymentDueDate">
             <div class="summary-item" v-if="invoiceNumber">
               <span class="summary-label">Factuurnr.</span>
               <div class="number" v-text="invoiceNumber">01 / 2015</div>
             </div>
-            <div class="summary-item" v-if="a.dateCreated">
+            <div class="summary-item" v-if="dateCreated">
               <span class="summary-label">Factuurdatum</span> {{a.dateCreated| date}}
             </div>
-            <div class="summary-item bolder" v-if="a.paymentDueDate">
-              <span class="summary-label">Vervaldatum</span> {{a.paymentDueDate| date}}
+            <div class="summary-item bolder" v-if="paymentDueDate">
+              <span class="summary-label">Vervaldatum</span> {{paymentDueDate| date}}
             </div>
             <div class="summary-item bolder" v-if="total">
               <span class="summary-label">Totaalbedrag</span>{{total|currency '€ '}}
@@ -286,7 +351,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="order in a.referencesOrder">
+                <tr v-for="order in orders">
                   <td>
                     <h3 v-if="order.orderedItem.name">{{order.orderedItem.name}}</h3>
                     <p v-if="order.orderedItem.description">{{order.orderedItem.description}}</p>
@@ -302,13 +367,13 @@
             <table class="tbl tbl-calc" v-if="totalPaymentDue">
               <tbody>
                 <tr v-for="line in totalPaymentDue" track-by="$index" :class="{bold:line.valueAddedTaxIncluded}">
-                  <td>{{line.name}}</td>
+                  <td>{{line.name}} <span v-if="line.asterisk" class="invoice-asterisk">*</span></td>
                   <td class="e" v-if="line.price!=undefined">{{line.price|currency '€ '}}</td>
                 </tr>
               </tbody>
             </table>
             <p v-if="taxExemptionRule" style="float:right;text-align:right;width:100%">
-              Bijzondere vrijstellingsregeling kleine ondernemingen   
+              <span class="invoice-asterisk">*</span> Bijzondere vrijstellingsregeling kleine ondernemingen   
             </p>
           </section>
           <footer class="invoice-container" v-if="a.provider">
@@ -316,6 +381,12 @@
             <i v-if="a.provider.address"> &nbsp; &bullet; &nbsp; {{a.provider.address.streetAddress}}, {{a.provider.address.postalCode}} {{a.provider.address.addressLocality}}</i>
             <span v-if="a.provider.vatID">&nbsp; &bullet; &nbsp; {{a.provider.vatID}}</span>
           </footer>
+        </div>
+      </div>
+
+      <div class="print-hidden">
+        <div class="invoice-ctrl">
+          <button class="btn btn-soft" @click="preview=0">Close</button>
         </div>
       </div>
     </div>
@@ -344,7 +415,7 @@ export default {
   props: ['a', 'options'],
   data () {
     return {
-      preview: false
+      preview: true
     }
   },
   computed: {
@@ -353,34 +424,55 @@ export default {
       n = n.slice(n.lastIndexOf(':') + 1)
       return n.slice(n.lastIndexOf('/') + 1)
     },
+    dateCreated () {
+      if (!this.a.dateCreated) {
+        console.log(this.$root.ns.min(this.a['@id']))
+        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:dateCreated\']', new Date().toJSON().slice(0, 10)))
+      }
+      return this.a.dateCreated
+    },
+    paymentDueDate () {
+      if (!this.a.paymentDueDate) {
+        var d = new Date(this.dateCreated)
+        d.setMonth(d.getMonth() + 1)
+        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:paymentDueDate\']', d.toJSON().slice(0, 10)))
+      }
+      return this.a.paymentDueDate
+    },
     taxExemptionRule () {
       return this.a.provider && this.a.provider['be:taxExemptionRule']
     },
     total () {
       return this.totalPaymentDue[this.totalPaymentDue.length - 1].price
     },
+    orders () {
+      return Array.isArray(this.a.referencesOrder) ? this.a.referencesOrder : [this.a.referencesOrder]
+    },
     totalPaymentDue () {
       if (this.a.totalPaymentDue) {
         return this.a.totalPaymentDue
       }
 
-      if (!this.a.referencesOrder) {
-        alert('no orders')
-        return
+      if (!this.orders) {
+        this.a.referencesOrder = [{
+          orderedItem: {
+            name: ''
+          },
+          acceptedOffer: {
+            price: 10
+          }
+        }]
       }
 
-      if (typeof this.a.referencesOrder !== 'object') {
+      if (typeof this.orders[0] !== 'object') {
         alert('expected object but got ' +  this.a.referencesOrder)
         return
-      }
-      if (!Array.isArray(this.a.referencesOrder)) {
-        this.a.referencesOrder = [this.a.referencesOrder]
       }
 
       var totalExcl = 0
       var totalIncl = 0
       var tax = inert(defaultTax)
-      this.a.referencesOrder.forEach(function(v, k) {
+      this.orders.forEach(function(v, k) {
 
         if (!v.orderedItem) return
         if (!v.acceptedOffer) return
@@ -402,12 +494,16 @@ export default {
         totalExcl += incl ? price - vat : price
         totalIncl += incl ? price : price + vat
         taxcat.vat += vat
-        console.log(totalExcl)
-        console.log(totalIncl, vat)
       })
 
       if (this.taxExemptionRule) {
         return [{
+          '@type': 'PriceSpecification',
+          price: 0,
+          priceCurrency: '%',
+          name: 'Btw-tarief: 0%',
+          asterisk: 1
+        }, {
           '@type': 'PriceSpecification',
           price: totalExcl,
           priceCurrency: 'EUR',

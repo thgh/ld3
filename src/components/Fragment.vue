@@ -26,7 +26,7 @@
       <button class="btn btn-soft" @click="clear">Clear</button>
     </p>
 
-    <div v-if="loadPlugin(fragment['@type'])&&resolved" :is="fragment['@type']" :a="resolved" :options="options">test</div>
+    <div v-if="loadPlugin(fragment['@type'])&&resolved" :is="loadPlugin(fragment['@type'])" :a="resolved" :options="options">test</div>
   </div>
 </template>
 
