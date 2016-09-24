@@ -430,16 +430,21 @@ export default {
     },
     dateCreated () {
       if (!this.a.dateCreated) {
-        console.log(this.$root.ns.min(this.a['@id']))
-        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:dateCreated\']', new Date().toJSON().slice(0, 10)))
+        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:dateCreated\']', {
+          '@type': 'xsd:date',
+          '@value': new Date().toJSON().slice(0, 10)
+        }))
       }
       return this.a.dateCreated
     },
     paymentDueDate () {
-      if (!this.a.paymentDueDate) {
+      if (!this.a.paymentDueDate && this.dateCreated) {
         var d = new Date(this.dateCreated)
         d.setMonth(d.getMonth() + 1)
-        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:paymentDueDate\']', d.toJSON().slice(0, 10)))
+        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:paymentDueDate\']', {
+          '@type': 'xsd:date',
+          '@value': d.toJSON().slice(0, 10)
+        }))
       }
       return this.a.paymentDueDate
     },
