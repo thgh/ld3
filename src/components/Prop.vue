@@ -8,12 +8,12 @@
 <script>
 import ValueArray from './ValueArray.vue'
 import ValueLiteral from './ValueLiteral.vue'
-import ValueObject from './ValueObject'
+import ValueObject from './ValueObject.vue'
 import ValueReference from './ValueReference.vue'
-import ValueString from './ValueString'
-import ValueText from './ValueText'
+import ValueString from './ValueString.vue'
+import ValueText from './ValueText.vue'
 
-import U from '../libs/util.js'
+import { toType } from '../libs/util.js'
 
 export default {
   name: 'prop',
@@ -26,7 +26,7 @@ export default {
   },
   computed: {
     renderType () {
-      return U.valueType(this.parent[this.prop])
+      return toType(this.parent[this.prop])
     },
     niceProp () {
       return this.prop && this.prop.substr(this.prop.indexOf(':') + 1)

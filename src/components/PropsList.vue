@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import PropAdd from './PropAdd'
+import PropAdd from './PropAdd.vue'
 import {toStub} from '../libs/stub.js'
 
 export default {

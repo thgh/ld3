@@ -1,5 +1,5 @@
-import throttle from '../libs/throttle'
-import U from '../libs/util'
+import throttle from '../libs/throttle.js'
+import { inert, getJSON, putJSON } from '../libs/util.js'
 import ls from 'local-storage'
 
 const backup = {}
@@ -109,17 +109,16 @@ export default {
     sync (fragment) {
       let $this = this
       if (typeof fragment === 'string') {
-        fragment = U.inert(this.fragments[ns.min(fragment)])
+        fragment = inert(this.fragments[ns.min(fragment)])
       }
       if (typeof fragment !== 'object') {
         return console.error('Store.sync expects object, but got', typeof fragment)
       }
-      fragment = fromMin(U.inert(fragment))
+      fragment = fromMin(inert(fragment))
       if (fragment['@temp']) {
         delete fragment['@temp']
       }
-      U.putJson(fragment)
-      .then(U.json)
+      putJSON(fragment)
       .then(function (body) {
         if (!body.success) {
           console.warn(body)
@@ -146,9 +145,7 @@ export default {
         return this.setFragment({'@type': 'schema:Person', '@id': 'ld3:anonymous', 'schema:name': 'Anonymous person'})
       }
       fetching[uri] = true
-      window.fetch(uri, U.getJson)
-      .then(U.checkStatus)
-      .then(U.json)
+      getJSON(uri)
       .then(this.addGraph).catch(function (body) {
         console.error('Store.fetch didnt retrieve', uri, body)
         $this.setFragment({
@@ -193,7 +190,7 @@ export default {
       if (this.fragments[to]) {
         return console.warn('Store.rename: overwriting is disabled', to)
       }
-      var temp = U.inert(this.fragments[uri])
+      var temp = inert(this.fragments[uri])
       temp['@id'] = to
       this.setFragment(temp)
       console.log('copied', uri, 'to', to)
@@ -205,7 +202,7 @@ export default {
         return
       }
       this.$set('fragments[\'' + f['@id'] + '\']', f)
-      backup[f['@id']] = U.inert(f)
+      backup[f['@id']] = inert(f)
       return f
     },
     resolve (uri, options) {
@@ -224,7 +221,7 @@ export default {
         this.fetch(uri)
         return // console.warn(uri, 'was not found in storage')
       }
-      var obj = U.inert(this.fragments[uri])
+      var obj = inert(this.fragments[uri])
       for (let prop in obj) {
         // Recursive
         if (options > 0 && typeof obj[prop] === 'object' && Object.keys(obj[prop]).length === 1 && obj[prop]['@id']) {

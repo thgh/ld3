@@ -31,11 +31,11 @@
 </template>
 
 <script>
-import InputClass from './InputClass'
-import PropsList from './PropsList'
-import TextareaSubtle from './TextareaSubtle'
+import InputClass from './InputClass.vue'
+import PropsList from './PropsList.vue'
+import TextareaSubtle from './TextareaSubtle.vue'
 
-import PluginSystem from '../mixins/PluginSystem'
+import PluginSystem from '../mixins/PluginSystem.js'
 
 export default {
   props: ['fragment'],

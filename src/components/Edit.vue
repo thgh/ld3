@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import Fragment from './Fragment'
+import Fragment from './Fragment.vue'
 // import LdContext from '../libs/LdContext'
 // LdContext.init()
 

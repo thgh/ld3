@@ -14,12 +14,12 @@
 </template>
 
 <script>
-import U from '../libs/util'
+import { inert } from '../libs/util.js'
 
-import InputClass from './InputClass'
-import InputReference from './InputReference'
-import InputSubtle from './InputSubtle'
-import PropsList from './PropsList'
+import InputClass from './InputClass.vue'
+import InputReference from './InputReference.vue'
+import InputSubtle from './InputSubtle.vue'
+import PropsList from './PropsList.vue'
 
 export default {
   name: 'value-object',
@@ -56,7 +56,7 @@ export default {
         return this.ref || this.fragment || console.log('falsy value object') || {}
       },
       set (ref) {
-        console.log('object => ref', U.inert(ref))
+        console.log('object => ref', inert(ref))
         if (typeof this.ref === 'object') {
           this.ref = ref
         } else {
@@ -86,7 +86,7 @@ export default {
       }
       // evt.stopPropagation()
       if (this.ref) {
-        let f = U.inert(this.fragment || {})
+        let f = inert(this.fragment || {})
         console.log('toggle ref=>object', f)
         f['@fromid'] = f['@id']
         delete f['@id']

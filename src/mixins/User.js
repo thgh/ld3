@@ -1,4 +1,4 @@
-import U from '../libs/util'
+import { inert, getJSON, putJSON } from '../libs/util.js'
 import ls from 'local-storage'
 
 export const LD3_PROFILES = 'http://id.thomasg.be/ld3-profiles/'
@@ -19,7 +19,7 @@ export const LD3_USER = {
   }]
 }
 
-const user = ls.get('user') || U.inert(LD3_USER)
+const user = ls.get('user') || inert(LD3_USER)
 
 export default {
   data: {
@@ -36,11 +36,9 @@ export default {
         uri = LD3_PROFILES + uri
       }
       var self = this
-      return window.fetch(uri, U.getJson)
-      .then(U.checkStatus)
-      .then(U.json)
+      return getJSON(uri)
       .then(function (body) {
-        self.setFragment(U.inert(body))
+        self.setFragment(inert(body))
         for (let key in body) {
           user[key] = body[key]
         }
@@ -60,11 +58,9 @@ export default {
       if (!uri.startsWith('http')) {
         uri = LD3_PROFILES + uri
       }
-      var data = U.inert(LD3_USER)
+      var data = inert(LD3_USER)
       data['@id'] = uri
-      return U.putJson(data)
-      .then(U.checkStatus)
-      .then(U.json)
+      return putJSON(data)
       .then(function (body) {
         for (let key in body) {
           user[key] = body[key] || null
@@ -89,7 +85,7 @@ export default {
     },
     userLogout () {
       ls.remove('user')
-      let u = U.inert(LD3_USER)
+      let u = inert(LD3_USER)
       u['@id'] = null
       for (let key in u) {
         user[key] = u[key] || null
@@ -101,6 +97,6 @@ export default {
       return console.warn('User.ready', 'but not logged in')
     }
     this.userLoad()
-    console.log('User.ready', user.workspace && user.workspace.length, U.inert(user))
+    console.log('User.ready', user.workspace && user.workspace.length, inert(user))
   }
 }

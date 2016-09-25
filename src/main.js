@@ -1,23 +1,23 @@
 import Vue from 'vue'
 
 // Pages
-import Home from './components/Home'
-import Conf from './components/Conf'
-import Edit from './components/Edit'
-import Create from './components/Create'
+import Home from './components/Home.vue'
+import Conf from './components/Conf.vue'
+import Edit from './components/Edit.vue'
+import Create from './components/Create.vue'
 
 // Modals
-import ModalAuth from './components/ModalAuth'
+import ModalAuth from './components/ModalAuth.vue'
 
-import Prop from './components/Prop'
-import RecentFragments from './components/RecentFragments'
+import Prop from './components/Prop.vue'
+import RecentFragments from './components/RecentFragments.vue'
 
 // Must be available in plugins
-import InputSingle from './components/InputSingle'
+import InputSingle from './components/InputSingle.vue'
 
 import Router from './mixins/Router.js'
-import Store from './mixins/Store'
-import User from './mixins/User'
+import Store from './mixins/Store.js'
+import User from './mixins/User.js'
 
 // Fix recursive initializing bug: PropsList > Prop > ValueObject > PropsList > Prop > ...
 Vue.component('Prop', Prop)

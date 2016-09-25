@@ -6,10 +6,10 @@
 </template>
 
 <script>
-import U from '../libs/util'
+import { inert, toType } from '../libs/util.js'
 
-import ValueObject from './ValueObject'
-import ValueReference from './ValueReference'
+import ValueObject from './ValueObject.vue'
+import ValueReference from './ValueReference.vue'
 
 export default {
   props: ['fragment'],
@@ -26,9 +26,9 @@ export default {
     },
     push () {
       var a = this.fragment
-      var b = !a || !a[a.length - 1] ? {} : U.inert(a[a.length - 1])
-      if (U.valueType(b) === 'ValueReference' && this.$root.fragments[b['@id']]) {
-        b = U.inert(this.$root.fragments[b['@id']])
+      var b = !a || !a[a.length - 1] ? {} : inert(a[a.length - 1])
+      if (toType(b) === 'ValueReference' && this.$root.fragments[b['@id']]) {
+        b = inert(this.$root.fragments[b['@id']])
       }
       b['@id'] = '_:' + Date.now() % 1000000
       b['@type'] = b['@type'] || 'schema:Thing'

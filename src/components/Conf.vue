@@ -70,7 +70,7 @@
 </template>
 
 <script>
-import browser from '../libs/browser'
+import browser from '../libs/browser.js'
 
 export default {
   data () {

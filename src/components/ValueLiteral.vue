@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import InputType from './InputType'
+import InputType from './InputType.vue'
 
 const acceptedTypes = [
   'xsd:boolean',

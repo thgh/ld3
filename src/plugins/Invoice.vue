@@ -397,7 +397,7 @@
 </template>
 
 <script>
-import {inert} from '../libs/util.js'
+import { inert } from '../libs/util.js'
 
 var defaultTax = {
   btw0: {

@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ValueObject from './ValueObject'
+import ValueObject from './ValueObject.vue'
 
 export default {
   name: 'value-reference',

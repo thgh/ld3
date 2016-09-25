@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import InputSubtle from './InputSubtle'
+import InputSubtle from './InputSubtle.vue'
 
 const DEFAULT_NAMESPACE = 'schema:'
 
