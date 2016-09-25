@@ -1,3 +1,5 @@
+import { fromMin, toMin } from '../libs/util.js'
+
 const routes = ['home', 'create', 'edit', 'conf']
 
 export default {
@@ -19,6 +21,7 @@ export default {
         window.history.replaceState('wut', 'ld3', route.base + '#!' + window.location.href)
       }
     }
+    console.log(route)
     return {
       route: route
     }
@@ -45,7 +48,7 @@ export default {
           window.document.title = hash + ' - ld3'
         } else {
           this.route.view = 'edit'
-          this.route.uri = this.$root.ns.min(hash)
+          this.route.uri = toMin(hash)
           window.document.title = this.route.uri + ' - ld3'
           // Avoid forced layout
           this.$nextTick(function () {
@@ -55,18 +58,13 @@ export default {
       } else {
         console.warn('changed hash to ', hash)
       }
+      console.log('hashchange')
     }
   },
-  ready () {
-    this.hashchange()
-  },
-  attached () {
-    // Start routing
+  mounted () {
     window.addEventListener('hashchange', this.hashchange, false)
-    this.route.uri = this.$root.ns.min(window.location.hash.substr(2))
-  },
-  detached () {
-    // Stop routing
-    window.removeEventListener('hashchange', this.hashchange, false)
+    this.route.uri = fromMin(window.location.hash.substr(2))
+    this.hashchange()
+    console.log(this.route.uri)
   }
 }

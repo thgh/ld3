@@ -36,7 +36,7 @@ export default {
   },
   computed: {
     index () {
-      var fragments = Object.values(this.$root.fragments)
+      var fragments = Object.keys(this.$root.fragments).map(k => this.$root.fragments[k])
       return new Fuse(fragments, fuseOptions)
     }
   },

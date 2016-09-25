@@ -57,7 +57,7 @@ export default {
       return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
     }
   },
-  ready () {
+  mounted () {
     // console.log('recent', this.$route.path)
   }
 }

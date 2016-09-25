@@ -7,6 +7,8 @@
 <script>
 import ValueObject from './ValueObject.vue'
 
+import { toMin } from '../libs/util.js'
+
 export default {
   name: 'value-reference',
   props: ['fragment'],
@@ -23,7 +25,7 @@ export default {
       }
     },
     actualFragment () {
-      return this.$root.fragments[this.$root.ns.min(this.model['@id'])] || this.$root.fetch(this.model['@id'])
+      return this.$root.fragments[toMin(this.model['@id'])] || this.$root.fetch(this.model['@id'])
     }
   },
   components: {

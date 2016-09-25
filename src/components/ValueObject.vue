@@ -141,7 +141,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 @import '../scss/variables';
 .value-object {
   flex-grow: 1;

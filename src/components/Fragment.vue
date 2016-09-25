@@ -13,7 +13,7 @@
           <br>
           <button type="button" @click="$root.fetch(fragment['@id'], true)">refetch</button>
         </p>
-        <pre class="fragment-collapse fragment-pre">{{fragment|json}}</pre>
+        <pre class="fragment-collapse fragment-pre">{{JSON.stringify(fragment)}}</pre>
       </div>
     </header>
 

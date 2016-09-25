@@ -61,15 +61,12 @@ export default {
       // console.log('unfocus', uid, this.focusIds.length)
     }
   },
-  ready () {
+  mounted () {
+    window.addEventListener('keydown', this.keydown, false)
     // console.info(window.location)
     // console.log('edit', this.$route.path)
   },
-  attached () {
-    // Editor shortcuts
-    window.addEventListener('keydown', this.keydown, false)
-  },
-  detached () {
+  destroyed () {
     window.removeEventListener('keydown', this.keydown, false)
   },
   watch: {
@@ -85,7 +82,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 @import '../scss/app.scss';
 
 .backdrop {

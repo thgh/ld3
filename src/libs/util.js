@@ -10,6 +10,48 @@ export function toType (o) {
       : typeof o['@value'] !== 'undefined' ? 'ValueLiteral' : 'ValueObject'
 }
 
+/* Namespace handling */
+const namespaces = {}
+
+export function fromMin (obj) {
+  // Replace prefix by url in strings
+  if (typeof obj === 'string') {
+    if (obj.endsWith('#id')) {
+      obj = obj.slice(0, -3)
+    }
+    for (let i = namespaces.length - 1; i >= 0; i--) {
+      obj = obj.replace(namespaces[i].prefix, namespaces[i].url)
+    }
+  }
+
+  // Recursive transformation for objects
+  else if (typeof obj === 'object') {
+    for (const prop in obj) {
+      obj[prop] = fromMin(obj[prop])
+    }
+  }
+
+  return obj
+}
+
+export function toMin (obj) {
+  // Replace prefix by url in strings
+  if (typeof obj === 'string') {
+    for (var i = 0; i < namespaces.length; i++) {
+      s = s.replace(namespaces[i].url, namespaces[i].prefix)
+    }
+  }
+
+  // Recursive transformation for objects
+  else if (typeof obj === 'object') {
+    for (const prop in obj) {
+      obj[prop] = toMin(obj[prop])
+    }
+  }
+
+  return obj
+}
+
 /* HTTP */
 
 export function getJSON (url) {

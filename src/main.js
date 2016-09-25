@@ -1,13 +1,9 @@
 import Vue from 'vue'
 
 // Pages
-import Home from './components/Home.vue'
-import Conf from './components/Conf.vue'
-import Edit from './components/Edit.vue'
-import Create from './components/Create.vue'
+import App from './App.vue'
 
 // Modals
-import ModalAuth from './components/ModalAuth.vue'
 
 import Prop from './components/Prop.vue'
 import RecentFragments from './components/RecentFragments.vue'
@@ -25,10 +21,11 @@ Vue.component('RecentFragments', RecentFragments)
 Vue.component('InputSingle', InputSingle)
 
 window.ld3 = true
+console.log('start')
 
 /* eslint-disable no-new */
 new Vue({
-  el: 'body',
+  el: '#app',
   data () {
     return {
       class: {
@@ -44,11 +41,5 @@ new Vue({
     extend: comp => Vue.extend(comp)
   },
   mixins: [Router, Store, User],
-  components: {
-    Home,
-    Conf,
-    Edit,
-    Create,
-    ModalAuth
-  }
+  render: h => h(App)
 })

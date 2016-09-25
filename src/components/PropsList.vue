@@ -1,6 +1,6 @@
 <template>
   <div class="props-list" :class="{active:blurry}">
-    <prop v-for="(prop, value) in fragment" v-if="prop[0]!=='@'" :parent.sync="fragment" :prop="prop"></prop>
+    <prop v-for="(value, prop) in fragment" v-if="prop[0]!=='@'" :parent.sync="fragment" :prop="prop"></prop>
     <prop v-for="prop in stub" :parent.sync="fragment" :prop="prop"></prop>
     <prop-add :fragment.sync="fragment"></prop-add>
   </div>
@@ -41,7 +41,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 @import '../scss/variables';
 .props-list {
   position: relative;

@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import { inert } from '../libs/util.js'
+import { inert, toMin } from '../libs/util.js'
 
 export default {
   props: ['a', 'path', 'label'],
@@ -25,7 +25,7 @@ export default {
       var setPath = '$parent.a'
 
       if (a['@id']) {
-        var min = this.$root.ns.min(a['@id'])
+        var min = toMin(a['@id'])
         setPath = '$root.fragments[\'' + min + '\']'
       }
 
@@ -39,7 +39,7 @@ export default {
         if (typeof a[piece] === 'undefined') {
           vm.$set(setPath, i === last ? 'no' : {})
         } else if (a[piece]['@id']) {
-          var min = vm.$root.ns.min(a[piece]['@id'])
+          var min = toMin(a[piece]['@id'])
           setPath = '$root.fragments[\'' + min + '\']'
         }
         pieces.push(a[piece])

@@ -1,5 +1,5 @@
 import throttle from '../libs/throttle.js'
-import { inert, getJSON, putJSON } from '../libs/util.js'
+import { inert, getJSON, putJSON, toMin, fromMin } from '../libs/util.js'
 import ls from 'local-storage'
 
 const backup = {}
@@ -17,47 +17,6 @@ export const STORE_NAMESPACES = {
   'schema': 'http://schema.org/',
   'skos': 'http://www.w3.org/2004/02/skos/core#',
   'xsd': 'http://www.w3.org/2001/XMLSchema#'
-}
-
-var ns = {
-  min (s) {
-    for (var i = 0; i < namespaces.length; i++) {
-      s = s.replace(namespaces[i].url, namespaces[i].prefix)
-    }
-    return s
-  },
-  minF (s) {
-    s['@id'] = this.min(s['@id'])
-    return s
-  },
-  undo (s) {
-    if (s.endsWith('#id')) {
-      s = s.slice(0, -3)
-    }
-    for (var i = namespaces.length - 1; i >= 0; i--) {
-      s = s.replace(namespaces[i].prefix, namespaces[i].url)
-    }
-    return s
-  },
-  undoF (s) {
-    s['@id'] = this.undo(s['@id'])
-    return s
-  }
-}
-
-function fromMin (obj) {
-  if (typeof obj !== 'object') {
-    return obj
-  }
-  // Undo @id
-  if (obj && typeof obj['@id'] === 'string') {
-    obj['@id'] = ns.undo(obj['@id'])
-  }
-  // Undo underlying objects
-  for (const prop in obj) {
-    obj[prop] = fromMin(obj[prop])
-  }
-  return obj
 }
 
 function hideSchema (obj) {
@@ -109,7 +68,7 @@ export default {
     sync (fragment) {
       let $this = this
       if (typeof fragment === 'string') {
-        fragment = inert(this.fragments[ns.min(fragment)])
+        fragment = inert(this.fragments[toMin(fragment)])
       }
       if (typeof fragment !== 'object') {
         return console.error('Store.sync expects object, but got', typeof fragment)
@@ -134,7 +93,7 @@ export default {
       if (typeof uri !== 'string') {
         return console.error('Store.fetch expects string, but got', typeof uri)
       }
-      uri = ns.undo(uri)
+      uri = fromMin(uri)
       if (fetching[uri] && !force) {
         return console.log(' cancel', uri)
       }
@@ -197,7 +156,7 @@ export default {
       return to
     },
     setFragment (f) {
-      f = ns.minF(f)
+      f = toMin(f)
       if (f['@id'].endsWith(':')) {
         return
       }
@@ -216,7 +175,7 @@ export default {
       if (!uri) {
         return // console.warn('This uri is falsy', uri)
       }
-      uri = ns.min(uri)
+      uri = toMin(uri)
       if (!this.fragments[uri]) {
         this.fetch(uri)
         return // console.warn(uri, 'was not found in storage')
@@ -264,7 +223,8 @@ export default {
   },
   created () {
     this.loadWorkspace(ls.get('namespaces') || STORE_NAMESPACES)
-    this.addGraph({'@graph': Object.values(ls.get('fragments') || {})})
+    const fragments = ls.get('fragments') || {}
+    this.addGraph({'@graph': Object.keys(fragments).map(k => fragments[k])})
   },
   attached () {
     this.interval = setInterval(this.checkSave, 5000)
@@ -274,7 +234,7 @@ export default {
     clearInterval(this.interval)
     clearInterval(this.syncInterval)
   },
-  ready () {
+  mounted () {
     console.log('Store.ready', Object.keys(this.fragments).length)
   }
 }

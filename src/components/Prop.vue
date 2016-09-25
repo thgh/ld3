@@ -29,7 +29,7 @@ export default {
       return toType(this.parent[this.prop])
     },
     niceProp () {
-      return this.prop && this.prop.substr(this.prop.indexOf(':') + 1)
+      return typeof this.prop === 'string' && this.prop.substr(this.prop.indexOf(':') + 1)
     }
   },
   events: {
@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style>
 @import '../scss/variables';
 
 .prop {

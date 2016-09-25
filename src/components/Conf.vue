@@ -9,7 +9,7 @@
       </p>
       <h2>User</h2>
       <p>
-        Logged in as {{$root.user['@id']|json}}
+        Logged in as {{JSON.stringify($root.user['@id'])}}
       </p>
       <h2>Namespaces</h2>
       <table class="tbl-conf" style="min-width:300px">

@@ -19,7 +19,7 @@ export const LD3_USER = {
   }]
 }
 
-const user = ls.get('user') || inert(LD3_USER)
+const user = ls('user') || inert(LD3_USER)
 
 export default {
   data: {
@@ -42,14 +42,14 @@ export default {
         for (let key in body) {
           user[key] = body[key]
         }
-        ls.set('user', user)
+        ls('user', user)
         return user
       }).catch(function (error) {
         if (error.status === 404) {
           user['@id'] = null
           user.person = null
           user.workspace = null
-          ls.set('user', user)
+          ls('user', user)
         }
         throw error
       })
@@ -92,7 +92,7 @@ export default {
       }
     }
   },
-  ready () {
+  mounted () {
     if (!this.auth) {
       return console.warn('User.ready', 'but not logged in')
     }

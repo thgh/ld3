@@ -397,7 +397,7 @@
 </template>
 
 <script>
-import { inert } from '../libs/util.js'
+import { inert, toMin } from '../libs/util.js'
 
 var defaultTax = {
   btw0: {
@@ -430,7 +430,7 @@ export default {
     },
     dateCreated () {
       if (!this.a.dateCreated) {
-        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:dateCreated\']', {
+        this.$nextTick(() => this.$set('$root.fragments[\'' + toMin(this.a['@id']) + '\'][\'schema:dateCreated\']', {
           '@type': 'xsd:date',
           '@value': new Date().toJSON().slice(0, 10)
         }))
@@ -441,7 +441,7 @@ export default {
       if (!this.a.paymentDueDate && this.dateCreated) {
         var d = new Date(this.dateCreated)
         d.setMonth(d.getMonth() + 1)
-        this.$nextTick(() => this.$set('$root.fragments[\'' + this.$root.ns.min(this.a['@id']) + '\'][\'schema:paymentDueDate\']', {
+        this.$nextTick(() => this.$set('$root.fragments[\'' + toMin(this.a['@id']) + '\'][\'schema:paymentDueDate\']', {
           '@type': 'xsd:date',
           '@value': d.toJSON().slice(0, 10)
         }))
