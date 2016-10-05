@@ -1,7 +1,7 @@
 <template>
   <div class="inp-text prop" :class="{'focus-prop':focus&&!focusFrom,'focus-from':focusFrom}" @click.stop>
     <label class="inp-label" :for="_uid" :title="prop">{{niceProp}}</label>
-    <component :is="renderType" :fragment.sync="parent[prop]" :id="_uid"></component>
+    <component :is="renderType" :parent="parent" :prop="prop" :id="_uid"></component>
   </div>
 </template>
 
@@ -43,7 +43,7 @@ export default {
       if (!val) {
         this.focusFrom = val
       }
-      this.$dispatch('focusFrom', val, this._uid)
+      hub.$emit('focusFrom', val, this._uid)
     },
     focusFrom (val, uid) {
       if (this._uid === uid) {
@@ -66,7 +66,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import '../scss/variables';
 
 .prop {

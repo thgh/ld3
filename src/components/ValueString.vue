@@ -5,6 +5,11 @@
 <script>
 export default {
   name: 'value-string',
-  props: ['fragment']
+  props: ['parent', 'prop', 'id'],
+  computed: {
+    fragment () {
+      return this.parent[this.prop]
+    }
+  }
 }
 </script>

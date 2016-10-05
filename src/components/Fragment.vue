@@ -1,9 +1,9 @@
 <template>
-  <div class="fragment">
+  <div class="fragment focus-prop">
     <header>
       <h1 class="fragment-h1">
-        <textarea-subtle :model.sync="fragment['schema:name']" :placeholder="fragment['@id']||'Fatal error'"></textarea-subtle>
-        <input-class :model.sync="fragment['@type']" placeholder="wut"></input-class>
+        <textarea-subtle :model="fragment" prop="schema:name" :placeholder="fragment['@id']||'Fatal error'"></textarea-subtle>
+        <input-class :model="fragment" prop="@type" placeholder="wut"></input-class>
       </h1>
       <div class="fragment-json mdi mdi-12px mdi-code-braces">
         <p class="fragment-collapse" style="text-align:right">
@@ -13,12 +13,12 @@
           <br>
           <button type="button" @click="$root.fetch(fragment['@id'], true)">refetch</button>
         </p>
-        <pre class="fragment-collapse fragment-pre">{{JSON.stringify(fragment)}}</pre>
+        <pre class="fragment-collapse fragment-pre">{{JSON.stringify(fragment, null, 2)}}</pre>
       </div>
     </header>
 
     <article>
-      <props-list :fragment.sync="fragment"></props-list>
+      <props-list :fragment="fragment"></props-list>
     </article>
 
     <p class="fragment-cta">
@@ -38,6 +38,7 @@ import TextareaSubtle from './TextareaSubtle.vue'
 import PluginSystem from '../mixins/PluginSystem.js'
 
 export default {
+  name: 'fragment',
   props: ['fragment'],
   data () {
     return {
@@ -59,7 +60,8 @@ export default {
       return this.fragment
     },
     savable () {
-      return this.$root.syncAgo > 1
+      return true
+      // return this.$root.syncAgo > 1
     },
     resolved () {
       return this.$root.resolve(this.fragment, this.options.resolve)
@@ -67,7 +69,7 @@ export default {
   },
   methods: {
     copy (evt) {
-      var uri = this.$root.copy(this.fragment['@id'], evt.target.value)
+      var uri = this.$root.copyFragment(this.fragment['@id'], evt.target.value)
       if (uri) {
         window.location.href = '#!' + uri
       }

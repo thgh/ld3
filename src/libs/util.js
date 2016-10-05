@@ -1,4 +1,3 @@
-
 export function inert (x) {
   return JSON.parse(JSON.stringify(x))
 }
@@ -11,7 +10,9 @@ export function toType (o) {
 }
 
 /* Namespace handling */
-const namespaces = {}
+
+// [{prefix: 'schema:', url: 'http://schema.org/'}]
+const namespaces = []
 
 export function fromMin (obj) {
   // Replace prefix by url in strings
@@ -90,4 +91,10 @@ export function checkStatus (response) {
 
 export function toJSON (response) {
   return response.json()
+}
+
+export const StyleInline = {
+  render: function (h) {
+    return h('style', this.$slots.default)
+  }
 }

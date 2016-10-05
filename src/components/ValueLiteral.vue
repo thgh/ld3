@@ -3,7 +3,7 @@
     <span class="inp-subtle-span" v-text="placeholder+'.'"></span>
     <input :id="id" v-if="type" :type="type" v-model="fragment['@value']">
     <textarea class="inp-big-focus" :id="id" v-else v-model="fragment['@value']"></textarea>
-    <input-type :model.sync="fragment['@type']" placeholder="wut" @blur="blur"></input-type>
+    <input-type :model="fragment" prop="@type" placeholder="wut" @blur="blur"></input-type>
   </div> 
 </template>
 
@@ -20,8 +20,12 @@ const acceptedTypes = [
 ]
 
 export default {
-  props: ['fragment', 'id'],
+  name: 'value-literal',
+  props: ['parent', 'prop', 'id'],
   computed: {
+    fragment () {
+      return this.parent[this.prop]
+    },
     placeholder () {
       var alt = ''
       if (this.fragment['@type'] === 'xsd:date') {
@@ -47,12 +51,12 @@ export default {
     blur () {
       if (acceptedTypes.indexOf(this.fragment['@type']) === -1) {
         console.log('to ValueObject')
-        this.$set('fragment[\'schema:name\']', this.fragment['@value'])
-        this.$set('fragment[\'@value\']', undefined)
+        this.$set(this.fragment, 'schema:name', this.fragment['@value'])
+        this.$delete(this.fragment, '@value')
       }
     }
   },
-  attached () {
+  mounted () {
     if (this.fragment['@type'] === '') {
       setTimeout(() => this.$el.querySelector('.inp-type input').focus(), 10)
     }

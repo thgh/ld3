@@ -1,6 +1,6 @@
 <template>
   <div class="value-reference">
-    <value-object :fragment.sync="actualFragment" :ref.sync="model"></value-object>
+    <value-object :parent="$root.fragments" :prop="uri" :ref="1" @changeRef=""></value-object>
   </div>
 </template>
 
@@ -11,8 +11,11 @@ import { toMin } from '../libs/util.js'
 
 export default {
   name: 'value-reference',
-  props: ['fragment'],
+  props: ['parent', 'prop', 'id'],
   computed: {
+    fragment () {
+      return this.parent[this.prop]
+    },
     model: {
       get () {
         return this.fragment
@@ -21,11 +24,19 @@ export default {
         if (this.fragment && this.fragment['@temp']) {
           console.error('ref: setting a @temp fragment is a bad idea')
         }
-        this.$set('fragment', ref)
+        this.$set(this.parent, this.prop, ref)
       }
     },
+    uri () {
+      return toMin(this.model['@id'])
+    },
     actualFragment () {
-      return this.$root.fragments[toMin(this.model['@id'])] || this.$root.fetch(this.model['@id'])
+      return this.$root.fragments[this.uri] || this.$root.fetch(this.uri)
+    }
+  },
+  events: {
+    propFocus (prop, _uid) {
+      this.$parent.$emit('propFocus', prop, _uid)
     }
   },
   components: {

@@ -1,10 +1,10 @@
 <template>
   <form class="inp-subtle inp-type fragment-type" :class="{'inp-type-active':options}" @submit.prevent.stop="submit" @keydown="keydown">
     <span class="inp-subtle-span" v-text="term||text"></span>
-    <input type="text" v-model="term" :placeholder="text" @blur="blur" @input="input" @focus="input">
+    <input type="text" :value="term" :placeholder="text" @blur="blur" @input="input" @focus="input">
     <div class="ref-select" v-if="options">
       <div class="ref-scroll">
-        <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item+' '+opt.score" track-by="item" @mouseenter="ghost=$index" @mousedown="confirm(opt.item)"></div>
+        <div class="ref-option" :class="{'ref-ghost':index===ghost}" v-for="(opt, index) in options" v-text="opt.item+' '+opt.score" :key="opt.item" @mouseenter="ghost=index" @mousedown="confirm(opt.item)"></div>
       </div>
     </div>
   </form> 
@@ -27,12 +27,8 @@ var fuseOptions = {
 }
 
 export default {
-  props: {
-    model: {
-      twoWay: true
-    },
-    placeholder: null
-  },
+  name: 'input-class',
+  props: ['model', 'prop', 'placeholder'],
   data () {
     return {
       term: null,
@@ -41,25 +37,28 @@ export default {
     }
   },
   computed: {
+    value () {
+      return this.model && this.model[this.prop]
+    },
     index () {
       return new Fuse(Classes, fuseOptions)
     },
     related () {
-      if (!this.model) {
+      if (!this.value) {
         return
       }
-      var model = this.model.slice(this.model.lastIndexOf(':') + 1)
+      var value = this.value.slice(this.value.lastIndexOf(':') + 1)
       // Get parent classes
-      var par = Classes.find(c => c.i === model)
+      var par = Classes.find(c => c.i === value)
       var opts = par && par.s && (par.s.length ? par.s : [par.s]) || []
       // Get child classes
-      var chi = Classes.filter(c => c.s && (c.s.i === model || c.s.length && c.s.find(x => x.i === model)))
+      var chi = Classes.filter(c => c.s && (c.s.i === value || c.s.length && c.s.find(x => x.i === value)))
       opts = opts.concat(chi)
       // Transform to match options
       return opts.map(c => { return {item: c.i, score: ''} })
     },
     text () {
-      var t = this.model || this.placeholder
+      var t = this.value || this.placeholder
       return t ? t.slice(t.lastIndexOf(':') + 1) : '?'
     }
   },
@@ -74,7 +73,7 @@ export default {
     },
     input () {
       if (!this.term) {
-        if (this.model) {
+        if (this.value) {
           this.options = this.related
         } else {
           this.options = null
@@ -115,7 +114,7 @@ export default {
       if (typeof uri !== 'string' || !uri) {
         return console.warn('confirming but dont know what', uri)
       }
-      this.model = 'schema:' + uri
+      this.value = 'schema:' + uri
       this.term = null
       this.ghost = 0
     }

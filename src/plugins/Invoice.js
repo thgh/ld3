@@ -1,3 +1,7 @@
-import inv from './Invoice.vue'
+import Invoice from './Invoice.vue'
 
-window.Invoice = inv
+window.Vue.use({
+	install (Vue) {
+	  Vue.component('invoice', Invoice)
+	}
+})

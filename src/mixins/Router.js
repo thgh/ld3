@@ -52,7 +52,8 @@ export default {
           window.document.title = this.route.uri + ' - ld3'
           // Avoid forced layout
           this.$nextTick(function () {
-            document.querySelector('.section-content').scrollIntoView(true)
+            var elem = document.querySelector('.section-content')
+            elem && elem.scrollIntoView(true)
           })
         }
       } else {

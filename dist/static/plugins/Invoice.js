@@ -1,1 +1,306 @@
-!function(e){function t(r){if(n[r])return n[r].exports;var i=n[r]={exports:{},id:r,loaded:!1};return e[r].call(i.exports,i,i.exports,t),i.loaded=!0,i.exports}var n={};return t.m=e,t.c=n,t.p="",t(0)}([function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}var i=n(74),o=r(i);window.Invoice=o["default"]},function(e,t){var n=e.exports="undefined"!=typeof window&&window.Math==Math?window:"undefined"!=typeof self&&self.Math==Math?self:Function("return this")();"number"==typeof __g&&(__g=n)},function(e,t){var n={}.hasOwnProperty;e.exports=function(e,t){return n.call(e,t)}},function(e,t,n){var r=n(52),i=n(15);e.exports=function(e){return r(i(e))}},function(e,t,n){e.exports=!n(10)(function(){return 7!=Object.defineProperty({},"a",{get:function(){return 7}}).a})},function(e,t,n){var r=n(6),i=n(13);e.exports=n(4)?function(e,t,n){return r.f(e,t,i(1,n))}:function(e,t,n){return e[t]=n,e}},function(e,t,n){var r=n(8),i=n(31),o=n(24),a=Object.defineProperty;t.f=n(4)?Object.defineProperty:function(e,t,n){if(r(e),t=o(t,!0),r(n),i)try{return a(e,t,n)}catch(s){}if("get"in n||"set"in n)throw TypeError("Accessors not supported!");return"value"in n&&(e[t]=n.value),e}},function(e,t,n){var r=n(22)("wks"),i=n(14),o=n(1).Symbol,a="function"==typeof o,s=e.exports=function(e){return r[e]||(r[e]=a&&o[e]||(a?o:i)("Symbol."+e))};s.store=r},function(e,t,n){var r=n(11);e.exports=function(e){if(!r(e))throw TypeError(e+" is not an object!");return e}},function(e,t){var n=e.exports={version:"2.3.0"};"number"==typeof __e&&(__e=n)},function(e,t){e.exports=function(e){try{return!!e()}catch(t){return!0}}},function(e,t){e.exports=function(e){return"object"==typeof e?null!==e:"function"==typeof e}},function(e,t,n){var r=n(36),i=n(16);e.exports=Object.keys||function(e){return r(e,i)}},function(e,t){e.exports=function(e,t){return{enumerable:!(1&e),configurable:!(2&e),writable:!(4&e),value:t}}},function(e,t){var n=0,r=Math.random();e.exports=function(e){return"Symbol(".concat(void 0===e?"":e,")_",(++n+r).toString(36))}},function(e,t){e.exports=function(e){if(void 0==e)throw TypeError("Can't call method on  "+e);return e}},function(e,t){e.exports="constructor,hasOwnProperty,isPrototypeOf,propertyIsEnumerable,toLocaleString,toString,valueOf".split(",")},function(e,t){e.exports={}},function(e,t){e.exports=!0},function(e,t){t.f={}.propertyIsEnumerable},function(e,t,n){var r=n(6).f,i=n(2),o=n(7)("toStringTag");e.exports=function(e,t,n){e&&!i(e=n?e:e.prototype,o)&&r(e,o,{configurable:!0,value:t})}},function(e,t,n){var r=n(22)("keys"),i=n(14);e.exports=function(e){return r[e]||(r[e]=i(e))}},function(e,t,n){var r=n(1),i="__core-js_shared__",o=r[i]||(r[i]={});e.exports=function(e){return o[e]||(o[e]={})}},function(e,t){var n=Math.ceil,r=Math.floor;e.exports=function(e){return isNaN(e=+e)?0:(e>0?r:n)(e)}},function(e,t,n){var r=n(11);e.exports=function(e,t){if(!r(e))return e;var n,i;if(t&&"function"==typeof(n=e.toString)&&!r(i=n.call(e)))return i;if("function"==typeof(n=e.valueOf)&&!r(i=n.call(e)))return i;if(!t&&"function"==typeof(n=e.toString)&&!r(i=n.call(e)))return i;throw TypeError("Can't convert object to primitive value")}},function(e,t,n){var r=n(1),i=n(9),o=n(18),a=n(26),s=n(6).f;e.exports=function(e){var t=i.Symbol||(i.Symbol=o?{}:r.Symbol||{});"_"==e.charAt(0)||e in t||s(t,e,{value:a.f(e)})}},function(e,t,n){t.f=n(7)},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}t.__esModule=!0;var i=n(42),o=r(i),a=n(41),s=r(a),c="function"==typeof s["default"]&&"symbol"==typeof o["default"]?function(e){return typeof e}:function(e){return e&&"function"==typeof s["default"]&&e.constructor===s["default"]?"symbol":typeof e};t["default"]="function"==typeof s["default"]&&"symbol"===c(o["default"])?function(e){return"undefined"==typeof e?"undefined":c(e)}:function(e){return e&&"function"==typeof s["default"]&&e.constructor===s["default"]?"symbol":"undefined"==typeof e?"undefined":c(e)}},function(e,t){var n={}.toString;e.exports=function(e){return n.call(e).slice(8,-1)}},function(e,t,n){var r=n(11),i=n(1).document,o=r(i)&&r(i.createElement);e.exports=function(e){return o?i.createElement(e):{}}},function(e,t,n){var r=n(1),i=n(9),o=n(49),a=n(5),s="prototype",c=function(e,t,n){var u,f,d,l=e&c.F,p=e&c.G,v=e&c.S,m=e&c.P,h=e&c.B,y=e&c.W,b=p?i:i[t]||(i[t]={}),g=b[s],x=p?r:v?r[t]:(r[t]||{})[s];p&&(n=t);for(u in n)f=!l&&x&&void 0!==x[u],f&&u in b||(d=f?x[u]:n[u],b[u]=p&&"function"!=typeof x[u]?n[u]:h&&f?o(d,r):y&&x[u]==d?function(e){var t=function(t,n,r){if(this instanceof e){switch(arguments.length){case 0:return new e;case 1:return new e(t);case 2:return new e(t,n)}return new e(t,n,r)}return e.apply(this,arguments)};return t[s]=e[s],t}(d):m&&"function"==typeof d?o(Function.call,d):d,m&&((b.virtual||(b.virtual={}))[u]=d,e&c.R&&g&&!g[u]&&a(g,u,d)))};c.F=1,c.G=2,c.S=4,c.P=8,c.B=16,c.W=32,c.U=64,c.R=128,e.exports=c},function(e,t,n){e.exports=!n(4)&&!n(10)(function(){return 7!=Object.defineProperty(n(29)("div"),"a",{get:function(){return 7}}).a})},function(e,t,n){"use strict";var r=n(18),i=n(30),o=n(37),a=n(5),s=n(2),c=n(17),u=n(54),f=n(20),d=n(61),l=n(7)("iterator"),p=!([].keys&&"next"in[].keys()),v="@@iterator",m="keys",h="values",y=function(){return this};e.exports=function(e,t,n,b,g,x,w){u(n,t,b);var O,S,_,j=function(e){if(!p&&e in I)return I[e];switch(e){case m:return function(){return new n(this,e)};case h:return function(){return new n(this,e)}}return function(){return new n(this,e)}},k=t+" Iterator",P=g==h,E=!1,I=e.prototype,T=I[l]||I[v]||g&&I[g],A=T||j(g),D=g?P?j("entries"):A:void 0,M="Array"==t?I.entries||T:T;if(M&&(_=d(M.call(new e)),_!==Object.prototype&&(f(_,k,!0),r||s(_,l)||a(_,l,y))),P&&T&&T.name!==h&&(E=!0,A=function(){return T.call(this)}),r&&!w||!p&&!E&&I[l]||a(I,l,A),c[t]=A,c[k]=y,g)if(O={values:P?A:j(h),keys:x?A:j(m),entries:D},w)for(S in O)S in I||o(I,S,O[S]);else i(i.P+i.F*(p||E),t,O);return O}},function(e,t,n){var r=n(8),i=n(58),o=n(16),a=n(21)("IE_PROTO"),s=function(){},c="prototype",u=function(){var e,t=n(29)("iframe"),r=o.length,i=">";for(t.style.display="none",n(51).appendChild(t),t.src="javascript:",e=t.contentWindow.document,e.open(),e.write("<script>document.F=Object</script"+i),e.close(),u=e.F;r--;)delete u[c][o[r]];return u()};e.exports=Object.create||function(e,t){var n;return null!==e?(s[c]=r(e),n=new s,s[c]=null,n[a]=e):n=u(),void 0===t?n:i(n,t)}},function(e,t,n){var r=n(36),i=n(16).concat("length","prototype");t.f=Object.getOwnPropertyNames||function(e){return r(e,i)}},function(e,t){t.f=Object.getOwnPropertySymbols},function(e,t,n){var r=n(2),i=n(3),o=n(48)(!1),a=n(21)("IE_PROTO");e.exports=function(e,t){var n,s=i(e),c=0,u=[];for(n in s)n!=a&&r(s,n)&&u.push(n);for(;t.length>c;)r(s,n=t[c++])&&(~o(u,n)||u.push(n));return u}},function(e,t,n){e.exports=n(5)},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}function i(e){return JSON.parse((0,c["default"])(e))}Object.defineProperty(t,"__esModule",{value:!0});var o=n(27),a=r(o),s=n(40),c=r(s);t.inert=i,t["default"]={getJson:{redirect:"follow",headers:{Accept:"application/json"}},putJson:function(e){return window.fetch(e["@id"],{method:"put",body:(0,c["default"])(e),redirect:"follow",headers:{Accept:"application/json",Authorization:"insecure"}})},checkStatus:function(e){if(e.status<400)return e;var t=new Error(e.statusText);throw t.status=e.status,t.response=e,t},json:function(e){return e.json()},inert:function(e){return JSON.parse((0,c["default"])(e))},valueType:function(e){return"object"!==("undefined"==typeof e?"undefined":(0,a["default"])(e))?"boolean"==typeof e?"ValueString":"number"==typeof e?"ValueString":"ValueText":Array.isArray(e)?"ValueArray":e["@id"]&&"_"!==e["@id"].charAt(0)?"ValueReference":"undefined"!=typeof e["@value"]?"ValueLiteral":"ValueObject"}}},function(e,t,n){"use strict";function r(e){return e&&e.__esModule?e:{"default":e}}Object.defineProperty(t,"__esModule",{value:!0});var i=n(27),o=r(i),a=n(38),s={btw0:{text:"BTW vrij",percent:0},btw6:{text:"BTW 6%",percent:6},btw21:{text:"BTW 21%",percent:21}};t["default"]={props:["a","options"],data:function(){return{preview:!0}},computed:{invoiceNumber:function(){var e=this.a.url||this.a["@id"]||"nope";return e=e.slice(e.lastIndexOf(":")+1),e=e.slice(e.lastIndexOf("/")+1),e.indexOf("-")>0?e.slice(0,e.indexOf("-")):e},dateCreated:function(){var e=this;return this.a.dateCreated||(console.log(this.$root.ns.min(this.a["@id"])),this.$nextTick(function(){return e.$set("$root.fragments['"+e.$root.ns.min(e.a["@id"])+"']['schema:dateCreated']",(new Date).toJSON().slice(0,10))})),this.a.dateCreated},paymentDueDate:function(){var e=this;if(!this.a.paymentDueDate){var t=new Date(this.dateCreated);t.setMonth(t.getMonth()+1),this.$nextTick(function(){return e.$set("$root.fragments['"+e.$root.ns.min(e.a["@id"])+"']['schema:paymentDueDate']",t.toJSON().slice(0,10))})}return this.a.paymentDueDate},taxExemptionRule:function(){return this.a.provider&&this.a.provider["be:taxExemptionRule"]},total:function(){return this.totalPaymentDue[this.totalPaymentDue.length-1].price},orders:function(){return Array.isArray(this.a.referencesOrder)?this.a.referencesOrder:[this.a.referencesOrder]},totalPaymentDue:function(){if(this.a.totalPaymentDue)return this.a.totalPaymentDue;if(this.orders||(this.a.referencesOrder=[{orderedItem:{name:""},acceptedOffer:{price:10}}]),"object"!==(0,o["default"])(this.orders[0]))return void alert("expected object but got "+this.a.referencesOrder);var e=0,t=0,n=(0,a.inert)(s);if(this.orders.forEach(function(r,i){if(r.orderedItem&&r.acceptedOffer){var o=r.orderedItem.category;void 0===o&&(o="btw21");var a=n[o];void 0===a&&(a=n.btw21),a.vat||(a.vat=0);var s=(a.percent||0)/100,c=parseInt(r.acceptedOffer.price)||0,u=!!r.acceptedOffer.valueAddedTaxIncluded,f=c*s/(u?1+s:1);e+=u?c-f:c,t+=u?c:c+f,a.vat+=f}}),this.taxExemptionRule)return[{"@type":"PriceSpecification",price:0,priceCurrency:"%",name:"Btw-tarief: 0%",asterisk:1},{"@type":"PriceSpecification",price:e,priceCurrency:"EUR",name:"Totaal",valueAddedTaxIncluded:!0}];var r=[{"@type":"PriceSpecification",price:e,priceCurrency:"EUR",name:"Totaal excl. BTW",valueAddedTaxIncluded:!1}];for(var i in n)n[i].vat&&r.push({"@type":"PriceSpecification",price:n[i].vat,priceCurrency:"EUR",name:n[i].text});return r.push({"@type":"PriceSpecification",price:t,priceCurrency:"EUR",name:"Totaal incl. BTW",valueAddedTaxIncluded:!0}),r}},methods:{print:function(){var e=document.getElementById("invoicestyling").innerHTML,t=document.getElementById("printme").innerHTML,n=document.getElementById("ifmcontentstoprint").contentWindow;n.document.open(),n.document.write(t+e),n.document.close(),n.focus(),n.print()}},created:function(){console.log("Invoice compnent created"),this.options.resolve=3},filters:{date:function(e){return e}}}},function(e,t,n){e.exports={"default":n(43),__esModule:!0}},function(e,t,n){e.exports={"default":n(44),__esModule:!0}},function(e,t,n){e.exports={"default":n(45),__esModule:!0}},function(e,t,n){var r=n(9),i=r.JSON||(r.JSON={stringify:JSON.stringify});e.exports=function(e){return i.stringify.apply(i,arguments)}},function(e,t,n){n(69),n(67),n(70),n(71),e.exports=n(9).Symbol},function(e,t,n){n(68),n(72),e.exports=n(26).f("iterator")},function(e,t){e.exports=function(e){if("function"!=typeof e)throw TypeError(e+" is not a function!");return e}},function(e,t){e.exports=function(){}},function(e,t,n){var r=n(3),i=n(64),o=n(63);e.exports=function(e){return function(t,n,a){var s,c=r(t),u=i(c.length),f=o(a,u);if(e&&n!=n){for(;u>f;)if(s=c[f++],s!=s)return!0}else for(;u>f;f++)if((e||f in c)&&c[f]===n)return e||f||0;return!e&&-1}}},function(e,t,n){var r=n(46);e.exports=function(e,t,n){if(r(e),void 0===t)return e;switch(n){case 1:return function(n){return e.call(t,n)};case 2:return function(n,r){return e.call(t,n,r)};case 3:return function(n,r,i){return e.call(t,n,r,i)}}return function(){return e.apply(t,arguments)}}},function(e,t,n){var r=n(12),i=n(35),o=n(19);e.exports=function(e){var t=r(e),n=i.f;if(n)for(var a,s=n(e),c=o.f,u=0;s.length>u;)c.call(e,a=s[u++])&&t.push(a);return t}},function(e,t,n){e.exports=n(1).document&&document.documentElement},function(e,t,n){var r=n(28);e.exports=Object("z").propertyIsEnumerable(0)?Object:function(e){return"String"==r(e)?e.split(""):Object(e)}},function(e,t,n){var r=n(28);e.exports=Array.isArray||function(e){return"Array"==r(e)}},function(e,t,n){"use strict";var r=n(33),i=n(13),o=n(20),a={};n(5)(a,n(7)("iterator"),function(){return this}),e.exports=function(e,t,n){e.prototype=r(a,{next:i(1,n)}),o(e,t+" Iterator")}},function(e,t){e.exports=function(e,t){return{value:t,done:!!e}}},function(e,t,n){var r=n(12),i=n(3);e.exports=function(e,t){for(var n,o=i(e),a=r(o),s=a.length,c=0;s>c;)if(o[n=a[c++]]===t)return n}},function(e,t,n){var r=n(14)("meta"),i=n(11),o=n(2),a=n(6).f,s=0,c=Object.isExtensible||function(){return!0},u=!n(10)(function(){return c(Object.preventExtensions({}))}),f=function(e){a(e,r,{value:{i:"O"+ ++s,w:{}}})},d=function(e,t){if(!i(e))return"symbol"==typeof e?e:("string"==typeof e?"S":"P")+e;if(!o(e,r)){if(!c(e))return"F";if(!t)return"E";f(e)}return e[r].i},l=function(e,t){if(!o(e,r)){if(!c(e))return!0;if(!t)return!1;f(e)}return e[r].w},p=function(e){return u&&v.NEED&&c(e)&&!o(e,r)&&f(e),e},v=e.exports={KEY:r,NEED:!1,fastKey:d,getWeak:l,onFreeze:p}},function(e,t,n){var r=n(6),i=n(8),o=n(12);e.exports=n(4)?Object.defineProperties:function(e,t){i(e);for(var n,a=o(t),s=a.length,c=0;s>c;)r.f(e,n=a[c++],t[n]);return e}},function(e,t,n){var r=n(19),i=n(13),o=n(3),a=n(24),s=n(2),c=n(31),u=Object.getOwnPropertyDescriptor;t.f=n(4)?u:function(e,t){if(e=o(e),t=a(t,!0),c)try{return u(e,t)}catch(n){}return s(e,t)?i(!r.f.call(e,t),e[t]):void 0}},function(e,t,n){var r=n(3),i=n(34).f,o={}.toString,a="object"==typeof window&&window&&Object.getOwnPropertyNames?Object.getOwnPropertyNames(window):[],s=function(e){try{return i(e)}catch(t){return a.slice()}};e.exports.f=function(e){return a&&"[object Window]"==o.call(e)?s(e):i(r(e))}},function(e,t,n){var r=n(2),i=n(65),o=n(21)("IE_PROTO"),a=Object.prototype;e.exports=Object.getPrototypeOf||function(e){return e=i(e),r(e,o)?e[o]:"function"==typeof e.constructor&&e instanceof e.constructor?e.constructor.prototype:e instanceof Object?a:null}},function(e,t,n){var r=n(23),i=n(15);e.exports=function(e){return function(t,n){var o,a,s=String(i(t)),c=r(n),u=s.length;return 0>c||c>=u?e?"":void 0:(o=s.charCodeAt(c),55296>o||o>56319||c+1===u||(a=s.charCodeAt(c+1))<56320||a>57343?e?s.charAt(c):o:e?s.slice(c,c+2):(o-55296<<10)+(a-56320)+65536)}}},function(e,t,n){var r=n(23),i=Math.max,o=Math.min;e.exports=function(e,t){return e=r(e),0>e?i(e+t,0):o(e,t)}},function(e,t,n){var r=n(23),i=Math.min;e.exports=function(e){return e>0?i(r(e),9007199254740991):0}},function(e,t,n){var r=n(15);e.exports=function(e){return Object(r(e))}},function(e,t,n){"use strict";var r=n(47),i=n(55),o=n(17),a=n(3);e.exports=n(32)(Array,"Array",function(e,t){this._t=a(e),this._i=0,this._k=t},function(){var e=this._t,t=this._k,n=this._i++;return!e||n>=e.length?(this._t=void 0,i(1)):"keys"==t?i(0,n):"values"==t?i(0,e[n]):i(0,[n,e[n]])},"values"),o.Arguments=o.Array,r("keys"),r("values"),r("entries")},function(e,t){},function(e,t,n){"use strict";var r=n(62)(!0);n(32)(String,"String",function(e){this._t=String(e),this._i=0},function(){var e,t=this._t,n=this._i;return n>=t.length?{value:void 0,done:!0}:(e=r(t,n),this._i+=e.length,{value:e,done:!1})})},function(e,t,n){"use strict";var r=n(1),i=n(2),o=n(4),a=n(30),s=n(37),c=n(57).KEY,u=n(10),f=n(22),d=n(20),l=n(14),p=n(7),v=n(26),m=n(25),h=n(56),y=n(50),b=n(53),g=n(8),x=n(3),w=n(24),O=n(13),S=n(33),_=n(60),j=n(59),k=n(6),P=n(12),E=j.f,I=k.f,T=_.f,A=r.Symbol,D=r.JSON,M=D&&D.stringify,C="prototype",N=p("_hidden"),F=p("toPrimitive"),z={}.propertyIsEnumerable,B=f("symbol-registry"),R=f("symbols"),L=Object[C],J="function"==typeof A,W=r.QObject,$=!W||!W[C]||!W[C].findChild,V=o&&u(function(){return 7!=S(I({},"a",{get:function(){return I(this,"a",{value:7}).a}})).a})?function(e,t,n){var r=E(L,t);r&&delete L[t],I(e,t,n),r&&e!==L&&I(L,t,r)}:I,U=function(e){var t=R[e]=S(A[C]);return t._k=e,t},K=J&&"symbol"==typeof A.iterator?function(e){return"symbol"==typeof e}:function(e){return e instanceof A},G=function(e,t,n){return g(e),t=w(t,!0),g(n),i(R,t)?(n.enumerable?(i(e,N)&&e[N][t]&&(e[N][t]=!1),n=S(n,{enumerable:O(0,!1)})):(i(e,N)||I(e,N,O(1,{})),e[N][t]=!0),V(e,t,n)):I(e,t,n)},H=function(e,t){g(e);for(var n,r=y(t=x(t)),i=0,o=r.length;o>i;)G(e,n=r[i++],t[n]);return e},Y=function(e,t){return void 0===t?S(e):H(S(e),t)},Q=function(e){var t=z.call(this,e=w(e,!0));return t||!i(this,e)||!i(R,e)||i(this,N)&&this[N][e]?t:!0},q=function(e,t){var n=E(e=x(e),t=w(t,!0));return!n||!i(R,t)||i(e,N)&&e[N][t]||(n.enumerable=!0),n},X=function(e){for(var t,n=T(x(e)),r=[],o=0;n.length>o;)i(R,t=n[o++])||t==N||t==c||r.push(t);return r},Z=function(e){for(var t,n=T(x(e)),r=[],o=0;n.length>o;)i(R,t=n[o++])&&r.push(R[t]);return r};J||(A=function(){if(this instanceof A)throw TypeError("Symbol is not a constructor!");var e=l(arguments.length>0?arguments[0]:void 0);return o&&$&&V(L,e,{configurable:!0,set:function(t){i(this,N)&&i(this[N],e)&&(this[N][e]=!1),V(this,e,O(1,t))}}),U(e)},s(A[C],"toString",function(){return this._k}),j.f=q,k.f=G,n(34).f=_.f=X,n(19).f=Q,n(35).f=Z,o&&!n(18)&&s(L,"propertyIsEnumerable",Q,!0),v.f=function(e){return U(p(e))}),a(a.G+a.W+a.F*!J,{Symbol:A});for(var ee="hasInstance,isConcatSpreadable,iterator,match,replace,search,species,split,toPrimitive,toStringTag,unscopables".split(","),te=0;ee.length>te;)p(ee[te++]);for(var ee=P(p.store),te=0;ee.length>te;)m(ee[te++]);a(a.S+a.F*!J,"Symbol",{"for":function(e){return i(B,e+="")?B[e]:B[e]=A(e)},keyFor:function(e){if(K(e))return h(B,e);throw TypeError(e+" is not a symbol!")},useSetter:function(){$=!0},useSimple:function(){$=!1}}),a(a.S+a.F*!J,"Object",{create:Y,defineProperty:G,defineProperties:H,getOwnPropertyDescriptor:q,getOwnPropertyNames:X,getOwnPropertySymbols:Z}),D&&a(a.S+a.F*(!J||u(function(){var e=A();return"[null]"!=M([e])||"{}"!=M({a:e})||"{}"!=M(Object(e))})),"JSON",{stringify:function(e){if(void 0!==e&&!K(e)){for(var t,n,r=[e],i=1;arguments.length>i;)r.push(arguments[i++]);return t=r[1],"function"==typeof t&&(n=t),!n&&b(t)||(t=function(e,t){return n&&(t=n.call(this,e,t)),K(t)?void 0:t}),r[1]=t,M.apply(D,r)}}}),A[C][F]||n(5)(A[C],F,A[C].valueOf),d(A,"Symbol"),d(Math,"Math",!0),d(r.JSON,"JSON",!0)},function(e,t,n){n(25)("asyncIterator")},function(e,t,n){n(25)("observable")},function(e,t,n){n(66);for(var r=n(1),i=n(5),o=n(17),a=n(7)("toStringTag"),s=["NodeList","DOMTokenList","MediaList","StyleSheetList","CSSRuleList"],c=0;5>c;c++){var u=s[c],f=r[u],d=f&&f.prototype;d&&!d[a]&&i(d,a,u),o[u]=o.Array}},function(e,t){e.exports='<div> <p class=fragment-cta> <button class="btn btn-soft" @click=print>Print</button> <button class="btn btn-soft" @click="preview=!preview">Preview</button> </p> <iframe id=ifmcontentstoprint style="border:0;height: 0px; width: 0px; position: absolute"></iframe> <template id=invoicestyling> <style type=text/css>html,\n      body {\n        box-sizing: border-box;\n        margin: 0;\n        padding: 0;\n        width: 210mm;\n        height: 277mm;\n        background: transparent;\n      }\n      .invoice-page {\n        position: static;\n        margin: 0;\n        outline: initial;\n        width: initial;\n        min-height: initial;\n        box-shadow: initial;\n        page-break-after: always;\n        transform: none!important;\n        transition: none;\n      }\n      .print-hidden {\n        display: none;\n      }\n      @page {\n        size: A4;\n        margin: 0;\n      }</style> </template> <style type=text/css>#printme {\n      position: fixed;\n      top: 0;\n      left: 0;\n      right: 0;\n      bottom: 0;\n      padding: 0 0 3rem;\n      overflow: auto;\n      background-color: #1b1f32;\n      z-index: 60;\n    }\n    .print-hidden {\n      margin: 0 auto;\n      max-width: 28rem;\n      text-align: center;\n    }\n    #printme>.invoice {\n      margin: 0 auto;\n    }\n    .invoice-ctrl {\n      margin: 2rem auto;\n      display: block;\n    }\n    .invoice-ctrl input {\n      width: 14rem;\n    }\n    body {\n      overflow: auto;\n    }</style> <div id=printme v-show=preview> <div class=print-hidden> <div class=invoice-ctrl> <p> Klik op \'Bewaren\' nadat je verbeteringen aangebracht hebt. </p> <input-single :a=a path=customer.name label=Naam></input-single> <input-single :a=a path=customer.address.streetAddress label="Straat + nummer"></input-single> <input-single :a=a path=customer.address.postalCode label=Postcode></input-single> <input-single :a=a path=customer.address.addressLocality label=Stad></input-single> <input-single :a=a path=customer.email label=E-mailadres></input-single> <input-single :a=a path=customer.vatID label=Ondernemingsnummer></input-single> </div> <div class=invoice-ctrl> <button class=btn @click="$root.sync(a.customer[\'@id\'] || a[\'@id\'])">Bewaren</button> <button class=btn @click=print>Afdrukken</button> </div> </div> <div class="invoice invoice-page"> <style>.bold {\n          font-weight: bold;\n        }\n        .bolder {\n          font-weight: bolder;\n        }\n        .pre-wrap {\n          white-space: pre-wrap;\n        }\n        .method {\n          flex-basis: 100%;\n          margin: 1cm 0 0\n        }\n        .invoice * {\n          box-sizing: border-box;\n        }\n        .invoice a {\n          color: inherit;\n          text-decoration: none;\n          border-bottom: 1px dashed #999;\n        }\n        .invoice a:hover {\n          border-bottom: 2px solid #000;\n        }\n        .invoice h1 {\n          margin: 0;\n          font-size: 1.125em;\n          font-weight: 500;\n        }\n        .invoice h2 {\n          margin: 0;\n          font-size: 1.5em;\n          font-weight: 400;\n          opacity: .5;\n        }\n        .invoice h3 {\n          margin: 0;\n          font-size: 1.125em;\n          font-weight: 500;\n          line-height: 1.6rem;\n        }\n        .invoice h3+p {\n          margin: 0;\n          opacity: .8;\n        }\n        .invoice address>div {\n          white-space: nowrap;\n        }\n        .invoice-top {\n          padding: 2cm 0 1cm;\n        }\n        .invoice-parties {\n          display: flex;\n          align-items: flex-start;\n        }\n        .invoice-start {\n          text-transform: uppercase;\n          font-size: 2em;\n          font-weight: 700;\n          opacity: .4;\n          margin-bottom: 1em;\n        }\n        .invoice-to {\n          text-transform: uppercase;\n          font-size: 1.125em;\n          font-weight: 500;\n          opacity: .6;\n          margin-right: 1em;\n        }\n        .invoice .customer {\n          position: relative;\n          flex-grow: 1;\n        }\n        .invoice .provider {\n          color: #666;\n        }\n        .invoice .summary {\n          background: #eee;\n          display: flex;\n          justify-content: space-between;\n          flex-wrap: wrap;\n          padding: 1cm 2cm;\n        }\n        .invoice .summary-item {\n          font-size: 1.25rem;\n        }\n        .invoice .summary-label {\n          display: block;\n          text-transform: uppercase;\n          font-size: 12px;\n          font-weight: normal;\n        }\n        .invoice .badge {\n          padding: .3em .5em;\n          line-height: 1.2em;\n          background: #888;\n          color: #FFF;\n          text-transform: uppercase;\n          font-size: 1.5em;\n          text-align: center;\n        }\n        .invoice .number {\n          display: block;\n        }\n        .invoice .details {\n          padding-top: 1em;\n          margin-bottom: 1em;\n        }\n        .invoice .list {\n          margin-top: 1em;\n          padding-bottom: 1em;\n        }\n        .invoice .taxes {\n          text-align: right;\n        }\n        .invoice-asterisk {\n          font-weight: 900;\n          color: red;\n        }\n        .tbl {\n          border: 0;\n          border-collapse: collapse;\n          text-align: left;\n        }\n        .tbl td,\n        .tbl th {\n          line-height: 1.4em;\n        }\n        .tbl-orders {\n          width: 100%;\n        }\n        .tbl-orders  td {\n          border-bottom: 1px solid #ccc;\n          padding-top: .5em;\n          padding-bottom: .5em;\n        }\n        .tbl-orders  th {\n          border-bottom: 1px solid #ccc;\n          padding-top: .5em;\n          padding-bottom: 1em;\n          font-size: 12px;\n          font-weight: 400;\n          text-transform: uppercase;\n          color: #666;\n        }\n\n        .tbl-calc {\n          float: right;\n          margin-top: .5em;\n        }\n        .tbl-calc> .e {\n          padding-left: 3em;\n        }\n        .tbl .e {\n          text-align: right;\n          padding-left: 2em;\n          white-space: nowrap;\n          vertical-align: top;\n        }\n        .invoice {\n          font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", sans-serif;\n          color: black;\n          font-size: 16px;\n        }\n        .invoice-page {\n          width: 210mm;\n          min-height: 277mm;\n          padding: 0;\n          box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n          background: #fff;\n        }\n        #printme .invoice-subpage {\n          height: 277mm;\n          padding-bottom: 2cm;\n        }\n        .invoice-subpage {\n          height: 277mm;\n          display: -webkit-box;\n          display: -webkit-flex;\n          display: -ms-flexbox;\n          display: flex;\n          -webkit-box-orient: vertical;\n          -webkit-box-direction: normal;\n          -webkit-flex-direction: column;\n              -ms-flex-direction: column;\n                  flex-direction: column;\n          -webkit-box-pack: justify;\n          -webkit-justify-content: space-between;\n              -ms-flex-pack: justify;\n                  justify-content: space-between;\n        }\n        .invoice-container {\n          padding-left: 2cm;\n          padding-right: 2cm;\n        }\n        .invoice h3 {\n          margin: 0;\n          font-size: 1.125em;\n          font-weight: 500;\n          line-height: 25px;\n          line-height: 1.6rem;\n        }\n        .invoice p {\n          margin: 1em 0;\n        }\n        .invoice h3+p {\n          margin: 0;\n          opacity: .8;\n          filter: alpha(opacity=80);\n        }</style> <div class=invoice-subpage> <div class=invoice-container v-if=a.provider||a.customer> <div class=invoice-top> <div class=invoice-start>Factuur</div> <div class=invoice-parties> <div class=invoice-to>aan</div> <section class=customer v-if=a.customer> <h1>{{a.customer.name}}</h1> <address> <div>{{a.customer.address&&a.customer.address.streetAddress}}</div> <div>{{a.customer.address&&a.customer.address.postalCode}} {{a.customer.address&&a.customer.address.addressLocality}}</div> </address> <div><a href=mailto:{{a.customer.email}}>{{a.customer.email}}</a></div> <div v-if=!a.customer.email><a href={{a.customer.url}}>{{a.customer.url}}</a></div> <div>{{a.customer.vatID}}</div> </section> <section class=provider v-if=a.provider> <img :src="a.provider.logo||\'\'" v-if=a.provider.logo> <h1>{{a.provider.name}}</h1> <address v-if=a.provider.address> <div>{{a.provider.address&&a.provider.address.streetAddress}}</div> <div>{{a.provider.address&&a.provider.address.postalCode}} {{a.provider.address&&a.provider.address.addressLocality}}</div> </address> <div><a href=mailto:{{a.provider.email}}>{{a.provider.email}}</a></div> <div v-if=!a.provider.email><a href={{a.provider.url}}>{{a.provider.url}}</a></div> <div>{{a.provider.vatID}}</div> </section> </div> </div> </div> <section class=summary v-if=dateCreated||a.url||paymentDueDate> <div class=summary-item v-if=invoiceNumber> <span class=summary-label>Factuurnr.</span> <div class=number v-text=invoiceNumber>01 / 2015</div> </div> <div class=summary-item v-if=dateCreated> <span class=summary-label>Factuurdatum</span> {{a.dateCreated| date}} </div> <div class="summary-item bolder" v-if=paymentDueDate> <span class=summary-label>Vervaldatum</span> {{paymentDueDate| date}} </div> <div class="summary-item bolder" v-if=total> <span class=summary-label>Totaalbedrag</span>{{total|currency \'€ \'}} </div> <p class=method v-if=a.paymentMethod v-html=a.paymentMethod></p> </section> <section class="list invoice-container" v-if=a.referencesOrder> <table class="tbl tbl-orders"> <thead> <tr> <th>Beschrijving</th> <th class=e>Bedrag</th> </tr> </thead> <tbody> <tr v-for="order in orders"> <td> <h3 v-if=order.orderedItem.name>{{order.orderedItem.name}}</h3> <p class=pre-wrap v-if=order.orderedItem.description>{{order.orderedItem.description}}</p> </td> <td class=e> <span v-if=order.acceptedOffer.price> {{order.acceptedOffer.price||0|currency \'€ \'}} </span> </td> </tr> </tbody> </table> <table class="tbl tbl-calc" v-if=totalPaymentDue> <tbody> <tr v-for="line in totalPaymentDue" track-by=$index :class={bold:line.valueAddedTaxIncluded}> <td>{{line.name}} <span v-if=line.asterisk class=invoice-asterisk>*</span></td> <td class=e v-if="line.price!=undefined">{{line.price|currency \'€ \'}}</td> </tr> </tbody> </table> <p v-if=taxExemptionRule style=float:right;text-align:right;width:100%> <span class=invoice-asterisk>*</span> Bijzondere vrijstellingsregeling kleine ondernemingen </p> </section> <footer class=invoice-container v-if=a.provider> <strong>{{a.provider.name}}</strong> <i v-if=a.provider.address> &nbsp; &bullet; &nbsp; {{a.provider.address.streetAddress}}, {{a.provider.address.postalCode}} {{a.provider.address.addressLocality}}</i> <span v-if=a.provider.vatID>&nbsp; &bullet; &nbsp; {{a.provider.vatID}}</span> </footer> </div> </div> <div class=print-hidden> <div class=invoice-ctrl> <button class="btn btn-soft" @click="preview=0">Close</button> </div> </div> </div> </div>'},function(e,t,n){var r,i;r=n(39),i=n(73),e.exports=r||{},e.exports.__esModule&&(e.exports=e.exports["default"]),i&&(("function"==typeof e.exports?e.exports.options||(e.exports.options={}):e.exports).template=i)}]);
+function inert (x) {
+  return JSON.parse(JSON.stringify(x))
+}
+
+
+
+/* Namespace handling */
+
+// [{prefix: 'schema:', url: 'http://schema.org/'}]
+var namespaces = []
+
+function fromMin (obj) {
+  // Replace prefix by url in strings
+  if (typeof obj === 'string') {
+    if (obj.endsWith('#id')) {
+      obj = obj.slice(0, -3)
+    }
+    for (var i = namespaces.length - 1; i >= 0; i--) {
+      obj = obj.replace(namespaces[i].prefix, namespaces[i].url)
+    }
+  }
+
+  // Recursive transformation for objects
+  else if (typeof obj === 'object') {
+    for (var prop in obj) {
+      obj[prop] = fromMin(obj[prop])
+    }
+  }
+
+  return obj
+}
+
+function toMin (obj) {
+  // Replace prefix by url in strings
+  if (typeof obj === 'string') {
+    for (var i = 0; i < namespaces.length; i++) {
+      s = s.replace(namespaces[i].url, namespaces[i].prefix)
+    }
+  }
+
+  // Recursive transformation for objects
+  else if (typeof obj === 'object') {
+    for (var prop in obj) {
+      obj[prop] = toMin(obj[prop])
+    }
+  }
+
+  return obj
+}
+
+/* HTTP */
+
+
+
+
+
+
+
+
+
+var StyleInline = {
+  render: function (h) {
+    return h('style', this.$slots.default)
+  }
+}
+
+var InputSingle = {
+render: function(){with(this){return _h('label',{staticClass:"inp-single"},["\n    "+_s(label)+"\n    ",_h('input',{directives:[{name:"model",value:(model),expression:"model"}],attrs:{"type":"text","placeholder":label},domProps:{"value":_s(model)},on:{"input":function($event){if($event.target.composing){ return; }model=$event.target.value}}})])}},
+staticRenderFns: [],
+  name: 'input-single',
+  props: ['a', 'path', 'label'],
+  computed: {
+    parent: function parent$1 () {
+      return this.follow(this.path).parent
+    },
+    prop: function prop$1 () {
+      return this.path.slice()
+    },
+    model: {
+      get: function get () {
+        return this.value
+      },
+      set: function set (v) {
+        this.$set(this.parent, this.prop, v)
+      }
+    }
+  },
+  methods: {
+    follow: function follow (path) {
+      var this$1 = this;
+
+      if (!this.a || !this.a['@id']) {
+        return console.warn('input single only supports fragments with @id')
+      }
+      var a = this.storage(this.a)
+      var pieces = path && path.split('.') || []
+
+      // Loop over all path pieces
+      for (var i = 0; i < pieces.length; i++) {
+        var piece = 'schema:' + pieces[i]
+        if (typeof a[piece] === 'undefined') {
+          this$1.$set(a, piece, i < pieces.length - 1 ? {} : 'nope')
+        }
+        if (i === pieces.length - 1) {
+          return {
+            parent: a,
+            prop: piece
+          }
+        }
+        a = this$1.storage(a[piece]) || a[piece]
+      }
+      throw 'path param in follow() is required'
+    },
+    storage: function storage (key) {
+      return this.$root.fragments[toMin(typeof key === 'object' ? key['@id'] : key)]
+    }
+  }
+}
+
+var invoiceStyling = "<style type=\"text/css\">\n        html,\n        body {\n          box-sizing: border-box;\n          margin: 0;\n          padding: 0;\n          width: 210mm;\n          height: 277mm;\n          background: transparent;\n        }\n        .invoice-page {\n          position: static;\n          margin: 0;\n          outline: initial;\n          width: initial;\n          min-height: initial;\n          box-shadow: initial;\n          page-break-after: always;\n          transform: none!important;\n          transition: none;\n        }\n        .print-hidden {\n          display: none;\n        }\n        @page {\n          size: A4;\n          margin: 0;\n        }\n      </style>"
+
+var defaultTax = {
+  btw0: {
+    text: 'BTW vrij',
+    percent: 0
+  },
+  btw6: {
+    text: 'BTW 6%',
+    percent: 6
+  },
+  btw21: {
+    text: 'BTW 21%',
+    percent: 21
+  }
+}
+
+var Invoice = {
+render: function(){with(this){return _h('div',[_h('p',{staticClass:"fragment-cta"},[_h('button',{staticClass:"btn btn-soft",on:{"click":print}},["Print"])," ",_h('button',{staticClass:"btn btn-soft",on:{"click":function($event){preview=!preview}}},["Preview"])])," ",_h('iframe',{attrs:{"id":"ifmcontentstoprint","style":"border:0;height: 0px; width: 0px; position: absolute"}})," ",_h('style-inline',["\n      #printme {\n        position: fixed;\n        top: 0;\n        left: 0;\n        right: 0;\n        bottom: 0;\n        padding: 0 0 3rem;\n        overflow: auto;\n        background-color: #1b1f32;\n        z-index: 60;\n      }\n      .print-hidden {\n        margin: 0 auto;\n        max-width: 28rem;\n        text-align: center;\n      }\n      #printme>.invoice {\n        margin: 0 auto;\n      }\n      .invoice-ctrl {\n        margin: 2rem auto;\n        display: block;\n      }\n      .invoice-ctrl input {\n        width: 14rem;\n      }\n      body {\n        overflow: auto;\n      }\n    \n    "])," ",_h('div',{directives:[{name:"show",value:(preview),expression:"preview"}],attrs:{"id":"printme"}},[_h('div',{staticClass:"print-hidden"},[_h('div',{staticClass:"invoice-ctrl"},[_m(0)," ",_h('input-single',{attrs:{"a":a,"path":"customer.name","label":"Naam"}})," ",_h('input-single',{attrs:{"a":a,"path":"customer.address.streetAddress","label":"Straat + nummer"}})," ",_h('input-single',{attrs:{"a":a,"path":"customer.address.postalCode","label":"Postcode"}})," ",_h('input-single',{attrs:{"a":a,"path":"customer.address.addressLocality","label":"Stad"}})," ",_h('input-single',{attrs:{"a":a,"path":"customer.email","label":"E-mailadres"}})," ",_h('input-single',{attrs:{"a":a,"path":"customer.vatID","label":"Ondernemingsnummer"}})])," ",_h('div',{staticClass:"invoice-ctrl"},[_h('button',{staticClass:"btn",on:{"click":function($event){$root.sync(a.customer['@id'] || a['@id'])}}},["Bewaren"])," ",_h('button',{staticClass:"btn",on:{"click":print}},["Afdrukken"])])])," ",_h('div',{staticClass:"invoice invoice-page"},[_h('style-inline',["\n          .bold {\n            font-weight: bold;\n          }\n          .bolder {\n            font-weight: bolder;\n          }\n          .pre-wrap {\n            white-space: pre-wrap;\n          }\n          .method {\n            flex-basis: 100%;\n            margin: 1cm 0 0\n          }\n          .invoice * {\n            box-sizing: border-box;\n          }\n          .invoice a {\n            color: inherit;\n            text-decoration: none;\n            border-bottom: 1px dashed #999;\n          }\n          .invoice a:hover {\n            border-bottom: 2px solid #000;\n          }\n          .invoice h1 {\n            margin: 0;\n            font-size: 1.125em;\n            font-weight: 500;\n          }\n          .invoice h2 {\n            margin: 0;\n            font-size: 1.5em;\n            font-weight: 400;\n            opacity: .5;\n          }\n          .invoice h3 {\n            margin: 0;\n            font-size: 1.125em;\n            font-weight: 500;\n            line-height: 1.6rem;\n          }\n          .invoice h3+p {\n            margin: 0;\n            opacity: .8;\n          }\n          .invoice address>div {\n            white-space: nowrap;\n          }\n          .invoice-top {\n            padding: 2cm 0 1cm;\n          }\n          .invoice-parties {\n            display: flex;\n            align-items: flex-start;\n          }\n          .invoice-start {\n            text-transform: uppercase;\n            font-size: 2em;\n            font-weight: 700;\n            opacity: .4;\n            margin-bottom: 1em;\n          }\n          .invoice-to {\n            text-transform: uppercase;\n            font-size: 1.125em;\n            font-weight: 500;\n            opacity: .6;\n            margin-right: 1em;\n          }\n          .invoice .customer {\n            position: relative;\n            flex-grow: 1;\n          }\n          .invoice .provider {\n            color: #666;\n          }\n          .invoice .summary {\n            background: #eee;\n            display: flex;\n            justify-content: space-between;\n            flex-wrap: wrap;\n            padding: 1cm 2cm;\n          }\n          .invoice .summary-item {\n            font-size: 1.25rem;\n          }\n          .invoice .summary-label {\n            display: block;\n            text-transform: uppercase;\n            font-size: 12px;\n            font-weight: normal;\n          }\n          .invoice .badge {\n            padding: .3em .5em;\n            line-height: 1.2em;\n            background: #888;\n            color: #FFF;\n            text-transform: uppercase;\n            font-size: 1.5em;\n            text-align: center;\n          }\n          .invoice .number {\n            display: block;\n          }\n          .invoice .details {\n            padding-top: 1em;\n            margin-bottom: 1em;\n          }\n          .invoice .list {\n            margin-top: 1em;\n            padding-bottom: 1em;\n          }\n          .invoice .taxes {\n            text-align: right;\n          }\n          .invoice-asterisk {\n            font-weight: 900;\n            color: red;\n          }\n          .tbl {\n            border: 0;\n            border-collapse: collapse;\n            text-align: left;\n          }\n          .tbl td,\n          .tbl th {\n            line-height: 1.4em;\n          }\n          .tbl-orders {\n            width: 100%;\n          }\n          .tbl-orders  td {\n            border-bottom: 1px solid #ccc;\n            padding-top: .5em;\n            padding-bottom: .5em;\n          }\n          .tbl-orders  th {\n            border-bottom: 1px solid #ccc;\n            padding-top: .5em;\n            padding-bottom: 1em;\n            font-size: 12px;\n            font-weight: 400;\n            text-transform: uppercase;\n            color: #666;\n          }\n\n          .tbl-calc {\n            float: right;\n            margin-top: .5em;\n          }\n          .tbl-calc> .e {\n            padding-left: 3em;\n          }\n          .tbl .e {\n            text-align: right;\n            padding-left: 2em;\n            white-space: nowrap;\n            vertical-align: top;\n          }\n          .invoice {\n            font-family: \"Segoe UI\", Frutiger, \"Frutiger Linotype\", \"Dejavu Sans\", \"Helvetica Neue\", sans-serif;\n            color: black;\n            font-size: 16px;\n          }\n          .invoice-page {\n            width: 210mm;\n            min-height: 277mm;\n            padding: 0;\n            box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);\n            background: #fff;\n          }\n          #printme .invoice-subpage {\n            height: 277mm;\n            padding-bottom: 2cm;\n          }\n          .invoice-subpage {\n            height: 277mm;\n            display: -webkit-box;\n            display: -webkit-flex;\n            display: -ms-flexbox;\n            display: flex;\n            -webkit-box-orient: vertical;\n            -webkit-box-direction: normal;\n            -webkit-flex-direction: column;\n                -ms-flex-direction: column;\n                    flex-direction: column;\n            -webkit-box-pack: justify;\n            -webkit-justify-content: space-between;\n                -ms-flex-pack: justify;\n                    justify-content: space-between;\n          }\n          .invoice-container {\n            padding-left: 2cm;\n            padding-right: 2cm;\n          }\n          .invoice h3 {\n            margin: 0;\n            font-size: 1.125em;\n            font-weight: 500;\n            line-height: 25px;\n            line-height: 1.6rem;\n          }\n          .invoice p {\n            margin: 1em 0;\n          }\n          .invoice h3+p {\n            margin: 0;\n            opacity: .8;\n            filter: alpha(opacity=80);\n          }\n        \n        "])," ",_h('div',{staticClass:"invoice-subpage"},[(a.provider||a.customer)?_h('div',{staticClass:"invoice-container"},[_h('div',{staticClass:"invoice-top"},[_m(1)," ",_h('div',{staticClass:"invoice-parties"},[_m(2)," ",(a.customer)?_h('section',{staticClass:"customer"},[_h('h1',[_s(a.customer.name)])," ",_h('address',[_h('div',[_s(a.customer.address&&a.customer.address.streetAddress)])," ",_h('div',[_s(a.customer.address&&a.customer.address.postalCode)+" "+_s(a.customer.address&&a.customer.address.addressLocality)])])," ",_h('div',[_h('a',{attrs:{"href":'mailto:'+a.customer.email}},[_s(a.customer.email)])])," ",(!a.customer.email)?_h('div',[_h('a',{attrs:{"href":a.customer.url}},[_s(a.customer.url)])]):_e()," ",_h('div',[_s(a.customer.vatID)])]):_e()," ",(a.provider)?_h('section',{staticClass:"provider"},[(a.provider.logo)?_h('img',{attrs:{"src":a.provider.logo||''}}):_e()," ",_h('h1',[_s(a.provider.name)])," "," ",(a.provider.address)?_h('address',[_h('div',[_s(a.provider.address&&a.provider.address.streetAddress)])," ",_h('div',[_s(a.provider.address&&a.provider.address.postalCode)+" "+_s(a.provider.address&&a.provider.address.addressLocality)])]):_e()," ",_h('div',[_h('a',{attrs:{"href":'mailto:'+a.provider.email}},[_s(a.provider.email)])])," ",(!a.provider.email)?_h('div',[_h('a',{attrs:{"href":a.provider.url}},[_s(a.provider.url)])]):_e()," ",_h('div',[_s(a.provider.vatID)])]):_e()])])]):_e()," ",(dateCreated||a.url||paymentDueDate)?_h('section',{staticClass:"summary"},[(invoiceNumber)?_h('div',{staticClass:"summary-item"},[_m(3)," ",_h('div',{staticClass:"number",domProps:{"textContent":_s(invoiceNumber)}},["01 / 2015"])]):_e()," ",(dateCreated)?_h('div',{staticClass:"summary-item"},[_m(4)," "+_s(_f("date")(a.dateCreated))+"\n            "]):_e()," ",(paymentDueDate)?_h('div',{staticClass:"summary-item bolder"},[_m(5)," "+_s(_f("date")(paymentDueDate))+"\n            "]):_e()," ",(total)?_h('div',{staticClass:"summary-item bolder"},[_m(6)," € "+_s(total)+"\n            "]):_e()," ",(a.paymentMethod)?_h('p',{staticClass:"method",domProps:{"innerHTML":_s(a.paymentMethod)}}):_e()]):_e()," ",(a.referencesOrder)?_h('section',{staticClass:"list invoice-container"},[_h('table',{staticClass:"tbl tbl-orders"},[_m(7)," ",_h('tbody',[(orders)&&_l((orders),function(order){return _h('tr',[_h('td',[(order.orderedItem.name)?_h('h3',[_s(order.orderedItem.name)]):_e()," ",(order.orderedItem.description)?_h('p',{staticClass:"pre-wrap"},[_s(order.orderedItem.description)]):_e()])," ",_h('td',{staticClass:"e"},[(order.acceptedOffer.price)?_h('span',["\n                    € "+_s(order.acceptedOffer.price||0)+"\n                    "]):_e()])])})])])," ",(totalPaymentDue)?_h('table',{staticClass:"tbl tbl-calc"},[_h('tbody',[(totalPaymentDue)&&_l((totalPaymentDue),function(line,index){return _h('tr',{key:index,class:{bold:line.valueAddedTaxIncluded}},[_h('td',[_s(line.name)+" ",(line.asterisk)?_h('span',{staticClass:"invoice-asterisk"},["*"]):_e()])," ",(line.price!=undefined)?_h('td',{staticClass:"e"},["€ "+_s(line.price)]):_e()])})])]):_e()," ",(taxExemptionRule)?_h('p',{attrs:{"style":"float:right;text-align:right;width:100%"}},[_m(8)," Bijzondere vrijstellingsregeling kleine ondernemingen   \n            "]):_e()]):_e()," ",(a.provider)?_h('footer',{staticClass:"invoice-container"},[_h('strong',[_s(a.provider.name)])," ",(a.provider.address)?_h('i',["   •   "+_s(a.provider.address.streetAddress)+", "+_s(a.provider.address.postalCode)+" "+_s(a.provider.address.addressLocality)]):_e()," ",(a.provider.vatID)?_h('span',["  •   "+_s(a.provider.vatID)]):_e()]):_e()])])," ",_h('div',{staticClass:"print-hidden"},[_h('div',{staticClass:"invoice-ctrl"},[_h('button',{staticClass:"btn btn-soft",on:{"click":function($event){preview=0}}},["Close"])])])])])}},
+staticRenderFns: [function(){with(this){return _h('p',["\n            Klik op 'Bewaren' nadat je verbeteringen aangebracht hebt.\n          "])}},function(){with(this){return _h('div',{staticClass:"invoice-start"},["Factuur"])}},function(){with(this){return _h('div',{staticClass:"invoice-to"},["aan"])}},function(){with(this){return _h('span',{staticClass:"summary-label"},["Factuurnr."])}},function(){with(this){return _h('span',{staticClass:"summary-label"},["Factuurdatum"])}},function(){with(this){return _h('span',{staticClass:"summary-label"},["Vervaldatum"])}},function(){with(this){return _h('span',{staticClass:"summary-label"},["Totaalbedrag"])}},function(){with(this){return _h('thead',[_h('tr',[_h('th',["Beschrijving"])," ",_h('th',{staticClass:"e"},["Bedrag"])])])}},function(){with(this){return _h('span',{staticClass:"invoice-asterisk"},["*"])}}],
+  props: ['a', 'options'],
+  data: function data () {
+    return {
+      preview: true
+    }
+  },
+  computed: {
+    invoiceNumber: function invoiceNumber$1 () {
+      var n = this.a.url || this.a['@id'] || 'nope'
+      n = n.slice(n.lastIndexOf(':') + 1)
+      n = n.slice(n.lastIndexOf('/') + 1)
+      return n.indexOf('-') > 0 ? n.slice(0, n.indexOf('-')) : n
+    },
+    dateCreated: function dateCreated$1 () {
+      if (!this.a.dateCreated) {
+        this.$set(this.$root.fragments[toMin(this.a['@id'])], 'schema:dateCreated', {
+          '@type': 'xsd:date',
+          '@value': new Date().toJSON().slice(0, 10)
+        })
+      }
+      return this.a.dateCreated
+    },
+    paymentDueDate: function paymentDueDate$1 () {
+      if (!this.a.paymentDueDate && this.dateCreated) {
+        var d = new Date(this.dateCreated)
+        d.setMonth(d.getMonth() + 1)
+        this.$set(this.$root.fragments[toMin(this.a['@id'])], 'schema:paymentDueDate', {
+          '@type': 'xsd:date',
+          '@value': d.toJSON().slice(0, 10)
+        })
+      }
+      return this.a.paymentDueDate
+    },
+    taxExemptionRule: function taxExemptionRule$1 () {
+      return this.a.provider && this.a.provider['be:taxExemptionRule']
+    },
+    total: function total$1 () {
+      return this.totalPaymentDue[this.totalPaymentDue.length - 1].price
+    },
+    orders: function orders$1 () {
+      return Array.isArray(this.a.referencesOrder) ? this.a.referencesOrder : [this.a.referencesOrder]
+    },
+    totalPaymentDue: function totalPaymentDue$1 () {
+      if (this.a.totalPaymentDue) {
+        return this.a.totalPaymentDue
+      }
+
+      if (!this.orders) {
+        this.a.referencesOrder = [{
+          orderedItem: {
+            name: ''
+          },
+          acceptedOffer: {
+            price: 10
+          }
+        }]
+      }
+
+      if (typeof this.orders[0] !== 'object') {
+        alert('expected object but got ' +  this.a.referencesOrder)
+        return
+      }
+
+      var totalExcl = 0
+      var totalIncl = 0
+      var tax = inert(defaultTax)
+      this.orders.forEach(function(v, k) {
+
+        if (!v.orderedItem) { return }
+        if (!v.acceptedOffer) { return }
+
+        /* Get category */
+        var cat = v.orderedItem.category
+        if (cat === undefined) { cat = 'btw21' }
+        var taxcat = tax[cat]
+        if (taxcat === undefined) { taxcat = tax['btw21'] }
+        if (!taxcat.vat) { taxcat.vat = 0 }
+
+        /* Get the rest */
+        var pct = (taxcat.percent || 0) / 100
+        var price = parseInt(v.acceptedOffer.price) || 0
+        var incl = !!v.acceptedOffer.valueAddedTaxIncluded
+
+        /* Count */
+        var vat = price * pct / (incl ? 1 + pct : 1)
+        totalExcl += incl ? price - vat : price
+        totalIncl += incl ? price : price + vat
+        taxcat.vat += vat
+      })
+
+      if (this.taxExemptionRule) {
+        return [{
+          '@type': 'PriceSpecification',
+          price: 0,
+          priceCurrency: '%',
+          name: 'Btw-tarief: 0%',
+          asterisk: 1
+        }, {
+          '@type': 'PriceSpecification',
+          price: totalExcl,
+          priceCurrency: 'EUR',
+          name: 'Totaal',
+          valueAddedTaxIncluded: true
+        }]
+      }
+
+      /* Generate totalPaymentDue */
+      var due = [{
+        '@type': 'PriceSpecification',
+        price: totalExcl,
+        priceCurrency: 'EUR',
+        name: 'Totaal excl. BTW',
+        valueAddedTaxIncluded: false
+      }]
+      for (var key in tax) {
+        if (tax[key].vat) {
+          due.push({
+            '@type': 'PriceSpecification',
+            price: tax[key].vat,
+            priceCurrency: 'EUR',
+            name: tax[key].text
+          })
+        }
+      }
+
+      due.push({
+        '@type': 'PriceSpecification',
+        price: totalIncl,
+        priceCurrency: 'EUR',
+        name: 'Totaal incl. BTW',
+        valueAddedTaxIncluded: true
+      })
+
+      return due
+    }
+  },
+  methods: {
+    print: function print$1 () {
+      var content = document.getElementById('printme').innerHTML
+      var pri = document.getElementById('ifmcontentstoprint').contentWindow
+      pri.document.open()
+      pri.document.write(content + invoiceStyling)
+      pri.document.close()
+      pri.focus()
+      pri.print()
+    }
+  },
+  created: function created () {
+    console.log('Invoice compnent created')
+    this.options.resolve = 3
+  },
+  filters: {
+    'date': function date (date) {
+      return date
+    }
+  },
+  components: {
+    InputSingle: InputSingle,
+    StyleInline: StyleInline
+  }
+}
+
+window.Vue.use({
+	install: function install (Vue) {
+	  Vue.component('invoice', Invoice)
+	}
+})

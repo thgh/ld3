@@ -1,16 +1,16 @@
-.opacity-transition {
+.opacity-enter-active, .opacity-leave-active {
 	opacity: 1;
 	transition: opacity 3s;
 }
-.opacity-leave {
+.opacity-leave-active {
 	opacity: 0;
 }
 
-.staggered-transition {
+.staggered-enter-active, .staggered-leave-active {
   transition: opacity .5s ease, height .5s ease;
   overflow: hidden;
 }
-.staggered-enter, .staggered-leave {
+.staggered-enter, .staggered-leave-active {
   opacity: 0;
   height: 0;
 }

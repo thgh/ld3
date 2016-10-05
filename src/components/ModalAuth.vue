@@ -1,5 +1,5 @@
 <template>
-  <div class="modal" transition="modal">
+  <div class="modal">
     <div class="modal-body" :class="{'modal-nudge':status}">
       <form class="auth" @submit.prevent="submit">
         <label class="inp-text inp-auth" :class="{'inp-error':status}" @input="input">
@@ -19,7 +19,9 @@
 </template>
 
 <script>
+// .modal: transition=modal
 export default {
+  name: 'modal-auth',
   data () {
     return {
       name: '',

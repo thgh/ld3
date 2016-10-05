@@ -78,7 +78,7 @@ export default {
       })
     },
     userLoad () {
-      this.$root.loadWorkspace(user.workspace)
+      // this.$root.loadWorkspace(user.workspace)
       for (let w of user.workspace) {
         this.$root.fetch(w.url, true)
       }

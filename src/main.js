@@ -2,6 +2,7 @@ import Vue from 'vue'
 
 // Pages
 import App from './App.vue'
+import './scss/app.scss'
 
 // Modals
 
@@ -20,6 +21,8 @@ Vue.component('Prop', Prop)
 Vue.component('RecentFragments', RecentFragments)
 Vue.component('InputSingle', InputSingle)
 
+window.Vue = Vue
+window.hub = new Vue()
 window.ld3 = true
 console.log('start')
 

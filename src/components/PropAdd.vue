@@ -1,7 +1,7 @@
 <template>
   <form @submit.prevent="submit">
     <label class="inp-text label-prop" :class="special">
-      <input-subtle :model.sync="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
+      <input-subtle :model="tuple" prop="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
       <input class="inp-big-focus" v-model="value" :placeholder="prop&&'value...'" @blur="submit" @keyup.enter="submit">
     </label>
   </form>
@@ -13,14 +13,20 @@ import InputSubtle from './InputSubtle.vue'
 const DEFAULT_NAMESPACE = 'schema:'
 
 export default {
+  name: 'prop-add',
   props: ['fragment'],
   data () {
     return {
-      prop: '',
+      tuple: {
+        prop: ''
+      },
       value: ''
     }
   },
   computed: {
+    prop () {
+      return this.tuple.prop
+    },
     props () {
       return this.fragment
     },
@@ -59,7 +65,7 @@ export default {
         }
         return
       }
-      this.$set('fragment[\'' + this.prop + '\']', this.value)
+      this.$set(this.fragment, this.prop, this.value)
       this.prop = ''
       this.value = ''
       this.$el.querySelector('input').focus()

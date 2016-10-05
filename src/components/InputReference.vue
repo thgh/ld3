@@ -1,11 +1,12 @@
 <template>
   <form class="inp-subtle" @submit.prevent.stop="submit" @keydown="keydown"><span class="inp-subtle-span" v-text="term||placeholder"></span> <input class="inp-big-focus" type="text" v-model="term" :placeholder="placeholder" @blur="blur" @input="input"><div class="ref-select" v-if="options">
-      <div class="ref-option" :class="{'ref-ghost':$index===ghost}" v-for="opt in options" v-text="opt.item+' '+opt.score" track-by="item" @mouseenter="ghost=$index" @mousedown="confirm(opt.item)" transition="staggered"></div>
+      <div class="ref-option" :class="{'ref-ghost':index===ghost}" v-for="(opt, index) in options" v-text="opt.item+' '+opt.score" :key="opt.item" @mouseenter="ghost=index" @mousedown="confirm(opt.item)"></div>
     </div>
   </form> 
 </template>
 
 <script>
+// .ref-option: transition=staggered
 import Fuse from 'fuse.js'
 
 var fuseOptions = {
@@ -21,12 +22,8 @@ var fuseOptions = {
 }
 
 export default {
-  props: {
-    model: {
-      twoWay: true
-    },
-    placeholder: null
-  },
+  name: 'input-reference',
+  props: ['model', 'prop', 'placeholder'],
   data () {
     return {
       term: null,
@@ -35,6 +32,9 @@ export default {
     }
   },
   computed: {
+    value () {
+      return this.model[this.prop]
+    },
     index () {
       var fragments = Object.keys(this.$root.fragments).map(k => this.$root.fragments[k])
       return new Fuse(fragments, fuseOptions)
@@ -76,10 +76,10 @@ export default {
     },
     confirm (uri) {
       if (typeof uri === 'string') {
-        this.model = {'@id': uri}
+        this.value = {'@id': uri}
         this.blur()
       } else if (!uri && this.options) {
-        this.model = {'@id': this.options[this.ghost].item}
+        this.value = {'@id': this.options[this.ghost].item}
         this.blur()
       } else {
         console.log('confirming but dont know what', uri)

@@ -5,7 +5,7 @@
     </div>
     <div class="nav-fragments">
       <div class="a-recent" v-for="(fragment, uri) in list" v-if="!fragment['@temp']">
-        <a href="#!{{uri}}" @mouseenter="enter(uri)" @mouseleave="leave" class="a-fragment">
+        <a :href="'#!'+uri" @mouseenter="enter(uri)" @mouseleave="leave" class="a-fragment">
           {{ fragment['schema:name'] || label(fragment) || fragment['dcterms:title'] || uri }}
           <small v-if="fragment['schema:name'] || label(fragment) || fragment['dcterms:title']">{{ uri }}</small>
         </a>

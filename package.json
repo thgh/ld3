@@ -7,25 +7,27 @@
     "plugins": "node build/plugins.js",
     "build": "cross-env NODE_ENV=production rollup -c",
     "dev": "cross-env NODE_ENV=development rollup -cw",
+    "build:plugins": "rollup -c -i src/plugins/Invoice.vue -o dist/static/plugins/Invoice.js",
+    "dev:plugins": "rollup -cw -i src/plugins/Invoice.vue -o dist/static/plugins/Invoice.js",
     "watch": "rollup -cw"
   },
   "devDependencies": {
     "cross-env": "^3.0.0",
     "fuse.js": "^2.5.0",
     "local-storage": "^1.4.2",
-    "rollup": "^0.36.0",
+    "rollup": "^0.36.1",
     "rollup-plugin-buble": "^0.14.0",
     "rollup-plugin-commonjs": "^5.0.4",
-    "rollup-plugin-css-only": "^0.0.3",
-    "rollup-plugin-livereload": "^0.0.3",
+    "rollup-plugin-css-only": "^0.0.4",
+    "rollup-plugin-livereload": "^0.1.0",
     "rollup-plugin-node-resolve": "^2.0.0",
-    "rollup-plugin-serve": "^0.0.1",
+    "rollup-plugin-serve": "^0.1.0",
     "rollup-plugin-uglify": "^1.0.1",
-    "rollup-plugin-vue2": "^0.0.8",
+    "rollup-plugin-vue2": "^0.2.0",
     "rollup-watch": "^2.5.0",
-    "vue": "^2.0.0-rc.7"
+    "vue": "^2.0.1"
   },
   "dependencies": {
-    "rollup-plugin-sass": "^0.2.1"
+    "rollup-plugin-sass": "^0.2.3"
   }
 }

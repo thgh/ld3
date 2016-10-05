@@ -1,6 +1,6 @@
 <template>
   <div class="value-array">
-    <component v-for="_nope in fragment" :is="renderType[$index]" :fragment.sync="fragment[$index]" @splice="splice($index)"></component>
+    <component v-for="(_nope, index) in fragment" :is="renderType[index]" :parent="fragment" :prop="index" @splice="splice(index)"></component>
     <button class="btn-add" @click="push">Add</button>
   </div>
 </template>
@@ -12,8 +12,12 @@ import ValueObject from './ValueObject.vue'
 import ValueReference from './ValueReference.vue'
 
 export default {
-  props: ['fragment'],
+  name: 'value-array',
+  props: ['parent', 'prop'],
   computed: {
+    fragment () {
+      return this.parent[this.prop]
+    },
     renderType () {
       return this.fragment.map(function (o) {
         return typeof o !== 'object' ? console.log('ErrorType') : o['@id'] && o['@id'].charAt(0) !== '_' ? 'ValueReference' : 'ValueObject'
@@ -37,7 +41,7 @@ export default {
   },
   events: {
     arrayFocused () {
-      this.$broadcast('siblingObjectActivated')
+      hub.$emit('siblingObjectActivated')
     }
   },
   components: {

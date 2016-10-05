@@ -73,6 +73,7 @@
 import browser from '../libs/browser.js'
 
 export default {
+  name: 'config',
   data () {
     return {
       browser: browser(),
@@ -111,7 +112,7 @@ export default {
       this.recalculate()
     }
   },
-  attached () {
+  mounted () {
     this.recalculate()
     var self = this
     setTimeout(function () {

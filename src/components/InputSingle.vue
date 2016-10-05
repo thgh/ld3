@@ -1,6 +1,6 @@
 <template>
   <label class="inp-single">
-    {{ label }} {{fragment}}
+    {{ label }}
     <input type="text" v-model="model" :placeholder="label">
   </label>
 </template>
@@ -8,58 +8,54 @@
 <script>
 import { inert, toMin } from '../libs/util.js'
 
+var parent
+var prop
+
 export default {
+  name: 'input-single',
   props: ['a', 'path', 'label'],
-  data () {
-    return {
-      depth: 0
-    }
-  },
   computed: {
-    setPath () {
-      var a = inert(this.a)
-      if (!a || !a['@id']) {
-        return '$parent.a'
-      }
-
-      var setPath = '$parent.a'
-
-      if (a['@id']) {
-        var min = toMin(a['@id'])
-        setPath = '$root.fragments[\'' + min + '\']'
-      }
-
-      var paths = [setPath]
-      var pieces = [a]
-
-      var vm = this
-      var last = this.path.split('.').length - 1
-      this.path.split('.').forEach(function (piece, i) {
-        setPath += '[\'schema:' + piece + '\']'
-        if (typeof a[piece] === 'undefined') {
-          vm.$set(setPath, i === last ? 'no' : {})
-        } else if (a[piece]['@id']) {
-          var min = toMin(a[piece]['@id'])
-          setPath = '$root.fragments[\'' + min + '\']'
-        }
-        pieces.push(a[piece])
-        paths.push(setPath)
-
-        a = a[piece]
-      })
-
-      console.log(pieces, paths)
-
-      return setPath
+    parent () {
+      return this.follow(this.path).parent
+    },
+    prop () {
+      return this.path.slice()
     },
     model: {
       get () {
-        return this.$get('$parent.a.' + this.path)
+        return this.value
       },
       set (v) {
-        console.log(this.setPath)
-        this.$set(this.setPath, v)
+        this.$set(this.parent, this.prop, v)
       }
+    }
+  },
+  methods: {
+    follow (path) {
+      if (!this.a || !this.a['@id']) {
+        return console.warn('input single only supports fragments with @id')
+      }
+      var a = this.storage(this.a)
+      var pieces = path && path.split('.') || []
+
+      // Loop over all path pieces
+      for (let i = 0; i < pieces.length; i++) {
+        let piece = 'schema:' + pieces[i]
+        if (typeof a[piece] === 'undefined') {
+          this.$set(a, piece, i < pieces.length - 1 ? {} : 'nope')
+        }
+        if (i === pieces.length - 1) {
+          return {
+            parent: a,
+            prop: piece
+          }
+        }
+        a = this.storage(a[piece]) || a[piece]
+      }
+      throw 'path param in follow() is required'
+    },
+    storage (key) {
+      return this.$root.fragments[toMin(typeof key === 'object' ? key['@id'] : key)]
     }
   }
 }

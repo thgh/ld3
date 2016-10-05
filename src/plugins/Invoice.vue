@@ -5,38 +5,7 @@
       <button class="btn btn-soft" @click="preview=!preview">Preview</button>
     </p>
     <iframe id="ifmcontentstoprint" style="border:0;height: 0px; width: 0px; position: absolute"></iframe>
-    <template id="invoicestyling">
-      <style type="text/css">
-        html,
-        body {
-          box-sizing: border-box;
-          margin: 0;
-          padding: 0;
-          width: 210mm;
-          height: 277mm;
-          background: transparent;
-        }
-        .invoice-page {
-          position: static;
-          margin: 0;
-          outline: initial;
-          width: initial;
-          min-height: initial;
-          box-shadow: initial;
-          page-break-after: always;
-          transform: none!important;
-          transition: none;
-        }
-        .print-hidden {
-          display: none;
-        }
-        @page {
-          size: A4;
-          margin: 0;
-        }
-      </style>
-    </template>
-    <style type="text/css">
+    <style-inline>
       #printme {
         position: fixed;
         top: 0;
@@ -67,6 +36,7 @@
         overflow: auto;
       }
     </style>
+    </style-inline>
     <div id="printme" v-show="preview">
       <div class="print-hidden">
         <div class="invoice-ctrl">
@@ -86,7 +56,7 @@
         </div>
       </div>
       <div class="invoice invoice-page">
-        <style>
+        <style-inline>
           .bold {
             font-weight: bold;
           }
@@ -298,6 +268,7 @@
             filter: alpha(opacity=80);
           }
         </style>
+        </style-inline>
         <div class="invoice-subpage">
           <div class="invoice-container" v-if="a.provider||a.customer">
             <div class="invoice-top">
@@ -310,8 +281,8 @@
                     <div>{{a.customer.address&&a.customer.address.streetAddress}}</div>
                     <div>{{a.customer.address&&a.customer.address.postalCode}} {{a.customer.address&&a.customer.address.addressLocality}}</div>
                   </address>
-                  <div><a href="mailto:{{a.customer.email}}">{{a.customer.email}}</a></div>
-                  <div v-if="!a.customer.email"><a href="{{a.customer.url}}">{{a.customer.url}}</a></div>
+                  <div><a :href="'mailto:'+a.customer.email">{{a.customer.email}}</a></div>
+                  <div v-if="!a.customer.email"><a :href="a.customer.url">{{a.customer.url}}</a></div>
                   <div>{{a.customer.vatID}}</div>
                 </section>
                 <section class="provider" v-if="a.provider">
@@ -322,8 +293,8 @@
                     <div>{{a.provider.address&&a.provider.address.streetAddress}}</div>
                     <div>{{a.provider.address&&a.provider.address.postalCode}} {{a.provider.address&&a.provider.address.addressLocality}}</div>
                   </address>
-                  <div><a href="mailto:{{a.provider.email}}">{{a.provider.email}}</a></div>
-                  <div v-if="!a.provider.email"><a href="{{a.provider.url}}">{{a.provider.url}}</a></div>
+                  <div><a :href="'mailto:'+a.provider.email">{{a.provider.email}}</a></div>
+                  <div v-if="!a.provider.email"><a :href="a.provider.url">{{a.provider.url}}</a></div>
                   <div>{{a.provider.vatID}}</div>
                 </section>
               </div>
@@ -341,7 +312,7 @@
               <span class="summary-label">Vervaldatum</span> {{paymentDueDate| date}}
             </div>
             <div class="summary-item bolder" v-if="total">
-              <span class="summary-label">Totaalbedrag</span>{{total|currency '€ '}}
+              <span class="summary-label">Totaalbedrag</span> € {{total}}
             </div>
             <p class="method" v-if="a.paymentMethod" v-html="a.paymentMethod"></p>
           </section>
@@ -361,7 +332,7 @@
                   </td>
                   <td class="e">
                     <span v-if="order.acceptedOffer.price">
-                    {{order.acceptedOffer.price||0|currency '€ '}}
+                    € {{order.acceptedOffer.price||0}}
                     </span>
                   </td>
                 </tr>
@@ -369,9 +340,9 @@
             </table>
             <table class="tbl tbl-calc" v-if="totalPaymentDue">
               <tbody>
-                <tr v-for="line in totalPaymentDue" track-by="$index" :class="{bold:line.valueAddedTaxIncluded}">
+                <tr v-for="(line, index) in totalPaymentDue" :key="index" :class="{bold:line.valueAddedTaxIncluded}">
                   <td>{{line.name}} <span v-if="line.asterisk" class="invoice-asterisk">*</span></td>
-                  <td class="e" v-if="line.price!=undefined">{{line.price|currency '€ '}}</td>
+                  <td class="e" v-if="line.price!=undefined">€ {{line.price}}</td>
                 </tr>
               </tbody>
             </table>
@@ -397,7 +368,39 @@
 </template>
 
 <script>
-import { inert, toMin } from '../libs/util.js'
+import { inert, toMin, StyleInline } from '../libs/util.js'
+
+import InputSingle from '../components/InputSingle.vue'
+
+const invoiceStyling = `<style type="text/css">
+        html,
+        body {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+          width: 210mm;
+          height: 277mm;
+          background: transparent;
+        }
+        .invoice-page {
+          position: static;
+          margin: 0;
+          outline: initial;
+          width: initial;
+          min-height: initial;
+          box-shadow: initial;
+          page-break-after: always;
+          transform: none!important;
+          transition: none;
+        }
+        .print-hidden {
+          display: none;
+        }
+        @page {
+          size: A4;
+          margin: 0;
+        }
+      </style>`
 
 var defaultTax = {
   btw0: {
@@ -430,10 +433,10 @@ export default {
     },
     dateCreated () {
       if (!this.a.dateCreated) {
-        this.$nextTick(() => this.$set('$root.fragments[\'' + toMin(this.a['@id']) + '\'][\'schema:dateCreated\']', {
+        this.$set(this.$root.fragments[toMin(this.a['@id'])], 'schema:dateCreated', {
           '@type': 'xsd:date',
           '@value': new Date().toJSON().slice(0, 10)
-        }))
+        })
       }
       return this.a.dateCreated
     },
@@ -441,10 +444,10 @@ export default {
       if (!this.a.paymentDueDate && this.dateCreated) {
         var d = new Date(this.dateCreated)
         d.setMonth(d.getMonth() + 1)
-        this.$nextTick(() => this.$set('$root.fragments[\'' + toMin(this.a['@id']) + '\'][\'schema:paymentDueDate\']', {
+        this.$set(this.$root.fragments[toMin(this.a['@id'])], 'schema:paymentDueDate', {
           '@type': 'xsd:date',
           '@value': d.toJSON().slice(0, 10)
-        }))
+        })
       }
       return this.a.paymentDueDate
     },
@@ -553,11 +556,10 @@ export default {
   },
   methods: {
     print () {
-      var styling = document.getElementById('invoicestyling').innerHTML
       var content = document.getElementById('printme').innerHTML
       var pri = document.getElementById('ifmcontentstoprint').contentWindow
       pri.document.open()
-      pri.document.write(content + styling)
+      pri.document.write(content + invoiceStyling)
       pri.document.close()
       pri.focus()
       pri.print()
@@ -571,6 +573,10 @@ export default {
     'date' (date) {
       return date
     }
+  },
+  components: {
+    InputSingle,
+    StyleInline
   }
 }
 </script>

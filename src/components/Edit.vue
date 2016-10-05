@@ -1,14 +1,13 @@
 <template>
-    <section class="section-content">
-      <fragment v-if="currentFragment" :fragment.sync="currentFragment"></fragment>
-      <div class="backdrop" :class="{active:this.focusIds.length}" @click.prevent.stop="unfocus"></div>
-    </section>
+  <div class="section-content">
+    <fragment v-if="currentFragment" :fragment="currentFragment"></fragment>
+  </div>
 </template>
 
 <script>
+import { inert, getJSON, putJSON, toMin, fromMin } from '../libs/util.js'
+
 import Fragment from './Fragment.vue'
-// import LdContext from '../libs/LdContext'
-// LdContext.init()
 
 export default {
   name: 'edit',
@@ -22,13 +21,13 @@ export default {
   },
   computed: {
     currentFragment () {
-      return (this.$root.fragments && this.route && this.route.uri && this.$root.fragments[this.route.uri]) || this.$root.fetch(this.route.uri)
+      return this.$root.currentFragment
     }
   },
   methods: {
     unfocus () {
       var uid = this.focusIds.pop()
-      this.$broadcast('unfocus', uid)
+      hub.$emit('unfocus', uid)
       // console.log('unfocus', uid, this.focusIds.length)
     },
     keydown (evt) {
@@ -81,23 +80,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@import '../scss/app.scss';
-
-.backdrop {
-  position: fixed;
-  z-index: 10;
-  opacity: 0;
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-  pointer-events: none;
-  transition: opacity .3s;
-}
-.backdrop.active {
-  opacity: .9;
-  pointer-events: all;
-}
-</style>

@@ -1,7 +1,12 @@
+# Build
+dist/build.js
+dist/build.js.map
+dist/build.css
+dist/build.css.map
+
+
 .DS_Store
 node_modules/
-dist/build.js
-dist/build.css
 npm-debug.log
 selenium-debug.log
 test/unit/coverage

@@ -1,23 +1,9 @@
 import throttle from '../libs/throttle.js'
 import { inert, getJSON, putJSON, toMin, fromMin } from '../libs/util.js'
 import ls from 'local-storage'
+import Vue from 'vue'
 
-const backup = {}
 const fragments = {}
-const namespaces = []
-
-// TODO: get this context from actual server, can be found in user object
-export const STORE_NAMESPACES = {
-  'dce': 'http://purl.org/dc/elements/1.1/',
-  'dcterms': 'http://purl.org/dc/terms/',
-  'foaf': 'http://xmlns.com/foaf/0.1/',
-  'ld3': 'http://ld3.link/',
-  'rdf': 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
-  'rdfs': 'http://www.w3.org/2000/01/rdf-schema#',
-  'schema': 'http://schema.org/',
-  'skos': 'http://www.w3.org/2004/02/skos/core#',
-  'xsd': 'http://www.w3.org/2001/XMLSchema#'
-}
 
 function hideSchema (obj) {
   // Collapse @value
@@ -49,21 +35,23 @@ var fetching = {}
 export default {
   data () {
     return {
-      backup: backup,
-      fragments: fragments,
-      namespaces: namespaces,
-      syncAgo: 0,
-      interval: 0
+      fragments: fragments
+
+      // syncAgo: 0,
+      // interval: 0
     }
   },
   computed: {
+    currentFragment () {
+      return this.fragments && this.route && this.route.uri && this.fragments[this.route.uri] || this.fetch(this.route.uri)
+    },
     fragmentCount () {
       return Object.keys(this.fragments).length
     }
   },
   methods: {
     checkSave () {
-      this.syncAgo++
+      // this.syncAgo++
     },
     sync (fragment) {
       let $this = this
@@ -82,7 +70,7 @@ export default {
         if (!body.success) {
           console.warn(body)
         }
-        $this.syncAgo = 0
+        // $this.syncAgo = 0
       }).catch(function (body) {
         console.warn(body)
       })
@@ -112,6 +100,7 @@ export default {
           'schema:name': 'Not found'
         })
       })
+      // this.$root.route.uri += '#temp'
       return {
         '@temp': true,
         '@id': uri,
@@ -142,7 +131,7 @@ export default {
       }
       this.syncLocal()
     },
-    copy (uri, to) {
+    copyFragment (uri, to) {
       if (!this.fragments[uri]) {
         return console.warn('Store.rename: cant find', uri)
       }
@@ -160,8 +149,10 @@ export default {
       if (f['@id'].endsWith(':')) {
         return
       }
-      this.$set('fragments[\'' + f['@id'] + '\']', f)
-      backup[f['@id']] = inert(f)
+      Vue.set(this.fragments, f['@id'], f)
+      // if (this.$root.route.uri.endsWith('#temp')) {
+      //   this.$nextTick(() => this.$root.route.uri = this.$root.route.uri.slice(0, -5))
+      // }
       return f
     },
     resolve (uri, options) {
@@ -216,25 +207,11 @@ export default {
     clearCache () {
       this.fragments = {}
       ls.remove('fragments')
+    },
+    initStorage () {
+      this.loadWorkspace(ls.get('namespaces') || STORE_NAMESPACES)
+      const fragments = ls.get('fragments') || {}
+      this.addGraph({'@graph': Object.keys(fragments).map(k => fragments[k])})
     }
-  },
-  init () {
-    this.ns = ns
-  },
-  created () {
-    this.loadWorkspace(ls.get('namespaces') || STORE_NAMESPACES)
-    const fragments = ls.get('fragments') || {}
-    this.addGraph({'@graph': Object.keys(fragments).map(k => fragments[k])})
-  },
-  attached () {
-    this.interval = setInterval(this.checkSave, 5000)
-    this.syncInterval = setInterval(this.syncLocal, 5000)
-  },
-  detached () {
-    clearInterval(this.interval)
-    clearInterval(this.syncInterval)
-  },
-  mounted () {
-    console.log('Store.ready', Object.keys(this.fragments).length)
   }
 }

@@ -2,14 +2,14 @@
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
     <a href="#" class="inp-type-icon" v-html="ref||search?'&rarr;':'&bullet;'" @click.prevent="toggleRef"></a>
     <span v-if="focus||search">
-      <input-reference v-if="inpref" :model.sync="model" :placeholder="placeholder" @click.prevent.stop></input-reference>
-      <input-subtle v-if="!inpref&&value['@value']" :model.sync="value['@value']" placeholder="Just a value"></input-subtle>
-      <input-subtle v-if="!inpref&&!value['@value']" :model.sync="fragment['schema:name']" placeholder="Unnamed"></input-subtle>
+      <input-reference v-if="inpref" :model="parent" :prop="prop" :placeholder="placeholder" @click.prevent.stop></input-reference>
+      <input-subtle v-if="!inpref&&value['@value']" :model="fragment" prop="@value" placeholder="Just a value"></input-subtle>
+      <input-subtle v-if="!inpref&&!value['@value']" :model="fragment" prop="schema:name" placeholder="Unnamed"></input-subtle>
     </span>
     <span v-else v-text="placeholder"></span>
-    <input-class :model.sync="fragment['@type']" placeholder="wut"></input-class>
+    <input-class :model="fragment" prop="@type" placeholder="wut"></input-class>
     <span class="icon-clear" @click="clear">&times;</span>
-    <props-list v-if="focus && value" :fragment.sync="value"></props-list>
+    <props-list v-if="focus && value" :fragment="value"></props-list>
   </div>
 </template>
 
@@ -23,7 +23,7 @@ import PropsList from './PropsList.vue'
 
 export default {
   name: 'value-object',
-  props: ['fragment', 'ref'],
+  props: ['parent', 'prop', 'id', 'ref'],
   data () {
     return {
       focus: false,
@@ -31,6 +31,9 @@ export default {
     }
   },
   computed: {
+    fragment () {
+      return this.parent[this.prop]
+    },
     inpref () {
       return this.ref || this.search
     },
@@ -70,15 +73,7 @@ export default {
       if (this.focus) {
         return
       }
-      // Unfocus siblings
-      this.$dispatch('arrayFocused')
-      // Focus parent
-      this.$dispatch('propFocus', true)
-      // Focus this
-      this.focus = true
-      this.activeLock = true
-      this.$dispatch('objectFocused', this._uid)
-      this.activeLock = false
+      this.$parent.$emit('propFocus', this.prop, this._uid)
     },
     toggleRef (evt) {
       if (this.focus) {
@@ -91,7 +86,7 @@ export default {
         f['@fromid'] = f['@id']
         delete f['@id']
         this.ref = f
-        this.$dispatch('arrayFocused')
+        hub.$emit('arrayFocused')
       } else if (!this.search) {
         console.log('toggle object=>ref')
         evt.stopPropagation()
@@ -121,14 +116,14 @@ export default {
     unfocus (uid) {
       if (this._uid === uid) {
         this.focus = false
-        this.$dispatch('propFocus', false)
+        hub.$emit('propFocus', false)
       }
       return true
     },
     siblingObjectActivated () {
       if (!this.activeLock && this.focus) {
         this.focus = false
-        this.$dispatch('siblingUnfocused', this._uid)
+        hub.$emit('siblingUnfocused', this._uid)
       }
     }
   },
@@ -141,7 +136,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import '../scss/variables';
 .value-object {
   flex-grow: 1;
@@ -152,6 +147,9 @@ export default {
   }
   &:hover>.icon-clear {
     visibility: visible;
+  }
+  &:hover {
+    background-color: rgba(0, 255, 0, .2);
   }
 }
 

@@ -1,8 +1,9 @@
 <template>
-  <div class="props-list" :class="{active:blurry}">
-    <prop v-for="(value, prop) in fragment" v-if="prop[0]!=='@'" :parent.sync="fragment" :prop="prop"></prop>
-    <prop v-for="prop in stub" :parent.sync="fragment" :prop="prop"></prop>
-    <prop-add :fragment.sync="fragment"></prop-add>
+  <div class="props-list">
+    <prop v-for="(value, prop) in fragment" v-if="prop[0]!=='@'" :parent="fragment" :prop="prop"></prop>
+    <prop v-for="prop in stub" :parent="fragment" :prop="prop"></prop>
+    <prop-add :fragment="fragment"></prop-add>
+    <div class="backdrop" :class="{active:childFocused}" @click.prevent.stop="unfocus"></div>
   </div>
 </template>
 
@@ -13,7 +14,7 @@ import {toStub} from '../libs/stub.js'
 export default {
   name: 'props-list',
   props: {
-    blurry: false,
+    childFocused: false,
     fragment: {
       default: {
         'schema:name': 'fuckthis'
@@ -32,7 +33,7 @@ export default {
   },
   methods: {
     cancel () {
-      this.blurry = false
+      // this.blurry = false
     }
   },
   components: {
