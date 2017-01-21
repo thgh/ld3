@@ -48,7 +48,6 @@ body {
 .section-content {
 	position: relative;
 	padding: 1rem;
-	min-height: 100vh;
 	background: $bg;
 	color: $fg;
 	.focused>& {
@@ -129,6 +128,5 @@ body {
 	.section-content {
 		margin: 1rem;
 		margin-left: calc(100vw / 2 - 25rem);
-		min-height: calc(100vh - 2rem);
 	}
 }

@@ -27,7 +27,7 @@ export default {
   methods: {
     unfocus () {
       var uid = this.focusIds.pop()
-      hub.$emit('unfocus', uid)
+      window.hub.$emit('unfocus', uid)
       // console.log('unfocus', uid, this.focusIds.length)
     },
     keydown (evt) {

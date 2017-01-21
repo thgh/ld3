@@ -43,7 +43,7 @@ export default {
       if (!val) {
         this.focusFrom = val
       }
-      hub.$emit('focusFrom', val, this._uid)
+      window.hub.$emit('focusFrom', val, this._uid)
     },
     focusFrom (val, uid) {
       if (this._uid === uid) {

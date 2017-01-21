@@ -1,4 +1,4 @@
-import vue from 'rollup-plugin-vue2'
+import vue from 'rollup-plugin-vue'
 import scss from 'rollup-plugin-scss'
 import buble from 'rollup-plugin-buble'
 import nodeResolve from 'rollup-plugin-node-resolve'
@@ -11,13 +11,13 @@ const plugins = [
   vue(),
   scss(),
   buble({ exclude: ['node_modules/**'], transforms: { dangerousForOf: true } }),
-  nodeResolve({ browser: true, jsnext: true }),
-  commonjs()
+  // nodeResolve({ browser: true, jsnext: true }),
+  // commonjs()
 ]
 
 if (process.env.NODE_ENV === 'production') {
   process.env.VUE_ENV = 'production'
-  plugins.push(uglify())
+  // plugins.push(uglify())
 }
 
 if (process.env.NODE_ENV === 'development') {

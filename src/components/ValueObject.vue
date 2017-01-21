@@ -86,7 +86,7 @@ export default {
         f['@fromid'] = f['@id']
         delete f['@id']
         this.ref = f
-        hub.$emit('arrayFocused')
+        window.hub.$emit('arrayFocused')
       } else if (!this.search) {
         console.log('toggle object=>ref')
         evt.stopPropagation()
@@ -116,14 +116,14 @@ export default {
     unfocus (uid) {
       if (this._uid === uid) {
         this.focus = false
-        hub.$emit('propFocus', false)
+        window.hub.$emit('propFocus', false)
       }
       return true
     },
     siblingObjectActivated () {
       if (!this.activeLock && this.focus) {
         this.focus = false
-        hub.$emit('siblingUnfocused', this._uid)
+        window.hub.$emit('siblingUnfocused', this._uid)
       }
     }
   },

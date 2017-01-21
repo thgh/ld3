@@ -41,7 +41,7 @@ export default {
   },
   events: {
     arrayFocused () {
-      hub.$emit('siblingObjectActivated')
+      window.hub.$emit('siblingObjectActivated')
     }
   },
   components: {
