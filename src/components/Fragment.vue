@@ -45,7 +45,6 @@ export default {
       options: {
         resolve: 0
       },
-      resolved: null,
       addPropShow: false,
       addPropSearch: '',
       addPropValue: ''

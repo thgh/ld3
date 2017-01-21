@@ -1,10 +1,12 @@
 <template>
   <div class="inp-subtle">
-    <span class="inp-subtle-span" v-text="placeholder+'.'"></span>
-    <input :id="id" v-if="type" type="text" v-model="fragment['@value']">
-    <!-- <input :id="id" v-if="type" :type="type" v-model="fragment['@value']"> -->
-    <textarea class="inp-big-focus" :id="id" v-else v-model="fragment['@value']"></textarea>
-    <input-type :model="fragment" prop="@type" placeholder="wut" @blur="blur"></input-type>
+    <span class="inp-subtle-span" v-text="placeholder + '.'"></span>
+    <input v-model="model" :id="id" v-if="inputType == 'text'" type="text">
+    <input v-model="model" :id="id" v-else-if="inputType == 'date'" type="date">
+    <input v-model="model" :id="id" v-else-if="inputType == 'number'" type="number">
+    <input v-model="model" :id="id" v-else-if="inputType == 'checkbox'" type="checkbox">
+    <textarea class="inp-big-focus" :id="id" v-else v-model="model"></textarea>
+    <input-type :model="value" prop="@type" placeholder="wut" @blur="blur"></input-type>
   </div> 
 </template>
 
@@ -22,23 +24,31 @@ const acceptedTypes = [
 
 export default {
   name: 'value-literal',
-  props: ['parent', 'prop', 'id'],
+  props: ['value', 'id'],
   computed: {
-    fragment () {
-      return this.parent[this.prop]
+    model: {
+      get () {
+        return this.value || {
+          '@type': '',
+          '@value': ''
+        }
+      },
+      set (val) {
+        this.$emit('input', val)
+      }
     },
     placeholder () {
       var alt = ''
-      if (this.fragment['@type'] === 'xsd:date') {
+      if (this.value['@type'] === 'xsd:date') {
         alt = 'ww/ww/wwww'
       }
-      return this.fragment['@value'] || alt
+      return this.model || alt
     },
-    type () {
-      if (this.fragment['@type'] && this.fragment['@type'].indexOf(':') === -1) {
-        this.fragment['@type'] = 'xsd:' + this.fragment['@type']
+    inputType () {
+      if (this.value['@type'] && !this.value['@type'].includes(':')) {
+        this.value['@type'] = 'xsd:' + this.value['@type']
       }
-      switch (this.fragment['@type']) {
+      switch (this.value['@type']) {
         case 'xsd:boolean': return 'checkbox'
         case 'xsd:date': return 'date'
         case 'xsd:dateTime': return 'text'
@@ -50,16 +60,17 @@ export default {
   },
   methods: {
     blur () {
-      if (acceptedTypes.indexOf(this.fragment['@type']) === -1) {
+      console.debug('value-literal blur')
+      if (!acceptedTypes.includes(this.value['@type'])) {
         console.log('to ValueObject')
-        this.$set(this.fragment, 'schema:name', this.fragment['@value'])
-        this.$delete(this.fragment, '@value')
+        this.$set(this.value, 'schema:name', this.model)
+        this.$delete(this.value, '@value')
       }
     }
   },
   mounted () {
-    if (this.fragment['@type'] === '') {
-      setTimeout(() => this.$el.querySelector('.inp-type input').focus(), 10)
+    if (this.value['@type'] === '') {
+      this.$nextTick(() => this.$el.querySelector('.inp-type input').focus())
     }
   },
   components: {
