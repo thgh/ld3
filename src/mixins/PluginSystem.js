@@ -9,6 +9,9 @@ export default {
   },
   methods: {
     loadPlugin (name) {
+      if (!this.$root.config.allowPlugins) {
+        return
+      }
       if (!name) {
         return
       }

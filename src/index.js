@@ -31,6 +31,7 @@ new Vue({
   el: '#app',
   data () {
     return {
+      config: {},
       class: {
         focused: null
       },
