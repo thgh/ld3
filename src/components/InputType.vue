@@ -1,9 +1,9 @@
 <template>
-  <form class="inp-subtle inp-type fragment-type" :class="{'inp-type-active':options}" @submit.prevent.stop="submit" @keydown="keydown">
-    <span class="inp-subtle-span" v-text="term||value||placeholder"></span>
-    <input type="text" v-value="term" :placeholder="value||placeholder" @blur="blur" @input="input" @focus="input">
+  <form class="inp-subtle inp-type fragment-type" :class="{ 'inp-type-active': options }" @submit.prevent.stop="submit" @keydown="keydown">
+    <span class="inp-subtle-span" v-text="term || value || placeholder"></span>
+    <input type="text" v-model="term" :placeholder="value || placeholder" @blur="blur" @input="input" @focus="input">
     <div class="ref-select" v-if="options">
-      <div class="ref-option" :class="{'ref-ghost':index===ghost}" v-for="(opt, index) in options" v-text="opt.item||opt.action" :key="opt.item" @mouseenter="ghost=index" @mousedown="confirm(opt.item)"></div>
+      <div class="ref-option" :class="{ 'ref-ghost': index === ghost }" v-for="(opt, index) in options" v-text="opt.item || opt.action" :key="opt.item" @mouseenter="ghost = index" @mousedown="confirm(opt.item)"></div>
     </div>
   </form> 
 </template>
@@ -34,7 +34,7 @@ var fuseOptions = {
 
 export default {
   name: 'input-type',
-  props: ['model', 'prop', 'placeholder'],
+  props: ['value', 'placeholder'],
   data () {
     return {
       term: null,
@@ -43,9 +43,6 @@ export default {
     }
   },
   computed: {
-    value () {
-      return this.model[this.prop]
-    },
     index () {
       var fragments = Classes
       return new Fuse(fragments, fuseOptions)
@@ -93,16 +90,16 @@ export default {
       return false
     },
     confirm (uri) {
-      console.log(uri)
+      console.debug('input-type confirm', uri)
       if (typeof uri === 'string') {
-        this.value = uri
+        this.$emit('input', uri)
         this.blur()
       } else if (!uri && this.options) {
         // TODO: set smart default @type
-        this.value = this.options[this.ghost].item || this.term || 'schema:Person'
+        this.$emit('input', this.options[this.ghost].item || this.term || 'schema:Person')
         this.blur()
       } else {
-        console.log('confirming but dont know what', uri)
+        console.debug('confirming but dont know what', uri)
       }
     }
   }
