@@ -1,6 +1,6 @@
 <template>
   <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
-    <a href="#" class="inp-type-icon" v-html="ref||search?'&rarr;':'&bullet;'" @click.prevent="toggleRef"></a>
+    <a href="#" class="inp-type-icon" v-html="reference||search?'&rarr;':'&bullet;'" @click.prevent="toggleRef"></a>
     <span v-if="focus||search">
       <input-reference v-if="inpref" :model="parent" :prop="prop" :placeholder="placeholder" @click.prevent.stop></input-reference>
       <input-subtle v-if="!inpref&&value['@value']" :model="fragment" prop="@value" placeholder="Just a value"></input-subtle>
@@ -23,7 +23,7 @@ import PropsList from './PropsList.vue'
 
 export default {
   name: 'value-object',
-  props: ['parent', 'prop', 'id', 'ref'],
+  props: ['parent', 'prop', 'id', 'reference'],
   data () {
     return {
       focus: false,
@@ -35,7 +35,7 @@ export default {
       return this.parent[this.prop]
     },
     inpref () {
-      return this.ref || this.search
+      return this.reference || this.search
     },
     niceType () {
       var t = this.value['@type']
@@ -56,15 +56,11 @@ export default {
     },
     model: {
       get () {
-        return this.ref || this.fragment || console.log('falsy value object') || {}
+        return this.fragment || console.log('falsy value object') || {}
       },
-      set (ref) {
-        console.log('object => ref', inert(ref))
-        if (typeof this.ref === 'object') {
-          this.ref = ref
-        } else {
-          this.fragment = ref
-        }
+      set (val) {
+        console.log('object => ref', inert(val))
+        this.$set(this.parent, this.prop, val)
       }
     }
   },
@@ -80,12 +76,12 @@ export default {
         return console.warn('toggle: should not be focused')
       }
       // evt.stopPropagation()
-      if (this.ref) {
+      if (this.reference) {
         let f = inert(this.fragment || {})
         console.log('toggle ref=>object', f)
         f['@fromid'] = f['@id']
         delete f['@id']
-        this.ref = f
+        this.reference = f
         window.hub.$emit('arrayFocused')
       } else if (!this.search) {
         console.log('toggle object=>ref')
@@ -105,8 +101,8 @@ export default {
     clear () {
       if (typeof this.$parent.renderType === 'object') {
         this.$emit('splice')
-      } else if (this.ref) {
-        this.ref = this.fragment && (this.fragment['schema:name'] || this.fragment.name) || ' '
+      } else if (this.reference) {
+        this.reference = this.fragment && (this.fragment['schema:name'] || this.fragment.name) || ' '
       } else {
         this.fragment = this.fragment && (this.fragment['schema:name'] || this.fragment.name) || ' '
       }

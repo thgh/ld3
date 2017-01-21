@@ -1,6 +1,6 @@
 <template>
   <div class="value-reference">
-    <value-object :parent="$root.fragments" :prop="uri" :ref="1" @changeRef=""></value-object>
+    <value-object :parent="$root.fragments" :prop="uri" :reference="1" @changeRef=""></value-object>
   </div>
 </template>
 
