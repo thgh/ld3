@@ -138,6 +138,7 @@ export default {
 
 <style lang="scss">
 @import '../scss/variables';
+
 .value-object {
   flex-grow: 1;
   cursor: pointer;

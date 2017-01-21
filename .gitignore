@@ -1,9 +1,6 @@
 # Build
-dist/build.js
-dist/build.js.map
-dist/build.css
-dist/build.css.map
-
+dist/*
+!dist/static
 
 .DS_Store
 node_modules/

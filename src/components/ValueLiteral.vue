@@ -1,7 +1,8 @@
 <template>
   <div class="inp-subtle">
     <span class="inp-subtle-span" v-text="placeholder+'.'"></span>
-    <input :id="id" v-if="type" :type="type" v-model="fragment['@value']">
+    <input :id="id" v-if="type" type="text" v-model="fragment['@value']">
+    <!-- <input :id="id" v-if="type" :type="type" v-model="fragment['@value']"> -->
     <textarea class="inp-big-focus" :id="id" v-else v-model="fragment['@value']"></textarea>
     <input-type :model="fragment" prop="@type" placeholder="wut" @blur="blur"></input-type>
   </div> 

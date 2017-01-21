@@ -42,8 +42,9 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 @import '../scss/variables';
+
 .props-list {
   position: relative;
   margin-left: -1rem;
