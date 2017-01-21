@@ -1,9 +1,9 @@
 <template>
   <div class="inp-subtle">
-    <span class="inp-subtle-span" v-text="(value||'')+'.'"></span>
-    <textarea class="inp-big-focus" :value="value" @input="$emit('input', $event.target.value)" @focus="show=1" @blur="show=0" :id="id"></textarea>
+    <span class="inp-subtle-span" v-text="(value || '')+'.'"></span>
+    <textarea class="inp-big-focus" :value="value" @input="$emit('input', $event.target.value)" @focus="show = 1" @blur="show = 0" :id="id"></textarea>
     <span class="inp-actions" v-if="show">
-      <button type="button" class="btn-reset fragment-type" @click="literal">+</button>
+      <button type="button" class="btn-reset fragment-type" @click="convertToLiteral">+</button>
     </span>
   </div> 
 </template>
@@ -24,8 +24,8 @@ export default {
     }
   },
   methods: {
-    literal () {
-      this.$set(this.parent, this.prop, {
+    convertToLiteral () {
+      this.$emit('input', {
         '@type': '',
         '@value': this.value || ''
       })
