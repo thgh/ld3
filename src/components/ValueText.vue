@@ -1,7 +1,7 @@
 <template>
   <div class="inp-subtle">
-    <span class="inp-subtle-span" v-text="(fragment||'')+'.'"></span>
-    <textarea class="inp-big-focus" :id="id" type="text" v-model="fragment" @focus="show=1" @blur="show=0"></textarea>
+    <span class="inp-subtle-span" v-text="(value||'')+'.'"></span>
+    <textarea class="inp-big-focus" :value="value" @input="$emit('input', $event.target.value)" @focus="show=1" @blur="show=0" :id="id"></textarea>
     <span class="inp-actions" v-if="show">
       <button type="button" class="btn-reset fragment-type" @click="literal">+</button>
     </span>
@@ -12,7 +12,7 @@
 // inp-subtle>inp-actions: transition=opacity
 export default {
   name: 'value-text',
-  props: ['parent', 'prop', 'id'],
+  props: ['value', 'id'],
   data () {
     return {
       show: false
@@ -20,14 +20,14 @@ export default {
   },
   computed: {
     fragment () {
-      return this.parent[this.prop]
+      return this.value
     }
   },
   methods: {
     literal () {
       this.$set(this.parent, this.prop, {
         '@type': '',
-        '@value': this.fragment || ''
+        '@value': this.value || ''
       })
     }
   }

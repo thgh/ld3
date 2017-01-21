@@ -1,7 +1,7 @@
 <template>
   <div class="inp-text prop" :class="{'focus-prop':focus&&!focusFrom,'focus-from':focusFrom}" @click.stop>
     <label class="inp-label" :for="_uid" :title="prop">{{niceProp}}</label>
-    <component :is="renderType" :parent="parent" :prop="prop" :id="_uid"></component>
+    <component :is="renderType" v-model="parent[prop]" :parent="parent" :prop="prop" :id="_uid"></component>
   </div>
 </template>
 
