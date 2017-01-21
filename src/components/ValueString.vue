@@ -1,15 +1,10 @@
 <template>
-  <input v-model="fragment" placeholder="{placeholder}">
+  <input :value="value" @input="$emit('input', $event.target.value)" placeholder="placeholder || 'needs placeholder'" :id="id">
 </template>
 
 <script>
 export default {
   name: 'value-string',
-  props: ['parent', 'prop', 'id'],
-  computed: {
-    fragment () {
-      return this.parent[this.prop]
-    }
-  }
+  props: ['value', 'placeholder', 'id']
 }
 </script>
