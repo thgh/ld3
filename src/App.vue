@@ -27,11 +27,6 @@ import ModalAuth from './components/ModalAuth.vue'
 
 export default {
   name: 'app',
-  data () {
-    return {
-      msg: 'Hello Vue!'
-    }
-  },
   components: {
     Home,
     Conf,

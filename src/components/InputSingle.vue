@@ -8,9 +8,6 @@
 <script>
 import { inert, toMin } from '../libs/util.js'
 
-var parent
-var prop
-
 export default {
   name: 'input-single',
   props: ['a', 'path', 'label'],
@@ -25,8 +22,8 @@ export default {
       get () {
         return this.value
       },
-      set (v) {
-        this.$set(this.parent, this.prop, v)
+      set (val) {
+        this.$emit('input', val)
       }
     }
   },

@@ -29,20 +29,6 @@ console.log('start')
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
-  data () {
-    return {
-      level: 0,
-      config: {},
-      listFocus: ['uri'],
-      class: {
-        focused: null
-      },
-      style: {
-        color: null,
-        background: null
-      }
-    }
-  },
   methods: {
     extend: comp => Vue.extend(comp)
   },

@@ -1,7 +1,6 @@
 import throttle from '../libs/throttle.js'
 import { inert, getJSON, putJSON, toMin, fromMin } from '../libs/util.js'
 import ls from 'local-storage'
-import Vue from 'vue'
 
 const fragments = {}
 
@@ -35,8 +34,18 @@ var fetching = {}
 export default {
   data () {
     return {
-      fragments: fragments
+      // Project setup
+      config: {
+        allowPlugins: false
+      },
 
+      // Data
+      fragments,
+
+      // UI state
+      listFocus: ['uri']
+
+      // deprecated
       // syncAgo: 0,
       // interval: 0
     }
@@ -149,7 +158,7 @@ export default {
       if (f['@id'].endsWith(':')) {
         return
       }
-      Vue.set(this.fragments, f['@id'], f)
+      this.$set(this.fragments, f['@id'], f)
       // if (this.$root.route.uri.endsWith('#temp')) {
       //   this.$nextTick(() => this.$root.route.uri = this.$root.route.uri.slice(0, -5))
       // }

@@ -59,13 +59,6 @@ export default {
   destroyed () {
     window.removeEventListener('keydown', this.keydown, false)
   },
-  watch: {
-    focusIds (val) {
-      this.$root.class.focused = !!val.length
-      // this.$root.style.background = val.length ? '#000' : null
-      // this.$root.style.color = val.length ? '#333' : null
-    }
-  },
   components: {
     Fragment
   }

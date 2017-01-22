@@ -2,18 +2,18 @@
   <div class="fragment" :class="{ 'focus-prop': focusProp, 'focus-from': focusFrom }">
     <header>
       <h1 class="fragment-h1">
-        <textarea-subtle :model="fragment" prop="schema:name" :placeholder="fragment['@id']||'Fatal error'"></textarea-subtle>
-        <input-class :model="fragment" prop="@type" placeholder="wut"></input-class>
+        <textarea-subtle v-model="fragment['schema:name']" :placeholder="fragment['@id'] || 'Fatal error'" />
+        <input-class v-model="fragment['@type']" placeholder="wut" />
       </h1>
       <div class="fragment-json mdi mdi-12px mdi-code-braces">
-        <p class="fragment-collapse" style="text-align:right">
+        <p class="fragment-collapse" style="text-align: right">
           Copy fragment to:
           <input type="text" :value="fragment['@id']" @blur="copy">
           <br>
           <br>
           <button type="button" @click="$root.fetch(fragment['@id'], true)">refetch</button>
         </p>
-        <pre class="fragment-collapse fragment-pre">{{JSON.stringify(fragment, null, 2)}}</pre>
+        <pre class="fragment-collapse fragment-pre">{{ fragment }}</pre>
       </div>
     </header>
 
@@ -22,11 +22,11 @@
     </article>
 
     <p class="fragment-cta">
-      <button class="btn" :class="{'btn-soft':!savable}" @click="sync">Sync</button>
+      <button class="btn" :class="{ 'btn-soft': !savable }" @click="sync">Save</button>
       <button class="btn btn-soft" @click="clear">Clear</button>
     </p>
 
-    <div v-if="loadPlugin(fragment['@type'])&&resolved" :is="loadPlugin(fragment['@type'])" :a="resolved" :options="options">test</div>
+    <div v-if="loadPlugin(fragment['@type']) && resolved" :is="loadPlugin(fragment['@type'])" :a="resolved" :options="options">test</div>
   </div>
 </template>
 

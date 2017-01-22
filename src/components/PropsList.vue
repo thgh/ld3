@@ -51,7 +51,7 @@ export default {
       while (vm && typeof vm.level !== 'number') {
         vm = vm.$parent
       }
-      return vm.level + 1
+      return vm ? vm.level + 1 : 1
     }
   },
   methods: {
