@@ -4,7 +4,6 @@
   "author": "Thomas <hello@thomasg.be>",
   "private": true,
   "scripts": {
-    "plugins": "node build/plugins.js",
     "dev": "vbuild --dev",
     "build": "vbuild"
   },

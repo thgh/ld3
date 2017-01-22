@@ -15,6 +15,7 @@ import InputSingle from './components/InputSingle.vue'
 import Router from './mixins/Router.js'
 import Store from './mixins/Store.js'
 import User from './mixins/User.js'
+import Worker from './mixins/Worker.js'
 
 // Fix recursive initializing bug: PropsList > Prop > ValueObject > PropsList > Prop > ...
 Vue.component('Prop', Prop)
@@ -32,18 +33,6 @@ new Vue({
   methods: {
     extend: comp => Vue.extend(comp)
   },
-  mixins: [Router, Store, User],
+  mixins: [Router, Store, User, Worker],
   render: h => h(App)
 })
-
-// if ('serviceWorker' in navigator) {
-//   window.addEventListener('load', function() {
-//     navigator.serviceWorker.register('/sw.js').then(function(registration) {
-//       // Registration was successful
-//       console.log('ServiceWorker registration successful with scope: ', registration.scope);
-//     }).catch(function(err) {
-//       // registration failed :(
-//       console.log('ServiceWorker registration failed: ', err);
-//     });
-//   });
-// }

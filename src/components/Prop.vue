@@ -89,6 +89,7 @@ export default {
   opacity: 0.2;
 }
 .focus-from > .fragment-cta,
+.focus-prop ~ form,
 .focus-from ~ form,
 .focus-from ~ .focus-sibling {
   opacity: 0;

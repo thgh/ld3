@@ -23,7 +23,6 @@ export default {
       get () {
         const uri = toMin((this.value || {})['@id'])
         const val = this.$root.fragments[uri] || this.$root.fetch(uri) || {}
-        console.debug(uri, val)
         return val
       },
       set (val) {

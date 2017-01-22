@@ -1,6 +1,5 @@
 # Build
-dist/*
-!dist/static
+/dist
 
 .DS_Store
 node_modules/
@@ -9,5 +8,4 @@ selenium-debug.log
 test/unit/coverage
 test/e2e/reports
 
-static/plugins
-notes
+/notes
