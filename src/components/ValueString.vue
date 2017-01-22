@@ -1,5 +1,10 @@
 <template>
-  <input :value="value" @input="$emit('input', $event.target.value)" placeholder="placeholder || 'needs placeholder'" :id="id">
+  <input
+  	:value="value"
+	  @input="$emit('input', $event.target.value)"
+	  placeholder="placeholder || 'needs placeholder'"
+	  :id="id"
+  >
 </template>
 
 <script>

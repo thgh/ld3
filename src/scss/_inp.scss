@@ -108,6 +108,21 @@ form.inp-subtle {
 	color: transparent;
 	white-space: pre-wrap;
 }
+
+// Input > The label of an input is an input itself
+
+.inp--label-prop {
+  padding-left: 1em;
+}
+.inp--label-prop>.inp-subtle {
+  margin-right: .75em;
+}
+.inp--label-prop>.btn-add {
+  margin-bottom: 10px;
+}
+
+// Input > Search input
+
 .inp-search {
 	margin-bottom: 10px;
 	>input {

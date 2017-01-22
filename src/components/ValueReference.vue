@@ -1,6 +1,12 @@
 <template>
   <div class="value-reference">
-    <value-object v-model="model" :reference="1" @changeRef="" @focus="$emit('focus')" />
+    <value-object
+      v-model="model"
+      :reference="1"
+      @changeRef=""
+      @focus="$emit('focus')"
+      :focus="focus"
+    />
   </div>
 </template>
 
@@ -11,12 +17,14 @@ import { toMin } from '../libs/util.js'
 
 export default {
   name: 'value-reference',
-  props: ['value', 'id'],
+  props: ['value', 'id', 'focus'],
   computed: {
     model: {
       get () {
         const uri = toMin((this.value || {})['@id'])
-        return this.$root.fragments[uri] || this.$root.fetch(uri) || {}
+        const val = this.$root.fragments[uri] || this.$root.fetch(uri) || {}
+        console.debug(uri, val)
+        return val
       },
       set (val) {
         if (this.value && this.value['@temp']) {

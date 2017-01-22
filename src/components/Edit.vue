@@ -26,8 +26,10 @@ export default {
   },
   methods: {
     unfocus () {
-      var uid = this.$root.listFocus.pop()
-      console.debug('edit keydown.esc unfocus')
+      if (this.$root.listFocus.length > 1) {
+        console.debug('edit keydown.esc unfocus')
+        this.$root.listFocus.pop()
+      }
     },
     keydown (evt) {
       let key = evt.which || evt.keyCode

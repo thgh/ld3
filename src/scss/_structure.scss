@@ -30,6 +30,20 @@ body {
 	transition: background 0.3s, color 0.3s;
 }
 
+/* Main scrollbar */
+
+::-webkit-scrollbar {
+  position: absolute;
+  background: $bgNav;
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  border: 1px solid $bgNav;
+  background: mix($fg, $bg, 20%);
+  border-radius: 4px;
+  width: 6px;
+}
+
 /* Structure > nav */
 
 .nav-content {
@@ -50,6 +64,7 @@ body {
 	padding: 1rem;
 	background: $bg;
 	color: $fg;
+	transition: background-color .5s;
 }
 .section-content--focus {
 	background: transparentize($bg, 1);

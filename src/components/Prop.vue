@@ -1,11 +1,11 @@
 <template>
-  <div class="inp-text prop" :class="{ 'focus-prop': focusProp, 'focus-from': focusFrom }" @click.stop>
+  <div class="inp-text prop" :class="propClasses" @click.stop>
     <label class="inp-label" :for="_uid" :title="prop">{{ niceProp }}</label>
     <component
       :is="renderType"
       v-model="fragment[prop]"
       :id="_uid"
-      :focus="focusProp || focusFrom"
+      :focus="hasPropFocus"
       @focus="propFocus"
     />
   </div>
@@ -25,16 +25,19 @@ export default {
   name: 'prop',
   props: ['fragment', 'prop'],
   computed: {
-    level () {
-      return this.$parent.level
+    propClasses () {
+      const level = this.$parent.level
+      const list = this.$root.listFocus
+      const isFocused = list[level] === this.prop
+      const distance = list.length - level
+      return {
+        'focus-prop': isFocused && distance === 1,
+        'focus-from': isFocused && distance > 1,
+        'focus-sibling': !isFocused && distance > 0
+      }
     },
-    focusProp () {
-      return this.$root.listFocus[this.level] === this.prop
-    },
-    focusFrom () {
-      const index = this.$root.listFocus.indexOf(this.prop)
-      console.log('from', index)
-      return index > -1 && index < this.level
+    hasPropFocus () {
+      return this.propClasses['focus-prop'] || this.propClasses['focus-from']
     },
     renderType () {
       return toType(this.fragment[this.prop])
@@ -64,9 +67,8 @@ export default {
 @import '../scss/variables';
 
 .prop {
-  transition: opacity 0.3s;
   &:hover {
-    z-index: 11;
+    // z-index: 11;
   }
 }
 // > normal
@@ -76,39 +78,27 @@ export default {
 }
 
 // .focused > low
-.focused .prop {
-  opacity: 0.1;
-}
 
 .focus-from {
-  background: $bgNav;
+  transition: opacity .3s, background .3s;
+  background: rgba(0, 0, 0, 0);
+}
+
+.focus-sibling {
+  transition: opacity .3s, background .3s;
+  opacity: 0.2;
+}
+.focus-from > .fragment-cta,
+.focus-from ~ form,
+.focus-from ~ .focus-sibling {
+  opacity: 0;
 }
 
 // .focus-prop > normal
-.focus-prop{
+.focus-prop {
   z-index: 11;
-  color: $fg;
   background: $bg;
-}
-
-.focus-prop:hover{
-  color: $fg;
-  background: $bg;
-  //transition: opacity 0.3s, background 0.2s;
-}
-.focus-from.prop,
-.focus-prop.prop {
-  opacity: 1;
-}
-
-.focus-prop>.value-array>.value-object>.props-list>.prop,
-.focus-prop>.value-object>.props-list>.prop {
-  opacity: 1;
-}
-
-// .focus-prop .focus-object > normal
-.focus-prop .focus-object>.props-list>.prop {
-  opacity: 1;
+  transition: none;
 }
 
 // .focus-prop.focus-from > low

@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="submit">
-    <label class="inp-text label-prop" :class="special">
+    <label class="inp-text inp--label-prop" :class="special">
       <input-subtle v-model="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
       <input class="inp-big-focus" v-model="value" :placeholder="prop && 'value...'" @blur="submit" @keyup.enter="submit">
     </label>
@@ -46,7 +46,7 @@ export default {
     },
     submit () {
       if (!this.prop.length) {
-        if (this.$el.querySelector('.label-prop>input') === document.activeElement) {
+        if (this.$el.querySelector('.inp--label-prop>input') === document.activeElement) {
           this.$el.querySelector('input').focus()
         }
         return
@@ -56,7 +56,7 @@ export default {
       }
       if (!this.value.length) {
         if (this.$el.querySelector('input') === document.activeElement) {
-          this.$el.querySelector('.label-prop>input').focus()
+          this.$el.querySelector('.inp--label-prop>input').focus()
         }
         return
       }
@@ -72,15 +72,3 @@ export default {
   }
 }
 </script>
-
-<style>
-.label-prop {
-  padding-left: 1em;
-}
-.label-prop>.inp-subtle {
-  margin-right: .75em;
-}
-.label-prop>.btn-add {
-  margin-bottom: 10px;
-}
-</style>

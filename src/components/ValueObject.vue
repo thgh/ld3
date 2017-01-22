@@ -1,10 +1,10 @@
 <template>
   <div class="value-object" :class="{ 'focus-object': focus }" @click.prevent.stop="objectFocus">
-    <a href="#" class="inp-type-icon" v-html="reference || search ? '&rarr;' : '&bullet;'" @click.prevent="toggleRef"></a>
+    <a href="#" class="inp-type-icon" v-html="isReference ? '&rarr;' : '&bullet;'" @click.prevent="toggleRef"></a>
     <span v-if="focus || search">
-      <input-reference v-if="inpref" v-model="model" :placeholder="placeholder" @click.prevent.stop />
-      <input-subtle v-if="!inpref && value['@value']" v-model="model['@value']" placeholder="Just a value" />
-      <input-subtle v-if="!inpref && !value['@value']" v-model="model['schema:name']" placeholder="Unnamed" />
+      <input-reference v-if="isReference" v-model="model" :placeholder="placeholder" @click.prevent.stop />
+      <input-subtle v-if="!isReference && value['@value']" v-model="model['@value']" placeholder="Just a value" />
+      <input-subtle v-if="!isReference && !value['@value']" v-model="model['schema:name']" placeholder="Unnamed" />
     </span>
     <span v-else v-text="placeholder"></span>
     <input-class v-model="model['@type']" placeholder="wut"></input-class>
@@ -23,7 +23,7 @@ import PropsList from './PropsList.vue'
 
 export default {
   name: 'value-object',
-  props: ['value', 'id', 'reference', 'focus'],
+  props: ['value', 'id', 'focus'],
   data () {
     return {
       search: false
@@ -38,7 +38,7 @@ export default {
         this.$emit('input', val)
       }
     },
-    inpref () {
+    isReference () {
       return this.model['@id'] || this.search
     },
     niceType () {
@@ -58,15 +58,17 @@ export default {
   },
   methods: {
     objectFocus () {
-      console.debug('objectFocus')
-      this.$emit('focus')
+      if (!this.focus) {
+        console.debug('objectFocus')
+        this.$emit('focus')
+      }
     },
     toggleRef (evt) {
       if (this.focus) {
         return console.warn('toggle: should not be focused')
       }
       // evt.stopPropagation()
-      if (this.reference) {
+      if (this.isReference) {
         console.debug('toggle ref=>object')
         this.model = Object.assign({}, this.model, {
           '@id': null,
@@ -114,7 +116,7 @@ export default {
     visibility: hidden;
     padding: 4px 8px;
   }
-  &:hover>.icon-clear {
+  .focus-prop &:hover>.icon-clear {
     visibility: visible;
   }
 }
@@ -138,7 +140,7 @@ export default {
 }
 // .focus-prop .focus-object .focus-prop > normal
 // .focus-prop .focus-object > normal
-.value-object:hover,
+.focus-prop .value-object:hover,
 .focus-object {
   opacity: 1!important;
   >.inp-type-icon {

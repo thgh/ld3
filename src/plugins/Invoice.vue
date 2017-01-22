@@ -477,7 +477,7 @@ export default {
       }
 
       if (typeof this.orders[0] !== 'object') {
-        alert('expected object but got ' +  this.a.referencesOrder)
+        // alert('expected object but got ' +  this.a.referencesOrder)
         return
       }
 

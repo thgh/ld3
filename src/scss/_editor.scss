@@ -12,7 +12,7 @@
 	}
 }
 .fragment-json {
-	position: absolute;
+	position: fixed;
 	z-index: 30;
 	right: 0;
 	bottom: 0;
@@ -58,7 +58,7 @@
 	}
 	header:hover &,
 	.inp-actions:hover>& ,
-	.value-object:hover>& {
+	.focus-prop .value-object:hover>& {
 		opacity: 1;
 	}
 }
@@ -66,9 +66,8 @@
 /* Fragment > Backdrop */
 
 .backdrop {
-  position: fixed;
+  position: absolute;
   z-index: 10;
-  background-color: rgba(0, 0, 0, 1);
   top: 0;
   left: 0;
   right: 0;
@@ -79,11 +78,11 @@
   width: auto;
   height: auto;
 }
-.backdrop.active {
-  opacity: .8;
+.backdrop--active {
+	opacity: .5;
   pointer-events: all;
-  transition: opacity .5s;
-  &:hover {
-  	opacity: .3;
-  }
+}
+.backdrop--fixed {
+	position: fixed;
+  z-index: 9;
 }

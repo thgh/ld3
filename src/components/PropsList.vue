@@ -13,7 +13,7 @@
       :prop="prop"
     />
     <prop-add :fragment="fragment"></prop-add>
-    <div class="backdrop" :class="{ active: backdrop }" @click.prevent.stop="listBlur"></div>
+    <div class="backdrop" :class="backdropClasses" @click.prevent.stop="listBlur"></div>
   </div>
 </template>
 
@@ -40,25 +40,24 @@ export default {
     stub () {
       return toStub(this.fragment)
     },
+    backdropClasses () {
+      return {
+        'backdrop--active': this.$root.listFocus.length > this.level,
+        'backdrop--fixed': this.level === 1
+      }
+    },
     level () {
       let vm = this.$parent
       while (vm && typeof vm.level !== 'number') {
         vm = vm.$parent
       }
       return vm.level + 1
-    },
-    backdrop () {
-      return this.$root.listFocus.length === this.level + 1
     }
   },
   methods: {
-    cancel () {
-      // this.blurry = false
-    },
     listFocus (prop) {
-      console.debug('listFocus')
+      console.debug('listFocus', this.level, this.$root.listFocus)
       const listFocus = this.$root.listFocus
-      console.log(this.level)
       if (listFocus[this.level]) {
         this.$set(listFocus, this.level, prop)
       } else if (listFocus.length === this.level) {
@@ -67,8 +66,8 @@ export default {
       this.$root.listFocus[this.level] = prop
     },
     listBlur () {
-      console.debug('listBlur')
-      this.$root.listFocus.pop()
+      console.debug('listBlur', this.level)
+      this.$root.listFocus =this.$root.listFocus.slice(0, this.level)
     }
   },
   components: {
@@ -95,24 +94,28 @@ export default {
   margin-left: 0;
   margin-right: 0;
   padding: 0 0 .5rem;
-  background-color: $bg;
   // outline: 1px solid purple;
-  transition: background 0.3s;
+  transition: background .3s;
 }
-.focus-prop:hover .props-list {
+.prop.focus-prop .props-list {
   background-color: $bg;
-  transition: background 0.2s;
+}
+.focus-prop:hover {
+  background: $bg;
+  // z-index: 12;
+  // transition: background .1s 3s;
 }
 .focus-from .props-list {
-  background: $bgNav;
-  z-index: 12;
+  // background: $bgNav;
+  // z-index: 12;
+  // transition: background .1s 3s;
 }
-.focus-from .focus-prop .props-list {
+.focus-prop .props-list {
   background-color: $bg;
 }
-.focus-from .focus-prop:hover .props-list {
-  background-color: $bg;
-}
+// .focus-from .focus-prop:hover .props-list {
+//   background-color: $bg;
+// }
 .value-array>.value-object>.props-list {
   margin-top: -1.6rem;
 }

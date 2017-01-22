@@ -1,5 +1,5 @@
 <template>
-  <div class="fragment" :class="{}">
+  <div class="fragment" :class="{ 'focus-prop': focusProp, 'focus-from': focusFrom }">
     <header>
       <h1 class="fragment-h1">
         <textarea-subtle :model="fragment" prop="schema:name" :placeholder="fragment['@id']||'Fatal error'"></textarea-subtle>
@@ -64,6 +64,13 @@ export default {
     },
     resolved () {
       return this.$root.resolve(this.fragment, this.options.resolve)
+    },
+    focusProp () {
+      // TODO: fill in route as first item in listFocus
+      return this.$root.listFocus.length === 1
+    },
+    focusFrom () {
+      return this.$root.listFocus.length > 1
     }
   },
   methods: {
@@ -80,6 +87,11 @@ export default {
       delete this.$root.fragments[this.fragment['@id']]
     }
   },
+  watch: {
+    '$root.route.uri' (val) {
+      this.$root.listFocus = [val]
+    }
+  },
   mixins: [PluginSystem],
   components: {
     InputClass,
@@ -88,3 +100,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.fragment {
+  margin: -2rem;
+  padding: 2rem;
+}
+</style>
