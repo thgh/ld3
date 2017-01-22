@@ -39,6 +39,7 @@ export default {
   },
   methods: {
     focus (index) {
+      console.debug('value-array focus', index)
       this.focusIndex = index
     },
     input (index, val) {

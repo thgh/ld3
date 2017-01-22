@@ -2,15 +2,20 @@
 	opacity: 1;
 	transition: opacity 3s;
 }
-.opacity-leave-active {
+.opacity-leave-active, .opacity-leave-to {
 	opacity: 0;
 }
 
-.staggered-enter-active, .staggered-leave-active {
-  transition: opacity .5s ease, height .5s ease;
-  overflow: hidden;
+// .staggered-enter-active, .staggered-leave-active {
+//   transition: transform .5s ease,  opacity .5s ease;
+// }
+// .staggered-enter, .staggered-leave-to {
+//   opacity: 0;
+//   transform: translateX(20px);
+// }
+.staggered-leave-active {
+	position: absolute;
 }
-.staggered-enter, .staggered-leave-active {
-  opacity: 0;
-  height: 0;
+.staggered-move {
+  transition: transform .3s ease;
 }

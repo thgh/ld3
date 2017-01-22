@@ -1,7 +1,25 @@
 <template>
-  <form class="inp-subtle" @submit.prevent.stop="submit" @keydown="keydown"><span class="inp-subtle-span" v-text="term||placeholder"></span> <input class="inp-big-focus" type="text" v-model="term" :placeholder="placeholder" @blur="blur" @input="input"><div class="ref-select" v-if="options">
-      <div class="ref-option" :class="{'ref-ghost':index===ghost}" v-for="(opt, index) in options" v-text="opt.item+' '+opt.score" :key="opt.item" @mouseenter="ghost=index" @mousedown="confirm(opt.item)"></div>
-    </div>
+  <form class="inp-subtle"
+    @submit.prevent.stop="submit"
+    @keydown="keydown"
+    ><span class="inp-subtle-span" v-text="term || placeholder"></span> <input
+      class="inp-big-focus"
+      type="text"
+      v-model="term"
+      :placeholder="placeholder"
+      @blur="blur"
+      @input="input"
+      ><transition-group name="staggered" tag="div" class="ref-select" v-if="options">
+        <div
+        class="ref-option"
+        :class="{ 'ref-ghost': index === ghost }"
+        v-for="(opt, index) in options"
+        v-text="opt.item + ' ' + opt.score"
+        :key="opt.item"
+        @mouseenter="ghost = index"
+        @mousedown="confirm(opt.item)"
+      ></div>
+    </transition-group>
   </form> 
 </template>
 
@@ -23,7 +41,7 @@ var fuseOptions = {
 
 export default {
   name: 'input-reference',
-  props: ['model', 'prop', 'placeholder'],
+  props: ['value', 'placeholder'],
   data () {
     return {
       term: null,
@@ -32,9 +50,6 @@ export default {
     }
   },
   computed: {
-    value () {
-      return this.model[this.prop]
-    },
     index () {
       var fragments = Object.keys(this.$root.fragments).map(k => this.$root.fragments[k])
       return new Fuse(fragments, fuseOptions)
@@ -75,14 +90,15 @@ export default {
       return false
     },
     confirm (uri) {
+      console.debug('input-ref confirm', uri)
       if (typeof uri === 'string') {
-        this.value = {'@id': uri}
+        this.$emit('input', { '@id': uri })
         this.blur()
       } else if (!uri && this.options) {
-        this.value = {'@id': this.options[this.ghost].item}
+        this.$emit('input', { '@id': this.options[this.ghost].item })
         this.blur()
       } else {
-        console.log('confirming but dont know what', uri)
+        console.debug('confirming but dont know what', uri)
       }
     }
   }

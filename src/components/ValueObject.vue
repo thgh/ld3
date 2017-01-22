@@ -1,13 +1,13 @@
 <template>
-  <div class="value-object" :class="{'focus-object':focus}" @click.prevent.stop="focusObject">
-    <a href="#" class="inp-type-icon" v-html="reference||search?'&rarr;':'&bullet;'" @click.prevent="toggleRef"></a>
-    <span v-if="focus||search">
-      <input-reference v-if="inpref" :model="parent" :prop="prop" :placeholder="placeholder" @click.prevent.stop></input-reference>
-      <input-subtle v-if="!inpref&&value['@value']" :model="fragment" prop="@value" placeholder="Just a value"></input-subtle>
-      <input-subtle v-if="!inpref&&!value['@value']" :model="fragment" prop="schema:name" placeholder="Unnamed"></input-subtle>
+  <div class="value-object" :class="{ 'focus-object': focus }" @click.prevent.stop="focusObject">
+    <a href="#" class="inp-type-icon" v-html="reference || search ? '&rarr;' : '&bullet;'" @click.prevent="toggleRef"></a>
+    <span v-if="focus || search">
+      <input-reference v-if="inpref" v-model="model" :placeholder="placeholder" @click.prevent.stop />
+      <input-subtle v-if="!inpref && value['@value']" v-model="model['@value']" placeholder="Just a value" />
+      <input-subtle v-if="!inpref && !value['@value']" v-model="model['schema:name']" placeholder="Unnamed" />
     </span>
     <span v-else v-text="placeholder"></span>
-    <input-class :model="fragment" prop="@type" placeholder="wut"></input-class>
+    <input-class v-model="model['@type']" placeholder="wut"></input-class>
     <span class="icon-clear" @click="clear">&times;</span>
     <props-list v-if="focus && value" :fragment="value"></props-list>
   </div>
@@ -23,7 +23,7 @@ import PropsList from './PropsList.vue'
 
 export default {
   name: 'value-object',
-  props: ['parent', 'prop', 'id', 'reference'],
+  props: ['value', 'id', 'reference'],
   data () {
     return {
       focus: false,
@@ -31,45 +31,40 @@ export default {
     }
   },
   computed: {
-    fragment () {
-      return this.parent[this.prop]
-    },
-    inpref () {
-      return this.reference || this.search
-    },
-    niceType () {
-      var t = this.value['@type']
-      return t ? t.slice(t.lastIndexOf(':') + 1) : '?'
-    },
-    value () {
-      return this.fragment || {}
-    },
-    label () {
-      var fragment = this.value
-      return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
-    },
-    placeholder () {
-      return this.label || this.value['schema:name'] || this.value['@id'] || this.value['@value'] || 'Unnamed'
-    },
-    name () {
-      return this.fragment['dcterms:title'] || this.fragment['schema:name']
-    },
     model: {
       get () {
-        return this.fragment || console.log('falsy value object') || {}
+        return this.value || console.debug('falsy value object') || {}
       },
       set (val) {
-        console.log('object => ref', inert(val))
-        this.$set(this.parent, this.prop, val)
+        this.$emit('input', val)
       }
+    },
+    inpref () {
+      return this.model['@id'] || this.search
+    },
+    niceType () {
+      var t = this.model['@type']
+      return t ? t.slice(t.lastIndexOf(':') + 1) : '?'
+    },
+    label () {
+      var model = this.model
+      return !model['rdfs:label'] ? false : typeof model['rdfs:label'] === 'string' ? model['rdfs:label'] : Array.isArray(model['rdfs:label']) ? model['rdfs:label'][0]['@value'] : model['rdfs:label']['@value']
+    },
+    placeholder () {
+      return this.label || this.model['schema:name'] || this.model['@id'] || this.model['@value'] || 'Unnamed'
+    },
+    name () {
+      return this.model['dcterms:title'] || this.model['schema:name']
     }
   },
   methods: {
     focusObject () {
+      console.debug('objectFocus')
       if (this.focus) {
         return
       }
-      this.$parent.$emit('propFocus', this.prop, this._uid)
+      this.focus = true
+      this.$emit('focus')
     },
     toggleRef (evt) {
       if (this.focus) {
@@ -77,17 +72,17 @@ export default {
       }
       // evt.stopPropagation()
       if (this.reference) {
-        let f = inert(this.fragment || {})
-        console.log('toggle ref=>object', f)
-        f['@fromid'] = f['@id']
-        delete f['@id']
-        this.reference = f
+        console.debug('toggle ref=>object')
+        this.model = Object.assign({}, this.model, {
+          '@id': null,
+          '@fromid': this.model['@id']
+        })
         window.hub.$emit('arrayFocused')
       } else if (!this.search) {
-        console.log('toggle object=>ref')
+        console.debug('toggle object=>ref')
         evt.stopPropagation()
-        if (this.fragment['@fromid']) {
-          this.model = {'@id': this.fragment['@fromid']}
+        if (this.model['@fromid']) {
+          this.model = {'@id': this.model['@fromid']}
         } else {
           this.search = true
           this.$nextTick(function () {
@@ -99,12 +94,9 @@ export default {
       }
     },
     clear () {
-      if (typeof this.$parent.renderType === 'object') {
-        this.$emit('splice')
-      } else if (this.reference) {
-        this.reference = this.fragment && (this.fragment['schema:name'] || this.fragment.name) || ' '
-      } else {
-        this.fragment = this.fragment && (this.fragment['schema:name'] || this.fragment.name) || ' '
+      this.$emit('remove')
+      if (!Array.isArray(this.$parent.renderType)) {
+        this.model = this.model['schema:name'] || this.model.name || ' '
       }
     }
   },

@@ -29,7 +29,7 @@ export default {
       this.intentTimeout = setTimeout(function () {
         window.location.hash = '!' + uri
         this.intentUri = null
-      }, 200)
+      }, 2000)
       this.intentUri = uri
     },
     leave () {

@@ -1,10 +1,21 @@
 <template>
-  <form class="inp-subtle inp-type fragment-type" :class="{'inp-type-active':options}" @submit.prevent.stop="submit" @keydown="keydown">
-    <span class="inp-subtle-span" v-text="term||text"></span>
-    <input type="text" :value="term" :placeholder="text" @blur="blur" @input="input" @focus="input">
+  <form class="inp-subtle inp-type fragment-type"
+    :class="{ 'inp-type-active': options }"
+    @submit.prevent.stop="submit"
+    @keydown="keydown"
+  >
+    <span class="inp-subtle-span" v-text="term || text"></span>
+    <input type="text" v-model="term" :placeholder="text" @blur="blur" @input="input" @focus="input">
     <div class="ref-select" v-if="options">
       <div class="ref-scroll">
-        <div class="ref-option" :class="{'ref-ghost':index===ghost}" v-for="(opt, index) in options" v-text="opt.item+' '+opt.score" :key="opt.item" @mouseenter="ghost=index" @mousedown="confirm(opt.item)"></div>
+        <div class="ref-option"
+          :class="{ 'ref-ghost': index === ghost }"
+          v-for="(opt, index) in options"
+          v-text="opt.item + ' ' + opt.score"
+          :key="opt.item"
+          @mouseenter="ghost = index"
+          @mousedown="confirm(opt.item)"
+        ></div>
       </div>
     </div>
   </form> 
@@ -12,7 +23,7 @@
 
 <script>
 import Fuse from 'fuse.js'
-import {Classes} from '../libs/schema.js'
+import { Classes } from '../libs/schema.js'
 
 var fuseOptions = {
   caseSensitive: false,
@@ -28,7 +39,7 @@ var fuseOptions = {
 
 export default {
   name: 'input-class',
-  props: ['model', 'prop', 'placeholder'],
+  props: ['value', 'placeholder'],
   data () {
     return {
       term: null,
@@ -37,9 +48,6 @@ export default {
     }
   },
   computed: {
-    value () {
-      return this.model && this.model[this.prop]
-    },
     index () {
       return new Fuse(Classes, fuseOptions)
     },
@@ -114,9 +122,9 @@ export default {
       if (typeof uri !== 'string' || !uri) {
         return console.warn('confirming but dont know what', uri)
       }
-      this.value = 'schema:' + uri
       this.term = null
       this.ghost = 0
+      this.$emit('input', 'schema:' + uri)
     }
   }
 }

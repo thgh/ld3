@@ -11,7 +11,6 @@
 </template>
 
 <script>
-// inp-subtle>inp-actions: transition=opacity
 export default {
   name: 'value-text',
   props: ['value', 'id'],

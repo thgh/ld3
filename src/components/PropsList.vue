@@ -1,20 +1,29 @@
 <template>
   <div class="props-list">
-    <prop v-for="(value, prop) in fragment" v-if="prop[0]!=='@'" :parent="fragment" :prop="prop"></prop>
-    <prop v-for="prop in stub" :parent="fragment" :prop="prop"></prop>
+    <prop
+      v-for="(value, prop) in fragment" 
+      v-if="prop[0] !== '@'"
+      :fragment="fragment"
+      :prop="prop"
+      @focus="childFocused = 1"
+    />
+    <prop
+      v-for="prop in stub"
+      :fragment="fragment"
+      :prop="prop"
+    />
     <prop-add :fragment="fragment"></prop-add>
-    <div class="backdrop" :class="{active:childFocused}" @click.prevent.stop="unfocus"></div>
+    <div class="backdrop" :class="{ active: childFocused }" @click.prevent.stop="unfocus"></div>
   </div>
 </template>
 
 <script>
 import PropAdd from './PropAdd.vue'
-import {toStub} from '../libs/stub.js'
+import { toStub } from '../libs/stub.js'
 
 export default {
   name: 'props-list',
   props: {
-    childFocused: false,
     fragment: {
       default: {
         'schema:name': 'fuckthis'
@@ -23,6 +32,7 @@ export default {
   },
   data () {
     return {
+      childFocused: false,
       suggest: null
     }
   },
@@ -34,6 +44,9 @@ export default {
   methods: {
     cancel () {
       // this.blurry = false
+    },
+    unfocus () {
+      console.debug('unfocus')
     }
   },
   components: {

@@ -59,16 +59,15 @@ export default {
       }, 100)
     },
     input () {
-      var needle = this.term
-      if (!needle) {
+      if (!this.term) {
         this.options = [{
           action: 'Object',
           score: ''
         }]
         this.ghost = 0
-        return
+        return console.debug('No term')
       }
-      this.options = this.index.search(needle).slice(0, 20).concat({
+      this.options = this.index.search(this.term).slice(0, 20).concat({
         action: 'Object: ' + this.term,
         score: ''
       })

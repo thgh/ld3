@@ -1,7 +1,12 @@
 <template>
-  <div class="inp-text prop" :class="{'focus-prop':focus&&!focusFrom,'focus-from':focusFrom}" @click.stop>
-    <label class="inp-label" :for="_uid" :title="prop">{{niceProp}}</label>
-    <component :is="renderType" v-model="parent[prop]" :parent="parent" :prop="prop" :id="_uid"></component>
+  <div class="inp-text prop" :class="{ 'focus-prop': focus && !focusFrom, 'focus-from': focusFrom }" @click.stop>
+    <label class="inp-label" :for="_uid" :title="prop">{{ niceProp }}</label>
+    <component
+      :is="renderType"
+      v-model="fragment[prop]"
+      :id="_uid"
+      @focus="propFocus"
+    />
   </div>
 </template>
 
@@ -17,7 +22,7 @@ import { toType } from '../libs/util.js'
 
 export default {
   name: 'prop',
-  props: ['parent', 'prop'],
+  props: ['fragment', 'prop'],
   data () {
     return {
       focus: false,
@@ -26,10 +31,16 @@ export default {
   },
   computed: {
     renderType () {
-      return toType(this.parent[this.prop])
+      return toType(this.fragment[this.prop])
     },
     niceProp () {
       return typeof this.prop === 'string' && this.prop.substr(this.prop.indexOf(':') + 1)
+    }
+  },
+  methods: {
+    propFocus (val) {
+      console.debug('propFocus', this.prop, val)
+      this.$emit('focus', val)
     }
   },
   events: {

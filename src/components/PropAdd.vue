@@ -1,8 +1,8 @@
 <template>
   <form @submit.prevent="submit">
     <label class="inp-text label-prop" :class="special">
-      <input-subtle :model="tuple" prop="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
-      <input class="inp-big-focus" v-model="value" :placeholder="prop&&'value...'" @blur="submit" @keyup.enter="submit">
+      <input-subtle v-model="prop" placeholder="property..." @blur="submit" @keydown.enter="submit" style="opacity:.7"></input-subtle>
+      <input class="inp-big-focus" v-model="value" :placeholder="prop && 'value...'" @blur="submit" @keyup.enter="submit">
     </label>
   </form>
 </template>
@@ -17,16 +17,11 @@ export default {
   props: ['fragment'],
   data () {
     return {
-      tuple: {
-        prop: ''
-      },
+      prop: '',
       value: ''
     }
   },
   computed: {
-    prop () {
-      return this.tuple.prop
-    },
     props () {
       return this.fragment
     },
