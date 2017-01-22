@@ -1,5 +1,5 @@
 <template>
-  <div class="fragment focus-prop">
+  <div class="fragment" :class="{}">
     <header>
       <h1 class="fragment-h1">
         <textarea-subtle :model="fragment" prop="schema:name" :placeholder="fragment['@id']||'Fatal error'"></textarea-subtle>

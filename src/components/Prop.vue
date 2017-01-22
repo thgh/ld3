@@ -1,10 +1,11 @@
 <template>
-  <div class="inp-text prop" :class="{ 'focus-prop': focus && !focusFrom, 'focus-from': focusFrom }" @click.stop>
+  <div class="inp-text prop" :class="{ 'focus-prop': focusProp, 'focus-from': focusFrom }" @click.stop>
     <label class="inp-label" :for="_uid" :title="prop">{{ niceProp }}</label>
     <component
       :is="renderType"
       v-model="fragment[prop]"
       :id="_uid"
+      :focus="focusProp || focusFrom"
       @focus="propFocus"
     />
   </div>
@@ -23,13 +24,18 @@ import { toType } from '../libs/util.js'
 export default {
   name: 'prop',
   props: ['fragment', 'prop'],
-  data () {
-    return {
-      focus: false,
-      focusFrom: false
-    }
-  },
   computed: {
+    level () {
+      return this.$parent.level
+    },
+    focusProp () {
+      return this.$root.listFocus[this.level] === this.prop
+    },
+    focusFrom () {
+      const index = this.$root.listFocus.indexOf(this.prop)
+      console.log('from', index)
+      return index > -1 && index < this.level
+    },
     renderType () {
       return toType(this.fragment[this.prop])
     },
@@ -41,29 +47,6 @@ export default {
     propFocus (val) {
       console.debug('propFocus', this.prop, val)
       this.$emit('focus', val)
-    }
-  },
-  events: {
-    deactivate () {
-      this.focus = false
-      return true
-    },
-    propFocus (val) {
-      // console.log('pf', val, this._uid)
-      this.focus = val
-      if (!val) {
-        this.focusFrom = val
-      }
-      window.hub.$emit('focusFrom', val, this._uid)
-    },
-    focusFrom (val, uid) {
-      if (this._uid === uid) {
-        return true
-      }
-      this.focusFrom = val
-    },
-    arrayFocused () {
-      // Catch it here, don't want it dispatched further
     }
   },
   components: {

@@ -1,5 +1,5 @@
 <template>
-  <div class="section-content">
+  <div class="section-content" :class="{ 'section-content--focus': $root.listFocus.length > 1 }">
     <fragment v-if="currentFragment" :fragment="currentFragment"></fragment>
   </div>
 </template>
@@ -26,9 +26,8 @@ export default {
   },
   methods: {
     unfocus () {
-      var uid = this.focusIds.pop()
-      window.hub.$emit('unfocus', uid)
-      // console.log('unfocus', uid, this.focusIds.length)
+      var uid = this.$root.listFocus.pop()
+      console.debug('edit keydown.esc unfocus')
     },
     keydown (evt) {
       let key = evt.which || evt.keyCode
@@ -48,16 +47,6 @@ export default {
         evt.preventDefault()
         document.querySelector('nav input').focus()
       }
-    }
-  },
-  events: {
-    objectFocused (uid) {
-      this.focusIds.push(uid)
-      // console.log('  focus', uid, this.focusIds.length)
-    },
-    siblingUnfocused (uid) {
-      this.focusIds.splice(this.focusIds.indexOf(uid), 1)
-      // console.log('unfocus', uid, this.focusIds.length)
     }
   },
   mounted () {

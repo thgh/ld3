@@ -1,5 +1,5 @@
 <template>
-  <div class="value-object" :class="{ 'focus-object': focus }" @click.prevent.stop="focusObject">
+  <div class="value-object" :class="{ 'focus-object': focus }" @click.prevent.stop="objectFocus">
     <a href="#" class="inp-type-icon" v-html="reference || search ? '&rarr;' : '&bullet;'" @click.prevent="toggleRef"></a>
     <span v-if="focus || search">
       <input-reference v-if="inpref" v-model="model" :placeholder="placeholder" @click.prevent.stop />
@@ -9,7 +9,7 @@
     <span v-else v-text="placeholder"></span>
     <input-class v-model="model['@type']" placeholder="wut"></input-class>
     <span class="icon-clear" @click="clear">&times;</span>
-    <props-list v-if="focus && value" :fragment="value"></props-list>
+    <props-list v-if="focus" :fragment="value"></props-list>
   </div>
 </template>
 
@@ -23,10 +23,9 @@ import PropsList from './PropsList.vue'
 
 export default {
   name: 'value-object',
-  props: ['value', 'id', 'reference'],
+  props: ['value', 'id', 'reference', 'focus'],
   data () {
     return {
-      focus: false,
       search: false
     }
   },
@@ -58,12 +57,8 @@ export default {
     }
   },
   methods: {
-    focusObject () {
+    objectFocus () {
       console.debug('objectFocus')
-      if (this.focus) {
-        return
-      }
-      this.focus = true
       this.$emit('focus')
     },
     toggleRef (evt) {
@@ -100,21 +95,6 @@ export default {
       }
     }
   },
-  events: {
-    unfocus (uid) {
-      if (this._uid === uid) {
-        this.focus = false
-        window.hub.$emit('propFocus', false)
-      }
-      return true
-    },
-    siblingObjectActivated () {
-      if (!this.activeLock && this.focus) {
-        this.focus = false
-        window.hub.$emit('siblingUnfocused', this._uid)
-      }
-    }
-  },
   components: {
     InputClass,
     InputReference,
@@ -136,9 +116,6 @@ export default {
   }
   &:hover>.icon-clear {
     visibility: visible;
-  }
-  &:hover {
-    background-color: rgba(0, 255, 0, .2);
   }
 }
 

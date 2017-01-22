@@ -50,9 +50,9 @@ body {
 	padding: 1rem;
 	background: $bg;
 	color: $fg;
-	.focused>& {
-		background: $bgNav;
-	}
+}
+.section-content--focus {
+	background: transparentize($bg, 1);
 }
 .section-intro {
 	a {

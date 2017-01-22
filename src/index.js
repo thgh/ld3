@@ -31,7 +31,9 @@ new Vue({
   el: '#app',
   data () {
     return {
+      level: 0,
       config: {},
+      listFocus: ['uid'],
       class: {
         focused: null
       },

@@ -5,7 +5,7 @@
       v-if="prop[0] !== '@'"
       :fragment="fragment"
       :prop="prop"
-      @focus="childFocused = 1"
+      @focus="listFocus(prop)"
     />
     <prop
       v-for="prop in stub"
@@ -13,7 +13,7 @@
       :prop="prop"
     />
     <prop-add :fragment="fragment"></prop-add>
-    <div class="backdrop" :class="{ active: childFocused }" @click.prevent.stop="unfocus"></div>
+    <div class="backdrop" :class="{ active: backdrop }" @click.prevent.stop="listBlur"></div>
   </div>
 </template>
 
@@ -39,14 +39,36 @@ export default {
   computed: {
     stub () {
       return toStub(this.fragment)
+    },
+    level () {
+      let vm = this.$parent
+      while (vm && typeof vm.level !== 'number') {
+        vm = vm.$parent
+      }
+      return vm.level + 1
+    },
+    backdrop () {
+      return this.$root.listFocus.length === this.level + 1
     }
   },
   methods: {
     cancel () {
       // this.blurry = false
     },
-    unfocus () {
-      console.debug('unfocus')
+    listFocus (prop) {
+      console.debug('listFocus')
+      const listFocus = this.$root.listFocus
+      console.log(this.level)
+      if (listFocus[this.level]) {
+        this.$set(listFocus, this.level, prop)
+      } else if (listFocus.length === this.level) {
+        listFocus.push(prop)
+      }
+      this.$root.listFocus[this.level] = prop
+    },
+    listBlur () {
+      console.debug('listBlur')
+      this.$root.listFocus.pop()
     }
   },
   components: {
