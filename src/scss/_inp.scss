@@ -263,7 +263,67 @@ form.inp-subtle {
 
 /* input-single */
 
-.inp-single {
-	display: block;
-	text-align:right;
+.input {
+	text-align: left;
+}
+.input--single {
+	position: relative;
+	display: flex;
+	line-height: 24px;
+	margin-left: -13px;
+	border: 1px solid mix($fg, $bg, 0%);
+	background: none;
+}
+.input--empty {
+	.input__label {
+		position: relative;
+		opacity: 1;
+		&::after {
+			content: '';
+			position: absolute;
+			right: -1rem;
+			top: 50%;
+			margin-top: -.2rem;
+			width: .6rem;
+			height: .6rem;
+			background: red;
+			border-radius: 50%;
+			opacity: .4;
+  		animation: scale2 .5s ease .5s;
+		}
+	}
+}
+.input--focus {
+	border-color: mix($fg, $bg, 15%);
+	background: mix($bg, $bgNav, 50%);
+	&.input--empty::after {
+		opacity: .2;
+	}
+}
+
+.input__label {
+	padding: 6px 12px;
+	line-height: inherit;
+	font: inherit;
+	user-select: none;
+	opacity: .5;
+}
+.input__input {
+	flex: 1;
+	border: none;
+	padding: 6px 1px;
+	line-height: inherit;
+	background: inherit;
+	font: inherit;
+	color: inherit;
+}
+.input__input__textarea {
+	outline: none;
+}
+
+@keyframes scale2 {
+  50% {
+    transform: scale(2);
+    opacity: 1;
+  }
 }

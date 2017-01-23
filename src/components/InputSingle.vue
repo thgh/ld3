@@ -1,7 +1,17 @@
 <template>
-  <label class="inp-single">
-    {{ label }}
-    <input type="text" v-model="model" :placeholder="label">
+  <label class="input input--single" :class="classes">
+    <div class="input__label">{{ label }}</div>
+    <span class="input__input inp-subtle">
+      <span class="inp-subtle-span" v-text="(model || '') + '.'"></span>
+      <textarea
+        :autofocus="!model"
+        class="input__input__textarea"
+        type="text"
+        v-model="model"
+        @focus="focus = 1"
+        @blur="focus = 0"
+      ></textarea>
+    </span> 
   </label>
 </template>
 
@@ -10,30 +20,47 @@ import { inert, toMin } from '../libs/util.js'
 
 export default {
   name: 'input-single',
-  props: ['a', 'path', 'label'],
+  props: {
+    a: null,
+    path: null,
+    label: null,
+    length: {
+      default: 10
+    }
+  },
+  data () {
+    return {
+      focus: false
+    }
+  },
   computed: {
-    parent () {
-      return this.follow(this.path).parent
-    },
-    prop () {
-      return this.path.slice()
+    classes () {
+      return {
+        'input--empty': !this.model,
+        'input--focus': this.focus
+      }
     },
     model: {
       get () {
-        return this.value
+        return this.parent[this.prop]
       },
-      set (val) {
-        this.$emit('input', val)
+      set (v) {
+        console.log('setting', this.parent, this.prop, v)
+        this.$set(this.parent, this.prop, v)
       }
-    }
-  },
-  methods: {
-    follow (path) {
+    },
+    parent () {
+      return this.resolved.parent
+    },
+    prop () {
+      return this.resolved.prop
+    },
+    resolved () {
       if (!this.a || !this.a['@id']) {
         return console.warn('input single only supports fragments with @id')
       }
       var a = this.storage(this.a)
-      var pieces = path && path.split('.') || []
+      var pieces = this.path && this.path.split('.') || []
 
       // Loop over all path pieces
       for (let i = 0; i < pieces.length; i++) {
@@ -50,7 +77,9 @@ export default {
         a = this.storage(a[piece]) || a[piece]
       }
       throw 'path param in follow() is required'
-    },
+    }
+  },
+  methods: {
     storage (key) {
       return this.$root.fragments[toMin(typeof key === 'object' ? key['@id'] : key)]
     }

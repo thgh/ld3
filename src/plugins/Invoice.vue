@@ -19,14 +19,14 @@
       }
       .print-hidden {
         margin: 0 auto;
-        max-width: 28rem;
-        text-align: center;
+        padding: 0 5mm;
+        max-width: 22cm;
       }
       #printme>.invoice {
         margin: 0 auto;
       }
       .invoice-ctrl {
-        margin: 2rem auto;
+        margin: 2rem 0;
         display: block;
       }
       .invoice-ctrl input {
