@@ -7,7 +7,7 @@
           <a href="#!home" v-show="$root.route.view=='conf'">home</a>
           <a href="#!conf" v-show="$root.route.view!='conf'">config</a>
         </p>
-        <recent-fragments class="nav-fixwidth" :list="$root.fragments"></recent-fragments>
+        <recent-fragments class="nav-fixwidth" />
       </nav>
     </div>
     <modal-auth v-if="!$root.user['@id']"></modal-auth>

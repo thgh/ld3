@@ -1,13 +1,19 @@
 <template>
-  <section :class="{'nav-muted':!search}">
+  <section :class="{ 'nav-muted': !search }">
     <div class="inp-text inp-search">
-      <input type="text" v-model="search" :placeholder="'Search through '+$root.fragmentCount+' fragments...'">
+      <input type="text" v-model="search" :placeholder="'Search through ' + $root.fragmentCount + ' fragments...'">
     </div>
     <div class="nav-fragments">
-      <div class="a-recent" v-for="(fragment, uri) in list" v-if="!fragment['@temp']">
-        <a :href="'#!'+uri" @mouseenter="enter(uri)" @mouseleave="leave" class="a-fragment">
-          {{ fragment['schema:name'] || label(fragment) || fragment['dcterms:title'] || uri }}
-          <small v-if="fragment['schema:name'] || label(fragment) || fragment['dcterms:title']">{{ uri }}</small>
+      <div class="a-recent" v-if="!search || !list">
+        <a :href="'#!create'" @mouseenter="leave" @mouseleave="leave" class="a-fragment">
+          Add...
+          <small>new fragment</small>
+        </a>
+      </div>
+      <div class="a-recent" v-for="uri in limitedList" v-if="!fragments[uri]['@temp']">
+        <a :href="'#!' + uri" @mouseenter="enter(uri)" @mouseleave="leave" class="a-fragment">
+          {{ fragments[uri]['schema:name'] || label(fragments[uri]) || fragments[uri]['dcterms:title'] || uri }}
+          <small v-if="fragments[uri]['schema:name'] || label(fragments[uri]) || fragments[uri]['dcterms:title']">{{ uri }}</small>
         </a>
       </div>
     </div>
@@ -21,6 +27,20 @@ export default {
   data () {
     return {
       search: ''
+    }
+  },
+  computed: {
+    filteredList () {
+      return Object.keys(this.$root.fragments).filter(f => f.includes(this.search))
+    },
+    sortedList () {
+      return this.order(this.filteredList)
+    },
+    limitedList () {
+      return this.sortedList
+    },
+    fragments () {
+      return this.$root.fragments
     }
   },
   methods: {
@@ -38,9 +58,7 @@ export default {
     },
     label (fragment) {
       return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
-    }
-  },
-  filters: {
+    },
     order (arr) {
       if (!arr) {
         return arr
@@ -48,7 +66,7 @@ export default {
       const key = '@id'
 
       return arr.slice().sort(function (a, b) {
-        return a['$value'][key] === b['$value'][key] ? 0 : a['$value'][key] > b['$value'][key] ? 1 : -1
+        return a[key] === b[key] ? 0 : a[key] > b[key] ? 1 : -1
       })
     }
   },
