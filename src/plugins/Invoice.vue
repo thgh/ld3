@@ -369,6 +369,7 @@
 
 <script>
 import { inert, toMin, StyleInline } from '../libs/util.js'
+import { last } from '../libs/collection.js'
 
 import InputSingle from '../components/InputSingle.vue'
 
@@ -455,7 +456,7 @@ export default {
       return this.a.provider && this.a.provider['be:taxExemptionRule']
     },
     total () {
-      return this.totalPaymentDue[this.totalPaymentDue.length - 1].price
+      return last(this.totalPaymentDue).price
     },
     orders () {
       return Array.isArray(this.a.referencesOrder) ? this.a.referencesOrder : [this.a.referencesOrder]
