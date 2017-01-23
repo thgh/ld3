@@ -2,6 +2,11 @@ import throttle from '../libs/throttle.js'
 import { inert, getJSON, putJSON, toMin, fromMin } from '../libs/util.js'
 import ls from 'local-storage'
 
+const config = {
+  allowPlugins: false,
+  serviceWorker: false
+}
+
 const fragments = {}
 
 function hideSchema (obj) {
@@ -35,9 +40,7 @@ export default {
   data () {
     return {
       // Project setup
-      config: {
-        allowPlugins: false
-      },
+      config,
 
       // Data
       fragments,
