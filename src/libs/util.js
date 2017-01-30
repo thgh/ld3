@@ -55,8 +55,12 @@ export function toMin (obj) {
 
 /* HTTP */
 
+// Force https on every request
+const httpsFix = window.location.protocol !== 'https:' ? u => u :
+  u => 'https' + u.slice(4)
+
 export function getJSON (url) {
-  return window.fetch(url, {
+  return window.fetch(httpsFix(url), {
     redirect: 'follow',
     headers: {
       Accept: 'application/json'
@@ -67,7 +71,7 @@ export function getJSON (url) {
 }
 
 export function putJSON (data) {
-  return window.fetch(data['@id'], {
+  return window.fetch(httpsFix(data['@id']), {
     method: 'put',
     body: JSON.stringify(data),
     redirect: 'follow',
