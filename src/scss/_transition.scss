@@ -1,10 +1,20 @@
 .opacity-enter-active, .opacity-leave-active {
-	opacity: 1;
-	transition: opacity 3s;
+  opacity: 1;
+  transition: opacity .5s;
 }
-.opacity-leave-active, .opacity-leave-to {
-	opacity: 0;
+.opacity-enter, .opacity-leave-to {
+  opacity: 0;
 }
+
+.plugin-enter-active, .plugin-leave-active {
+  opacity: 1;
+  transition: opacity .5s, transform .5s;
+}
+.plugin-enter, .plugin-leave-to {
+  opacity: 0;
+  transform: scale(.1) translateY(-50vh);
+}
+
 
 // .staggered-enter-active, .staggered-leave-active {
 //   transition: transform .5s ease,  opacity .5s ease;

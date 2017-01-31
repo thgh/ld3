@@ -45,7 +45,6 @@ export default {
         return this.parent[this.prop]
       },
       set (v) {
-        console.log('setting', this.parent, this.prop, v)
         this.$set(this.parent, this.prop, v)
       }
     },
@@ -60,21 +59,33 @@ export default {
         return console.warn('input single only supports fragments with @id')
       }
       var a = this.storage(this.a)
+
       var pieces = this.path && this.path.split('.') || []
+      let lastPiece = '.'
 
       // Loop over all path pieces
       for (let i = 0; i < pieces.length; i++) {
         let piece = 'schema:' + pieces[i]
-        if (typeof a[piece] === 'undefined') {
-          this.$set(a, piece, i < pieces.length - 1 ? {} : 'nope')
-        }
+
+        // Return the last piece and its parent
         if (i === pieces.length - 1) {
+          if (typeof a[piece] === 'undefined') {
+            this.$set(a, piece, '(something went wrong)')
+          }
           return {
             parent: a,
             prop: piece
           }
         }
-        a = this.storage(a[piece]) || a[piece]
+
+        // Really need this to be an object
+        if (a[piece] === null || typeof a[piece] !== 'object') {
+          this.$set(a, piece, { blub: 'blub' })
+          a = a[piece]
+        } else {
+          a = this.storage(a[piece]) || a[piece]
+        }
+        lastPiece = piece
       }
       throw 'path param in follow() is required'
     }

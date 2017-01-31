@@ -6,17 +6,6 @@
     </p>
     <iframe id="ifmcontentstoprint" style="border:0;height: 0px; width: 0px; position: absolute"></iframe>
     <style-inline>
-      #printme {
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        padding: 0 0 3rem;
-        overflow: auto;
-        background-color: #1b1f32;
-        z-index: 60;
-      }
       .print-hidden {
         margin: 0 auto;
         padding: 0 5mm;
@@ -37,7 +26,8 @@
       }
     </style>
     </style-inline>
-    <div id="printme" v-show="preview">
+    <transition name="plugin">
+    <div class="plugin--overlay" id="printme" v-if="preview">
       <div class="print-hidden">
         <div class="invoice-ctrl">
           <p>
@@ -55,7 +45,7 @@
           <button class="btn" @click="print">Afdrukken</button>
         </div>
       </div>
-      <div class="invoice invoice-page">
+      <div class="invoice invoice-page" v-if="a.customer && a.customer.address">
         <style-inline>
           .bold {
             font-weight: bold;
@@ -364,6 +354,7 @@
         </div>
       </div>
     </div>
+    </transition>
   </div>
 </template>
 
@@ -422,7 +413,7 @@ export default {
   props: ['a', 'options'],
   data () {
     return {
-      preview: true
+      preview: false
     }
   },
   computed: {
@@ -569,6 +560,11 @@ export default {
   created () {
     console.log('Invoice compnent created')
     this.options.resolve = 3
+  },
+  mounted () {
+    setTimeout(() => {
+      this.preview = true
+    }, 100)
   },
   filters: {
     'date' (date) {

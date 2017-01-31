@@ -10,46 +10,34 @@ export default {
   },
   methods: {
     loadPlugin (name) {
+      if (typeof name === 'object') {
+        name = name['@type']
+      }
       if (!name) {
         return
       }
       if (name.startsWith('schema:')) {
         name = name.slice(7)
       }
-      if (this.plugins.loaded.includes(name)) {
-        return name
-      }
-      if (window[name]) {
-        this.plugins.loaded.push(name)
-        this.finishLoading(name)
-        return name
-      }
       if (!this.plugins.list.includes(name)) {
         return
       }
-      if (this.plugins.fetched.includes(name)) {
-        return
-      }
-      if (!this.$root.config.allowPlugins) {
-        this.plugins.fetched.push(name)
-        // Try once more after all scripts are loaded
-        setTimeout(() => this.loadPlugin(name), 1000)
-        return
+      if (this.plugins.loaded.includes(name)) {
+        return name
       }
 
-      // Fetch plugin
-      console.debug('plugin fetch', name)
-      this.plugins.fetched.push(name)
-      const script = document.createElement('script')
-      script.onload = () => this.finishLoading(name)
-      script.src = './' + name + '.js'
-      document.body.appendChild(script)
-      return false
-    },
-    finishLoading (name) {
-      console.debug('plugin finish loading', name, window[name])
-      this.$options.components[name] = this.$root.extend(window[name])
-      this.plugins.loaded.push(name)
+      setTimeout(() => {
+        require.ensure(['../plugins/Invoice.vue'], (require) => {
+          if (!this.plugins.loaded.includes(name)) {
+            const plugin = require('../plugins/Invoice.vue');
+            this.$options.components[name] = this.$root.extend(plugin)
+            this.plugins.loaded.push(name)
+            console.log('load inv', name)
+          }
+        })
+      }, 20)
+
+      return 'temp-plugin'
     }
   }
 }

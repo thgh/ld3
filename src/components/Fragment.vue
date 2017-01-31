@@ -26,13 +26,14 @@
       <button class="btn btn-soft" @click="clear">Clear</button>
     </p>
 
-    <div v-if="loadPlugin(fragment['@type']) && resolved" :is="loadPlugin(fragment['@type'])" :a="resolved" :options="options">test</div>
+    <div v-if="loadPlugin(fragment) && resolved" :is="loadPlugin(fragment)" :a="resolved" :options="options">test</div>
   </div>
 </template>
 
 <script>
 import InputClass from './InputClass.vue'
 import PropsList from './PropsList.vue'
+import TempPlugin from './TempPlugin.vue'
 import TextareaSubtle from './TextareaSubtle.vue'
 
 import PluginSystem from '../mixins/PluginSystem.js'
@@ -96,6 +97,7 @@ export default {
   components: {
     InputClass,
     PropsList,
+    TempPlugin,
     TextareaSubtle
   }
 }
