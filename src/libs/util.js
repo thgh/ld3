@@ -57,7 +57,7 @@ export function toMin (obj) {
 
 // Force https on every request
 const httpsFix = window.location.protocol !== 'https:' ? u => u :
-  u => 'https' + u.slice(4)
+  u => 'https' + u.slice(u.indexOf(':'))
 
 export function getJSON (url) {
   return window.fetch(httpsFix(url), {
