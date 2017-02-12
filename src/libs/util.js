@@ -12,7 +12,7 @@ export function toType (o) {
 /* Namespace handling */
 
 // [{prefix: 'schema:', url: 'http://schema.org/'}]
-const namespaces = []
+const namespaces = [{prefix: 'http:', url: 'https:'}]
 
 export function fromMin (obj) {
   // Replace prefix by url in strings
@@ -39,7 +39,7 @@ export function toMin (obj) {
   // Replace prefix by url in strings
   if (typeof obj === 'string') {
     for (var i = 0; i < namespaces.length; i++) {
-      s = s.replace(namespaces[i].url, namespaces[i].prefix)
+      obj = obj.replace(namespaces[i].url, namespaces[i].prefix)
     }
   }
 

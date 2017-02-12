@@ -4,6 +4,7 @@ module.exports = {
   },
   devtool: 'source-map',
   title: 'web4',
-  port: 80,
+  template: 'template.html',
+  port: 5454,
   resolve: true
 }

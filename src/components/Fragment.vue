@@ -105,7 +105,7 @@ export default {
 
 <style>
 .fragment {
-  margin: -2rem;
-  padding: 2rem;
+  margin: -2rem -1rem;
+  padding: 2rem 1rem;
 }
 </style>

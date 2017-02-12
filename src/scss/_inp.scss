@@ -135,8 +135,7 @@ form.inp-subtle {
 			font-weight: 300;
 		}
 		&:-moz-placeholder {
-			color: transparentize($fg, .3);
-			
+			color: transparentize($fg, .3);	
 		}
 	}
 }
@@ -282,7 +281,7 @@ form.inp-subtle {
 			content: '';
 			position: absolute;
 			right: -1rem;
-			top: 50%;
+			bottom: 0.8rem;
 			margin-top: -.2rem;
 			width: .6rem;
 			height: .6rem;
@@ -301,17 +300,32 @@ form.inp-subtle {
 	}
 }
 
+.input__help {
+	position: absolute;
+	z-index: 1;
+	top: 0;
+	padding-top: 6px;
+	padding-left: 12px;
+	font-size: 12px;
+	& + .input__label,
+	& ~ .input__input {
+		padding-top: 30px;
+	}
+}
 .input__label {
 	padding: 6px 12px;
 	line-height: inherit;
 	font: inherit;
 	user-select: none;
 	opacity: .5;
+	& + .input__input {
+		padding-left: 1px;
+	}
 }
 .input__input {
 	flex: 1;
 	border: none;
-	padding: 6px 1px;
+	padding: 6px 12px;
 	line-height: inherit;
 	background: inherit;
 	font: inherit;
@@ -319,6 +333,14 @@ form.inp-subtle {
 }
 .input__input__textarea {
 	outline: none;
+
+	&::-webkit-input-placeholder {
+		opacity: .5;
+		font-weight: 300;
+	}
+	&:-moz-placeholder {
+		opacity: .5;
+	}
 }
 
 @keyframes scale2 {

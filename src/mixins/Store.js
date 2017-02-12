@@ -7,8 +7,6 @@ const config = {
   serviceWorker: false
 }
 
-const fragments = {}
-
 function hideSchema (obj) {
   // Collapse @value
   if (typeof obj['@value'] !== 'undefined') {
@@ -23,7 +21,7 @@ function hideSchema (obj) {
   }
   // Hide nested props
   for (let prop in obj) {
-    if (typeof obj[prop] === 'object' && Object.keys(obj[prop]).length > 1) {
+    if (typeof obj[prop] === 'object' && obj && Object.keys(obj[prop]).length > 1) {
       obj[prop] = hideSchema(obj[prop])
     }
   }
@@ -43,7 +41,8 @@ export default {
       config,
 
       // Data
-      fragments,
+      fragments: {},
+      fetchedFragments: {},
 
       // UI state
       listFocus: ['uri']
@@ -55,10 +54,23 @@ export default {
   },
   computed: {
     currentFragment () {
-      return this.fragments && this.route && this.route.uri && this.fragments[this.route.uri] || this.fetch(this.route.uri)
+      const inCache = this.fragments && this.route && this.route.uri && this.fragments[this.route.uri]
+      if (inCache) {
+        return inCache
+      }
+
+      // Prepare reactivity
+      this.$set(this.fragments, this.route.uri, null)
+      this.$set(this.fetchedFragments, this.route.uri, null)
+      const notInCache = this.fragments[this.route.uri] || {}
+
+      return this.fetch(this.route.uri)
     },
     fragmentCount () {
-      return Object.keys(this.fragments).length
+      return this.fragmentList.length
+    },
+    fragmentList () {
+      return Object.keys(this.fragments)
     }
   },
   methods: {
@@ -101,16 +113,13 @@ export default {
         return console.log(' this aint no uri', uri)
       }
       if (uri.endsWith('anonymous')) {
-        return this.setFragment({'@type': 'schema:Person', '@id': 'ld3:anonymous', 'schema:name': 'Anonymous person'})
+        // Fetched is set to true, but might have to be flagged in another way
+        return this.setFragment({'@type': 'schema:Person', '@id': 'ld3:anonymous', 'schema:name': 'Anonymous person'}, true)
       }
       fetching[uri] = true
       getJSON(uri)
-      .then(this.addGraph).catch(function (body) {
+      .then(data => this.addGraph(data, true)).catch(function (body) {
         console.error('Store.fetch didnt retrieve', uri, body)
-        $this.setFragment({
-          '@id': uri,
-          'schema:name': 'Not found'
-        })
       })
       // this.$root.route.uri += '#temp'
       return {
@@ -119,7 +128,7 @@ export default {
         'schema:name': 'Temporary'
       }
     },
-    addGraph (body) {
+    addGraph (body, fetched) {
       if (!body) {
         return console.warn('no data in response')
       }
@@ -129,15 +138,15 @@ export default {
       if (body.length && body[0]) {
         for (let s of body) {
           if (s['@id']) {
-            this.setFragment(s)
+            this.setFragment(s, fetched)
           }
         }
       } else if (body['@id']) {
-        this.setFragment(body)
+        this.setFragment(body, fetched)
       } else if (body['@graph']) {
         for (let s of body['@graph']) {
           if (s['@id']) {
-            this.setFragment(s)
+            this.setFragment(s, fetched)
           }
         }
       }
@@ -156,12 +165,17 @@ export default {
       console.log('copied', uri, 'to', to)
       return to
     },
-    setFragment (f) {
+    setFragment (f, fetched) {
       f = toMin(f)
       if (f['@id'].endsWith(':')) {
         return
       }
       this.$set(this.fragments, f['@id'], f)
+
+      //
+      if (fetched) {
+        this.$set(this.fetchedFragments, f['@id'], inert(f))
+      }
       // if (this.$root.route.uri.endsWith('#temp')) {
       //   this.$nextTick(() => this.$root.route.uri = this.$root.route.uri.slice(0, -5))
       // }

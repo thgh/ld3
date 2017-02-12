@@ -1,4 +1,5 @@
 import { inert, getJSON, putJSON } from '../libs/util.js'
+import throttle from '../libs/throttle.js'
 import ls from 'local-storage'
 
 export const LD3_PROFILES = 'http://id.thomasg.be/ld3-profiles/'
@@ -12,6 +13,9 @@ export const LD3_USER = {
   'schema:name': '',
   person: LD3_PERSON,
   server: LD3_SERVER,
+  ui: {
+    tabs: [],
+  },
   workspace: [{
     'schema:name': 'LBLOD test data',
     'ld3:prefix': 'lblod',
@@ -38,7 +42,7 @@ export default {
       var self = this
       return getJSON(uri)
       .then(function (body) {
-        self.setFragment(inert(body))
+        self.setFragment(inert(body), true)
         for (let key in body) {
           user[key] = body[key]
         }
@@ -98,5 +102,14 @@ export default {
     }
     this.userLoad()
     console.log('User.ready', user.workspace && user.workspace.length, inert(user))
+  },
+  watch: {
+    user: {
+      deep: true,
+      handler: throttle(function () {
+        console.debug('ls save user')
+        ls('user', user)
+      })
+    }
   }
 }

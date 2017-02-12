@@ -36,6 +36,7 @@ body {
   position: absolute;
   background: $bgNav;
   width: 10px;
+  height: 10px;
 }
 ::-webkit-scrollbar-thumb {
   border: 1px solid $bgNav;
@@ -61,10 +62,10 @@ body {
 
 .section-content {
 	position: relative;
-	padding: 1rem;
-	background: $bg;
+	padding: 2rem 1rem;
+	background: none;
 	color: $fg;
-	transition: background-color .5s;
+	transition: background-color .5s, transform .3s;
 }
 .section-content--focus {
 	background: transparentize($bg, 1);
@@ -77,6 +78,9 @@ body {
 	a:visited {
 		color: mix($focus, $fg, 60%);
 	}
+}
+.app--wide .section-content {
+  transform: translateY(11vh);
 }
 
 /* Structure > Tablet */
@@ -99,7 +103,7 @@ body {
 @media (min-width: 940px) {
 	.nav-pane {
 		position: fixed;
-		top: 0;
+		top: 64px;
 		left: 0;
 		bottom: 0;
 		width: 16rem;
@@ -120,13 +124,18 @@ body {
 		justify-content: space-between;
 	}
 	.section-content {
-		padding: 2rem;
-		margin-left: 16rem;
+		padding: 2rem 1rem;
+		margin: 0 auto;
 		max-width: 50rem;
 	}
 	.section-intro {
 		.hero {
 			padding-bottom: 2rem;
+		}
+	}
+	.app--left {
+		.section-content {
+			margin: 0 0 0 16rem;
 		}
 	}
 }
@@ -141,7 +150,6 @@ body {
 		width: calc(100vw / 2 - 27rem);
 	}
 	.section-content {
-		margin: 1rem;
-		margin-left: calc(100vw / 2 - 25rem);
+		margin-left: calc(100% / 2 - 25rem);
 	}
 }

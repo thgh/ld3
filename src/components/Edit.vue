@@ -11,7 +11,6 @@ import Fragment from './Fragment.vue'
 
 export default {
   name: 'edit',
-  props: ['route'],
   data () {
     return {
       backdrop: false,
@@ -40,7 +39,7 @@ export default {
       // ctrl+s
       if ((evt.ctrlKey || evt.metaKey) && String.fromCharCode(evt.which).toLowerCase() === 's') {
         evt.preventDefault()
-        if (this.route && this.route.uri) {
+        if (this.$root.route && this.$root.route.uri) {
           this.$root.sync(this.currentFragment)
         }
       }
