@@ -25,7 +25,6 @@ Vue.component('InputSingle', InputSingle)
 window.Vue = Vue
 window.hub = new Vue()
 window.ld3 = true
-console.log('start')
 
 /* eslint-disable no-new */
 new Vue({

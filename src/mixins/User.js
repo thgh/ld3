@@ -2,10 +2,10 @@ import { inert, getJSON, putJSON } from '../libs/util.js'
 import throttle from '../libs/throttle.js'
 import ls from 'local-storage'
 
-export const LD3_PROFILES = 'http://id.thomasg.be/ld3-profiles/'
+export const LD3_PROFILES = 'https://id.thomasg.be/ld3-profiles/'
 
 export const LD3_PERSON = {'@type': 'schema:Person', '@id': 'ld3:anonymous', 'schema:name': 'Anonymous person'}
-export const LD3_SERVER = [{'@id': 'http://id.thomasg.be/#server'}]
+export const LD3_SERVER = [{'@id': 'https://id.thomasg.be/#server'}]
 
 export const LD3_USER = {
   '@type': 'ld3:Profile',
@@ -19,7 +19,7 @@ export const LD3_USER = {
   workspace: [{
     'schema:name': 'LBLOD test data',
     'ld3:prefix': 'lblod',
-    url: 'http://id.thomasg.be/lblod'
+    url: 'https://id.thomasg.be/lblod'
   }]
 }
 
@@ -98,7 +98,7 @@ export default {
   },
   mounted () {
     if (!this.auth) {
-      return console.warn('User.ready', 'but not logged in')
+      return
     }
     this.userLoad()
     console.log('User.ready', user.workspace && user.workspace.length, inert(user))

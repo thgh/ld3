@@ -1,25 +1,16 @@
 <template>
-  <section class="section-content section-intro">
-    <div class="hero">
-      <h1>ld3: Linked Data Driven Documents</h1>
-      <p>
-        This is a proof of concept for a generic Linked Data editor interface.
-      </p>
-    </div>
+  <section class="section-content">
     <p>
-      Login to save your workspace, it's optional.
+      Fill in the URI of the resource you want to create/edit.
     </p>
-    <p v-if="$root.auth">
-      <button type="button" class="btn" @click="$root.user['@id']='ld3:no-user'">Logout</button>
-    </p>
-    <p v-else>
-      <button type="button" class="btn" @click="$root.userLogout()">Login</button>
+    <p>
+      <a href="#!create" class="btn">Create resource...</a>
     </p>
   </section>
 </template>
 
 <script>
 export default {
-
+  name: 'home'
 }
 </script>

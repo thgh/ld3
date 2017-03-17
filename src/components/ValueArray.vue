@@ -4,6 +4,7 @@
       v-for="(item, index) in value"
       :is="toType(item)"
       :value="item"
+      :key="item"
       @focus="focus(index)"
       @input="input(index, $event)"
       @remove="remove(index)"

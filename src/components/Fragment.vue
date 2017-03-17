@@ -21,11 +21,6 @@
       <props-list :fragment="fragment"></props-list>
     </article>
 
-    <p class="fragment-cta">
-      <button class="btn" :class="{ 'btn-soft': !savable }" @click="sync">Save</button>
-      <button class="btn btn-soft" @click="clear">Clear</button>
-    </p>
-
     <div v-if="loadPlugin(fragment) && resolved" :is="loadPlugin(fragment)" :a="resolved" :options="options">test</div>
   </div>
 </template>
@@ -59,10 +54,6 @@ export default {
     props () {
       return this.fragment
     },
-    savable () {
-      return true
-      // return this.$root.syncAgo > 1
-    },
     resolved () {
       return this.$root.resolve(this.fragment, this.options.resolve)
     },
@@ -80,12 +71,6 @@ export default {
       if (uri) {
         window.location.href = '#!' + uri
       }
-    },
-    sync () {
-      this.$root.sync(this.fragment)
-    },
-    clear () {
-      delete this.$root.fragments[this.fragment['@id']]
     }
   },
   watch: {

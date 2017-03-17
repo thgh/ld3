@@ -2,11 +2,6 @@ import throttle from '../libs/throttle.js'
 import { inert, getJSON, putJSON, toMin, fromMin } from '../libs/util.js'
 import ls from 'local-storage'
 
-const config = {
-  allowPlugins: false,
-  serviceWorker: false
-}
-
 function hideSchema (obj) {
   // Collapse @value
   if (typeof obj['@value'] !== 'undefined') {
@@ -21,28 +16,45 @@ function hideSchema (obj) {
   }
   // Hide nested props
   for (let prop in obj) {
-    if (typeof obj[prop] === 'object' && obj && Object.keys(obj[prop]).length > 1) {
+    if (typeof obj[prop] === 'object' && obj[prop] && Object.keys(obj[prop]).length > 1) {
       obj[prop] = hideSchema(obj[prop])
     }
   }
   return obj
 }
 
-var storeLocally = throttle(function (f) {
-  ls('fragments', f)
-}, 5000)
+var storeLocally = throttle(function (fragments, fetchedFragments) {
+  console.log('storeLocally')
+  ls('fragments', fragments)
+  ls('fetchedFragments', fetchedFragments)
+}, 2000)
 
 var fetching = {}
 
 export default {
   data () {
+    const fragments = ls('fragments') || {}
+    const fetchedFragments = ls('fetchedFragments') || {}
+
+    if (!fragments['_:config']) {
+      console.warn('Initial config')
+      fragments['_:config'] = {
+        '@id': '_:config',
+        '@type': 'Config',
+        plugins: false,
+        serviceWorker: false
+      }
+      fetchedFragments['_:config'] = inert(fragments['_:config'])
+    }
+
     return {
       // Project setup
-      config,
+      config: fragments['_:config'],
 
       // Data
-      fragments: {},
-      fetchedFragments: {},
+      fragments,
+      fetchedFragments,
+      storedFragments: inert(fragments),
 
       // UI state
       listFocus: ['uri']
@@ -77,31 +89,45 @@ export default {
     checkSave () {
       // this.syncAgo++
     },
+    discard (uri) {
+      if (typeof uri !== 'string') {
+        return console.error('Store.discard expects string, but got', typeof uri)
+      }
+      this.fragments[uri] = inert(this.fetchedFragments[uri])
+      this.syncLocal()
+    },
     sync (fragment) {
-      let $this = this
       if (typeof fragment === 'string') {
         fragment = inert(this.fragments[toMin(fragment)])
       }
-      if (typeof fragment !== 'object') {
+      if (typeof fragment !== 'object' || fragment === null) {
         return console.error('Store.sync expects object, but got', typeof fragment)
       }
+
+      // Save local fragments to localStorage
+      const id = fragment['@id']
+      if (id && id.startsWith('_:')) {
+        this.fetchedFragments[id] = inert(fragment)
+        this.syncLocal()
+        return
+      }
+
+      //
       fragment = fromMin(inert(fragment))
       if (fragment['@temp']) {
         delete fragment['@temp']
       }
       putJSON(fragment)
-      .then(function (body) {
+      .then((body) => {
         if (!body.success) {
           console.warn(body)
         }
-        // $this.syncAgo = 0
-      }).catch(function (body) {
+      }).catch((body) => {
         console.warn(body)
       })
       this.syncLocal()
     },
     fetch (uri, force) {
-      let $this = this
       if (typeof uri !== 'string') {
         return console.error('Store.fetch expects string, but got', typeof uri)
       }
@@ -110,7 +136,8 @@ export default {
         return console.log(' cancel', uri)
       }
       if (!uri.startsWith('http')) {
-        return console.log(' this aint no uri', uri)
+        console.log(this.fragments, uri,this.fragments[uri] )
+        return console.log(' this aint no uri', uri) || this.fragments[uri]
       }
       if (uri.endsWith('anonymous')) {
         // Fetched is set to true, but might have to be flagged in another way
@@ -175,6 +202,8 @@ export default {
       //
       if (fetched) {
         this.$set(this.fetchedFragments, f['@id'], inert(f))
+      } else if (!this.fetchedFragments.hasOwnProperty(f['@id'])){
+        this.$set(this.fetchedFragments, f['@id'], null)
       }
       // if (this.$root.route.uri.endsWith('#temp')) {
       //   this.$nextTick(() => this.$root.route.uri = this.$root.route.uri.slice(0, -5))
@@ -228,7 +257,8 @@ export default {
       console.log(Object.keys(this.fragments).filter(k => k.startsWith('http')))
     },
     syncLocal () {
-      storeLocally(this.fragments)
+      this.storedFragments = inert(this.fragments)
+      storeLocally(this.fragments, this.fetchedFragments)
     },
     clearCache () {
       this.fragments = {}

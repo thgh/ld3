@@ -26,18 +26,28 @@ export default {
         return name
       }
 
-      setTimeout(() => {
+      if (name === 'Invoice') {
         require.ensure(['../plugins/Invoice.vue'], (require) => {
-          if (!this.plugins.loaded.includes(name)) {
-            const plugin = require('../plugins/Invoice.vue');
-            this.$options.components[name] = this.$root.extend(plugin)
-            this.plugins.loaded.push(name)
-            console.log('load inv', name)
-          }
+          this.finishLoading(require('../plugins/Invoice.vue'), name)
         })
-      }, 20)
+      // } else if (name === 'Foobar') {
+      //   require.ensure(['../plugins/Foobar.vue'], (require) => {
+      //     this.finishLoading(require('../plugins/Foobar.vue'), name)
+      //   })
+      }
+
+      if (this.plugins.loaded.includes(name)) {
+        return name
+      }
 
       return 'temp-plugin'
+    },
+    finishLoading (plugin, name) {
+      if (!this.plugins.loaded.includes(name)) {
+        this.$options.components[name] = this.$root.extend(plugin)
+        this.plugins.loaded.push(name)
+        console.log('finishLoading', name)
+      }
     }
   }
 }

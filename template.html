@@ -8,14 +8,14 @@
   <link rel="manifest" href="./manifest.json">
   <link rel="icon" type="image/png" href="./favicon.png">
   <% htmlWebpackPlugin.files.css.forEach(function (css) { %>
-  <link rel="stylesheet" href="<%=css%>">
+  <link rel="stylesheet" href=".<%=css%>">
   <% }) %>
 </head>
 
 <body>
   <div id="app"></div>
   <% htmlWebpackPlugin.files.js.forEach(function (js) { %>
-  <script src="<%=js%>"></script>
+  <script src=".<%=js%>"></script>
   <% }) %>
 </body>
 

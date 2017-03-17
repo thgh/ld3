@@ -1,7 +1,7 @@
 <template>
   <form class="app-nav" @submit.prevent="submit">
     <a class="btn btn-soft" href="/">ld3</a>
-    <input class="app-nav__input" v-model="search" type="text" :placeholder="placeholder" autofocus>
+    <input class="app-nav__input" v-model="search" type="text" :placeholder="placeholder" autofocus autocomplete autosave>
     <a class="btn btn-soft" href="/#!create">New</a>
   </form>
 </template>

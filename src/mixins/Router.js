@@ -1,6 +1,7 @@
 import { fromMin, toMin } from '../libs/util.js'
 
-const routes = ['home', 'create', 'edit', 'conf']
+const routes = ['home', 'create', 'conf']
+const internals = ['config']
 
 export default {
   data () {
@@ -10,6 +11,7 @@ export default {
       uri: '',
       view: 'home'
     }
+
     // Detect installation directory
     if (window.location.pathname !== '/') {
       // Replace url to get the router to start properly
@@ -21,51 +23,48 @@ export default {
         window.history.replaceState('wut', 'ld3', route.base + '#!' + window.location.href)
       }
     }
-    console.log(route)
+
     return {
       route: route
     }
   },
   methods: {
     hashchange () {
-      let hash = window.location.hash
-      if (hash.length === 0) {
-        console.log('no hash')
-        this.route.view = 'home'
-      } else if (hash.length === 1 && hash !== '#') {
-        console.warn('not much hash but umm', hash)
-      } else if (hash.length === 2) {
-        console.log('not much hash')
-      } else if (hash.substr(0, 2) === '#!') {
-        hash = hash.substr(2)
-        if (hash.indexOf(':') === -1) {
-          if (routes.indexOf(hash) === -1) {
-            console.log('Router.hashchange did not expect', hash)
-            hash = 'home'
-            window.history.replaceState({}, 'Home - ld3', '#!home')
-          }
-          this.route.view = hash
-          window.document.title = hash + ' - ld3'
-        } else {
-          this.route.view = 'edit'
-          this.route.uri = toMin(hash)
-          window.document.title = this.route.uri + ' - ld3'
-          // Avoid forced layout
-          this.$nextTick(function () {
-            var elem = document.querySelector('.section-content')
-            elem && elem.scrollIntoView(true)
-          })
-        }
-      } else {
-        console.warn('changed hash to ', hash)
+      let hash = window.location.hash.slice(1)
+
+      // Exclamation mark will be ignored
+      if (hash[0] === '!') {
+        hash = hash.slice(1)
       }
-      console.log('hashchange')
+
+      if (internals.includes(hash)) {
+        hash = '_:' + hash
+      }
+
+      // Colon means we are dealing with a URI
+      if (hash.includes(':')) {
+        this.route.view = 'edit'
+        this.route.uri = toMin(hash)
+        window.document.title = this.route.uri + ' - ld3'
+        // Avoid forced layout
+        this.$nextTick(function () {
+          var elem = document.querySelector('.section-content')
+          elem && elem.scrollIntoView(true)
+        })
+      } else if (routes.includes(hash)) {
+        this.route.view = hash
+        window.document.title = hash + ' - ld3'
+        console.debug('hashchange: view', hash)
+      } else {
+        this.route.view = 'home'
+        window.document.title = 'Home - ld3'
+        console.debug('hashchange: fallback to home')
+      }
     }
   },
   mounted () {
     window.addEventListener('hashchange', this.hashchange, false)
     this.route.uri = fromMin(window.location.hash.substr(2))
     this.hashchange()
-    console.log(this.route.uri)
   }
 }

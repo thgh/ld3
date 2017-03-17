@@ -12,10 +12,10 @@
     "local-storage": "^1.4.2",
     "node-sass": "^4.3.0",
     "sass-loader": "^4.1.1",
-    "vue": "^2.1.5"
+    "vue": "^2.2.4"
   },
   "devDependencies": {
-    "vue-loader": "^10.0.2",
-    "vue-template-compiler": "^2.1.5"
+    "vue-loader": "^11.1.4",
+    "vue-template-compiler": "^2.2.4"
   }
 }

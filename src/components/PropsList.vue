@@ -1,19 +1,15 @@
 <template>
   <div class="props-list">
     <prop
-      v-for="(value, prop) in fragment" 
+      v-for="(_, prop) in fragment" 
       v-if="prop[0] !== '@'"
       :fragment="fragment"
       :prop="prop"
+      :key="prop"
       @focus="listFocus(prop)"
     />
-    <prop
-      v-for="prop in stub"
-      :fragment="fragment"
-      :prop="prop"
-    />
     <prop-add :fragment="fragment"></prop-add>
-    <div class="backdrop" :class="backdropClasses" @click.prevent.stop="listBlur"></div>
+    <div  class="backdrop" :class="backdropClasses" @click.prevent.stop="listBlur"></div>
   </div>
 </template>
 
@@ -37,9 +33,6 @@ export default {
     }
   },
   computed: {
-    stub () {
-      return toStub(this.fragment)
-    },
     backdropClasses () {
       return {
         'backdrop--active': this.$root.listFocus.length > this.level,
@@ -69,6 +62,11 @@ export default {
       console.debug('listBlur', this.level)
       this.$root.listFocus =this.$root.listFocus.slice(0, this.level)
     }
+  },
+  mounted () {
+    toStub(this.fragment).forEach(key => {
+      this.$set(this.fragment, key, null)
+    })
   },
   components: {
     PropAdd
@@ -134,4 +132,10 @@ export default {
   opacity: .9;
   pointer-events:all;
 }*/
+.props-move>* {
+  transition:  all 1s;
+}
+.props-move {
+  transition:  all 1s;
+}
 </style>

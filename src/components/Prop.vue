@@ -3,10 +3,11 @@
     <label class="inp-label" :for="_uid" :title="prop">{{ niceProp }}</label>
     <component
       :is="renderType"
-      v-model="fragment[prop]"
       :id="_uid"
       :focus="hasPropFocus"
       @focus="propFocus"
+      :value="fragment[prop]"
+      @input="$set(fragment, prop, $event)"
     />
   </div>
 </template>

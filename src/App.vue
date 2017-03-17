@@ -27,7 +27,7 @@ export default {
       // return this.$root.fragmentList.length
     },
     appWide () {
-      return !this.$root.route || !this.$root.route.uri
+      return !this.$root.route || !this.$root.route.view || this.$root.route.view === 'home'
     }
   },
   components: {

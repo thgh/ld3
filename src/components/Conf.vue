@@ -2,10 +2,10 @@
     <section class="section-content">
       <h1>conf</h1>
       <p>
-        <button type="button" class="btn btn-save" @click="forceCache">Cache fragments</button>
-        <button type="button" class="btn btn-save" @click="$root.clearCache()">Clear cache</button>
-        <button type="button" class="btn btn-save" @click="$root.userLoad()">Load workspace</button>
-        <button type="button" class="btn btn-save" @click="$root.userLogout()">logout</button>
+        <button type="button" class="btn" @click="forceCache">Cache fragments</button>
+        <button type="button" class="btn" @click="$root.clearCache()">Clear cache</button>
+        <button type="button" class="btn" @click="$root.userLoad()">Load workspace</button>
+        <button type="button" class="btn" @click="$root.userLogout()">logout</button>
       </p>
       <h2>User</h2>
       <p>
@@ -87,6 +87,10 @@ export default {
         key: 'fragments',
         count: Object.keys(this.$root.fragments).length,
         size: JSON.stringify(this.$root.fragments).length
+      }, {
+        key: 'fetchedFragments',
+        count: Object.keys(this.$root.fetchedFragments).length,
+        size: JSON.stringify(this.$root.fetchedFragments).length
       }]
     }
   },

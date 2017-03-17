@@ -1,6 +1,9 @@
 <template>
   <div class="section-content" :class="{ 'section-content--focus': $root.listFocus.length > 1 }">
     <fragment v-if="currentFragment" :fragment="currentFragment"></fragment>
+    <div v-else>
+      loading...
+    </div>
   </div>
 </template>
 

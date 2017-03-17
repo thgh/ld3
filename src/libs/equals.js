@@ -1,3 +1,4 @@
+// Falsy values are ignored
 export default function equals(x, y) {
   // Don't care about undefined, null, false, ''
   if (!x || !y) {
@@ -13,6 +14,7 @@ export default function equals(x, y) {
   }
 
   // Recursive check
-  var p = Object.keys(x)
-  return Object.keys(y).every((i) => p.includes(i)) && p.every((i) => equals(x[i], y[i]))
+  const xKeys = Object.keys(x)
+  return Object.keys(y).every((i) => xKeys.includes(i) || !y[i])
+    && xKeys.every((i) => equals(x[i], y[i]))
 }
