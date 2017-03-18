@@ -34,7 +34,8 @@ var fetching = {}
 export default {
   data () {
     const fragments = ls('fragments') || {}
-    const fetchedFragments = ls('fetchedFragments') || {}
+    const fetchedFragments = {}
+    // const fetchedFragments = ls('fetchedFragments') || {}
 
     if (!fragments['_:config']) {
       console.warn('Initial config')
