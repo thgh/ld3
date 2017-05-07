@@ -1,11 +1,12 @@
 <template>
-  <div :class="{ 'app--left': appLeft, 'app--wide': appWide }">
+  <div :class="{ 'app--left': $root.show.appLeft, 'app--wide': appWide }">
     <app-nav />
+    <app-left />
     <modal-auth v-if="!$root.user['@id']"></modal-auth>
-    <component :is="$root.route.view">
+    <component :is="$root.route.view" @mouseenter.native="$root.show.appLeft = 0">
       <section class="section-content"></section>
     </component>
-    <app-sync />
+    <app-sync @mouseenter.native="$root.show.appLeft = 0" />
   </div>
 </template>
 
@@ -23,9 +24,6 @@ import ModalAuth from './components/ModalAuth.vue'
 export default {
   name: 'app',
   computed: {
-    appLeft () {
-      // return this.$root.fragmentList.length
-    },
     appWide () {
       return !this.$root.route || !this.$root.route.view || this.$root.route.view === 'home'
     }

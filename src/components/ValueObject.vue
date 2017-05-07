@@ -78,7 +78,9 @@ export default {
       } else if (!this.search) {
         console.debug('toggle object=>ref')
         evt.stopPropagation()
-        if (this.model['@fromid']) {
+        if (this.model['@id']) {
+          this.model = {'@id': this.model['@id']}
+        } else if (this.model['@fromid']) {
           this.model = {'@id': this.model['@fromid']}
         } else {
           this.search = true

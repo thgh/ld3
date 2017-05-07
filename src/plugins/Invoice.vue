@@ -411,12 +411,15 @@ var defaultTax = {
 
 export default {
   props: ['a', 'options'],
-  data () {
-    return {
-      preview: false
-    }
-  },
   computed: {
+    preview: {
+      get () {
+        return this.$root.show.view === 'Invoice'
+      },
+      set (v) {
+        this.$root.show.view = v ? 'Invoice' : false
+      }
+    },
     invoiceNumber () {
       var n = this.a.url || this.a['@id'] || 'nope'
       n = n.slice(n.lastIndexOf(':') + 1)
@@ -563,8 +566,20 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-      this.preview = true
     }, 100)
+  },
+  beforeCreate () {
+    this.$parent.addCapability({
+      id: 'invoice.preview',
+      type: 'view',
+      label: 'Preview',
+      enabled () {
+        return this.a['@type'] === 'Invoice'
+      },
+      click: () => {
+        this.$root.show.view = 'Invoice'
+      }
+    })
   },
   filters: {
     'date' (date) {

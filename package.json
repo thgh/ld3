@@ -8,14 +8,15 @@
     "build": "vbuild"
   },
   "dependencies": {
-    "fuse.js": "^2.6.1",
+    "fuse.js": "^3.0.0",
     "local-storage": "^1.4.2",
-    "node-sass": "^4.3.0",
-    "sass-loader": "^4.1.1",
+    "node-sass": "^4.5.2",
+    "poi": "^8.0.0-rc.4",
+    "sass-loader": "^6.0.3",
     "vue": "^2.2.4"
   },
   "devDependencies": {
-    "vue-loader": "^11.1.4",
-    "vue-template-compiler": "^2.2.4"
+    "vue-loader": "^12.0.3",
+    "vue-template-compiler": "^2.3.2"
   }
 }

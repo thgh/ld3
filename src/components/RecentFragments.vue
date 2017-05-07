@@ -10,10 +10,10 @@
           <small>new fragment</small>
         </a>
       </div>
-      <div class="a-recent" v-for="uri in limitedList" v-if="!fragments[uri]['@temp']">
-        <a :href="'#!' + uri" @mouseenter="enter(uri)" @mouseleave="leave" class="a-fragment">
-          {{ fragments[uri]['schema:name'] || label(fragments[uri]) || fragments[uri]['dcterms:title'] || uri }}
-          <small v-if="fragments[uri]['schema:name'] || label(fragments[uri]) || fragments[uri]['dcterms:title']">{{ uri }}</small>
+      <div class="a-recent" v-for="fragment in limitedList" v-if="!fragment['@temp']">
+        <a :href="'#!' + fragment['@id']" @mouseenter="enter(fragment['@id'])" @mouseleave="leave" class="a-fragment">
+          {{ fragment['schema:name'] || label(fragment) || fragment['dcterms:title'] || fragment['@id'] }}
+          <small v-if="fragment['schema:name'] || label(fragment) || fragment['dcterms:title']">{{ rellipsis(fragment['@id']) }}</small>
         </a>
       </div>
     </div>
@@ -33,8 +33,11 @@ export default {
     filteredList () {
       return Object.keys(this.$root.fragments).filter(f => f.includes(this.search))
     },
+    hydratedList () {
+      return this.filteredList.map(uri => this.fragments[uri]).filter(Boolean)
+    },
     sortedList () {
-      return this.order(this.filteredList)
+      return this.order(this.hydratedList)
     },
     limitedList () {
       return this.sortedList
@@ -59,15 +62,21 @@ export default {
     label (fragment) {
       return !fragment['rdfs:label'] ? false : typeof fragment['rdfs:label'] === 'string' ? fragment['rdfs:label'] : Array.isArray(fragment['rdfs:label']) ? fragment['rdfs:label'][0]['@value'] : fragment['rdfs:label']['@value']
     },
+    rellipsis (uri) {
+      return uri.length < 40 ? uri : '...' + uri.slice(-30)
+    },
     order (arr) {
       if (!arr) {
         return arr
       }
-      const key = '@id'
+      const key = '@updated_at'
 
-      return arr.slice().sort(function (a, b) {
-        return a[key] === b[key] ? 0 : a[key] > b[key] ? 1 : -1
+      const copy = arr.slice()
+      copy.sort(function (a, b) {
+        return b[key] === a[key] ? 0 : (b[key] || '') > (a[key] || '') ? 1 : -1
       })
+      console.log(copy.map(c => c[key]))
+      return copy
     }
   },
   mounted () {

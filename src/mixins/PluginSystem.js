@@ -1,6 +1,7 @@
 export default {
   data () {
     return {
+      capabilities: [],
       plugins: {
         list: ['Invoice'],
         fetched: [],
@@ -48,6 +49,9 @@ export default {
         this.plugins.loaded.push(name)
         console.log('finishLoading', name)
       }
+    },
+    addCapability (capability) {
+      this.capabilities.push(capability)
     }
   }
 }

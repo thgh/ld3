@@ -29,7 +29,7 @@ import Fuse from 'fuse.js'
 
 var fuseOptions = {
   caseSensitive: false,
-  include: ['score'],
+  includeScore: true,
   shouldSort: true,
   tokenize: false,
   threshold: 0.6,
@@ -51,7 +51,7 @@ export default {
   },
   computed: {
     index () {
-      var fragments = Object.keys(this.$root.fragments).map(k => this.$root.fragments[k])
+      var fragments = Object.keys(this.$root.fragments).map(k => this.$root.fragments[k]).filter(Boolean)
       return new Fuse(fragments, fuseOptions)
     }
   },
@@ -72,6 +72,7 @@ export default {
         return
       }
       this.options = this.index.search(needle).slice(0, 20)
+      console.log(this.index, this.options)
       this.ghost = Math.min(this.ghost, (this.options.length || 1) - 1)
     },
     keydown (evt) {

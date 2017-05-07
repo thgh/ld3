@@ -1,19 +1,25 @@
 <template>
-  <div class="fragment" :class="{ 'focus-prop': focusProp, 'focus-from': focusFrom }">
+  <div class="fragment" :class="{ 'focus-prop': focusProp, 'focus-from': focusFrom, 'fragment--advanced': advanced }">
     <header>
       <h1 class="fragment-h1">
         <textarea-subtle v-model="fragment['schema:name']" :placeholder="fragment['@id'] || 'Fatal error'" />
         <input-class v-model="fragment['@type']" placeholder="wut" />
       </h1>
-      <div class="fragment-json mdi mdi-12px mdi-code-braces">
-        <p class="fragment-collapse" style="text-align: right">
-          Copy fragment to:
-          <input type="text" :value="fragment['@id']" @blur="copy">
-          <br>
-          <br>
-          <button type="button" @click="$root.fetch(fragment['@id'], true)">refetch</button>
-        </p>
-        <pre class="fragment-collapse fragment-pre">{{ fragment }}</pre>
+
+      <div class="fragment-json mdi mdi-12px mdi-code-braces" @mouseenter="advanced = 1" @mouseleave="advanced = 0">
+        <transition name="opacity">
+          <div v-if="advanced">
+            <form @submit="copy">
+              Copy fragment to:
+              <input type="text" v-model="copyURI" style="width:100%">
+              <button type="submit">Copy</button>
+            </form>
+            <form @click="$root.fetch(fragment['@id'], true)">
+              <button type="submit">refetch {{ fragment['@id'] }}</button>
+            </form>
+            <pre class="fragment-pre">{{ fragment }}</pre>
+          </div>
+          </transition>
       </div>
     </header>
 
@@ -21,13 +27,24 @@
       <props-list :fragment="fragment"></props-list>
     </article>
 
+    <nav class="fragment__nav">
+      <div class="nav-right">
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI" @>URI</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI" @>Duplicate</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI" @>JSON</button>
+        <button class="btn btn-soft app-nav__uri" type="button" v-for="c in capabilities" @click="c.click">{{ c.label || c.type || '*' }}</button>
+      </div>
+    </nav>
+
     <div v-if="loadPlugin(fragment) && resolved" :is="loadPlugin(fragment)" :a="resolved" :options="options">test</div>
   </div>
 </template>
 
 <script>
 import InputClass from './InputClass.vue'
+import InputSubtle from './InputSubtle.vue'
 import PropsList from './PropsList.vue'
+import Prop from './Prop.vue'
 import TempPlugin from './TempPlugin.vue'
 import TextareaSubtle from './TextareaSubtle.vue'
 
@@ -41,6 +58,8 @@ export default {
       options: {
         resolve: 0
       },
+      copyURI: '',
+      advanced: 0,
       addPropShow: false,
       addPropSearch: '',
       addPropValue: ''
@@ -67,13 +86,19 @@ export default {
   },
   methods: {
     copy (evt) {
-      var uri = this.$root.copyFragment(this.fragment['@id'], evt.target.value)
+      if (!this.copyURI) {
+        return console.warn('Fragment: copyURI is empty')
+      }
+      var uri = this.$root.copyFragment(this.fragment['@id'], this.copyURI)
       if (uri) {
         window.location.href = '#!' + uri
       }
     }
   },
   watch: {
+    advanced () {
+      this.copyURI = this.fragment['@id']
+    },
     '$root.route.uri' (val) {
       this.$root.listFocus = [val]
     }
@@ -81,6 +106,8 @@ export default {
   mixins: [PluginSystem],
   components: {
     InputClass,
+    InputSubtle,
+    Prop,
     PropsList,
     TempPlugin,
     TextareaSubtle
@@ -88,9 +115,34 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
 .fragment {
   margin: -2rem -1rem;
   padding: 2rem 1rem;
+}
+.nav-right {
+  position: sticky;
+  top: 0;
+  right: 0;
+}
+
+@media (min-width: 940px) {
+  .fragment__nav {
+    position: absolute;
+    top: 0;
+    height: 100%;
+    left: calc(800px);
+    padding: .5rem 0;
+    width: calc(50vw - 405px);
+    .btn {
+      display: block;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      width: 100%;
+      padding: .5rem 0 .5rem .5rem;
+      text-align: left;
+    }
+  }
 }
 </style>

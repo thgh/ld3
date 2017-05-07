@@ -2,7 +2,7 @@
   <div class="props-list">
     <prop
       v-for="(_, prop) in fragment" 
-      v-if="prop[0] !== '@'"
+      v-if="$root.showURI || prop[0] !== '@'"
       :fragment="fragment"
       :prop="prop"
       :key="prop"

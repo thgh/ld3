@@ -1,8 +1,11 @@
 <template>
   <form class="app-nav" @submit.prevent="submit">
-    <a class="btn btn-soft" href="/">ld3</a>
-    <input class="app-nav__input" v-model="search" type="text" :placeholder="placeholder" autofocus autocomplete autosave>
-    <a class="btn btn-soft" href="/#!create">New</a>
+    <div class="nav-left">
+      <a class="btn btn-soft" href="#">ld3</a>
+    </div>
+    <div class="nav-center">
+      <input class="app-nav__input" v-model="search" type="text" :placeholder="placeholder" autofocus autocomplete autosave>
+    </div>
   </form>
 </template>
 
@@ -39,17 +42,15 @@ export default {
 @import '../scss/variables';
 
 .app-nav {
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  min-height: $navHeight;
   margin: 0 auto;
   transition: transform .3s;
   .btn {
     flex-basis: 70px;
     padding: 0 1rem;
-    height: 48px;
-    line-height: 48px;
+    min-height: $navHeight;
+    line-height: $navHeight;
     text-decoration: none;
   }
   .app--wide & {
@@ -57,7 +58,7 @@ export default {
   }
 }
 .app-nav__input {
-  flex: 0 1 50rem;
+  width: 100%;
   border: 2px solid $bg;
   border-radius: 6px;
   padding: 0 1rem;
@@ -67,6 +68,24 @@ export default {
   outline: none;
   &:focus {
     background: $bg;
+  }
+}
+
+.nav-left {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  right: calc(400px + 50vw);
+  >.btn {
+    display: block;
+  }
+}
+.nav-center {
+  margin: 0 auto;
+  padding-top: 6px;
+  max-width: 800px;
+  >.btn {
+    display: block;
   }
 }
 </style>

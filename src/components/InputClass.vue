@@ -27,7 +27,7 @@ import { Classes } from '../libs/schema.js'
 
 var fuseOptions = {
   caseSensitive: false,
-  include: ['score'],
+  includeScore: true,
   shouldSort: true,
   tokenize: false,
   threshold: 0.6,

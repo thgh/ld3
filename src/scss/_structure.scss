@@ -135,7 +135,7 @@ body {
 	}
 	.app--left {
 		.section-content {
-			margin: 0 0 0 16rem;
+			transform: translateX(16rem);
 		}
 	}
 }

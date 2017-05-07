@@ -1,6 +1,7 @@
-import throttle from '../libs/throttle.js'
-import { inert, getJSON, putJSON, toMin, fromMin } from '../libs/util.js'
+// import throttle from '../libs/throttle.js'
+import { inert, getJSON, putJSON, toMin, fromMin, timestamp } from '../libs/util.js'
 import ls from 'local-storage'
+import throttle from 'lodash/throttle'
 
 function hideSchema (obj) {
   // Collapse @value
@@ -23,19 +24,17 @@ function hideSchema (obj) {
   return obj
 }
 
-var storeLocally = throttle(function (fragments, fetchedFragments) {
-  console.log('storeLocally')
-  ls('fragments', fragments)
-  ls('fetchedFragments', fetchedFragments)
-}, 2000)
-
 var fetching = {}
+
+const CREATED_AT = '@created_at';
+const FETCHED_AT = '@fetched_at';
+const UPDATED_AT = '@updated_at';
 
 export default {
   data () {
     const fragments = ls('fragments') || {}
-    const fetchedFragments = {}
-    // const fetchedFragments = ls('fetchedFragments') || {}
+    // const fetchedFragments = {}
+    const fetchedFragments = ls('fetchedFragments') || {}
 
     if (!fragments['_:config']) {
       console.warn('Initial config')
@@ -58,7 +57,12 @@ export default {
       storedFragments: inert(fragments),
 
       // UI state
-      listFocus: ['uri']
+      listFocus: ['uri'],
+      showURI: false,
+      show: {
+        appLeft: false,
+        view: false,
+      },
 
       // deprecated
       // syncAgo: 0,
@@ -68,7 +72,12 @@ export default {
   computed: {
     currentFragment () {
       const inCache = this.fragments && this.route && this.route.uri && this.fragments[this.route.uri]
+          console.log(new Date().toJSON().slice(0, 16))
       if (inCache) {
+        if (inCache[FETCHED_AT] && inCache[FETCHED_AT].startsWith(new Date().toJSON().slice(0, 16))) {
+          console.log()
+          this.fetch(this.route.uri)
+        }
         return inCache
       }
 
@@ -94,8 +103,13 @@ export default {
       if (typeof uri !== 'string') {
         return console.error('Store.discard expects string, but got', typeof uri)
       }
-      this.fragments[uri] = inert(this.fetchedFragments[uri])
-      this.syncLocal()
+      if (this.fetchedFragments[uri]) {
+        this.fragments[uri] = inert(this.fetchedFragments[uri])
+        this.syncLocal()
+      } else {
+        this.$set(this.fetchedFragments, uri, null)
+        this.fetch(uri)
+      }
     },
     sync (fragment) {
       if (typeof fragment === 'string') {
@@ -115,18 +129,26 @@ export default {
 
       //
       fragment = fromMin(inert(fragment))
-      if (fragment['@temp']) {
-        delete fragment['@temp']
+      delete fragment['@temp']
+      delete fragment['@fake']
+      delete fragment[FETCHED_AT]
+
+      // Update timestamps
+      fragment[UPDATED_AT] = timestamp()
+      if (!fragment[CREATED_AT]) {
+        fragment[CREATED_AT] = timestamp()
       }
+
       putJSON(fragment)
       .then((body) => {
         if (!body.success) {
           console.warn(body)
+        } else {
+          this.fetch(id, true)
         }
       }).catch((body) => {
         console.warn(body)
       })
-      this.syncLocal()
     },
     fetch (uri, force) {
       if (typeof uri !== 'string') {
@@ -202,6 +224,7 @@ export default {
 
       //
       if (fetched) {
+        f[FETCHED_AT] = timestamp()
         this.$set(this.fetchedFragments, f['@id'], inert(f))
       } else if (!this.fetchedFragments.hasOwnProperty(f['@id'])){
         this.$set(this.fetchedFragments, f['@id'], null)
@@ -257,13 +280,26 @@ export default {
       }
       console.log(Object.keys(this.fragments).filter(k => k.startsWith('http')))
     },
-    syncLocal () {
+    syncLocal: throttle(function () {
+      this.actualSyncLocal()
+    }, 2000),
+    actualSyncLocal () {
+      console.log('storeLocally', this)
+      if (!this) return
+
+
+      // Keep a copy of what is stored 
       this.storedFragments = inert(this.fragments)
-      storeLocally(this.fragments, this.fetchedFragments)
+
+      //
+      ls('fragments', this.fragments)
+      ls('fetchedFragments', this.fetchedFragments)
+      console.log('succes')
     },
     clearCache () {
       this.fragments = {}
       ls.remove('fragments')
+      ls.remove('fetchedFragments')
     },
     initStorage () {
       this.loadWorkspace(ls.get('namespaces') || STORE_NAMESPACES)

@@ -9,10 +9,16 @@ export function toType (o) {
       : typeof o['@value'] !== 'undefined' ? 'ValueLiteral' : 'ValueObject'
 }
 
+/* Date helpers */
+
+export function timestamp () {
+  return new Date().toJSON().slice(0, 19) + 'Z'
+}
+
 /* Namespace handling */
 
 // [{prefix: 'schema:', url: 'http://schema.org/'}]
-const namespaces = [{prefix: 'http:', url: 'https:'}]
+const namespaces = [{prefix: 'http:', url: 'https:'}, {prefix: 'https:', url: 'http:'}]
 
 export function fromMin (obj) {
   // Replace prefix by url in strings

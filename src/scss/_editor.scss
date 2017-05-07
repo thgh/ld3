@@ -20,7 +20,7 @@
 	font-size: 16px;
 	color: #888;
 	background-color: mix($fg, $bg);
-	&:hover {
+	.fragment--advanced & {
 		z-index: 30;
 		max-width: calc(100vw - 2rem);
 		max-height: calc(100vh - 2rem);
@@ -28,18 +28,12 @@
 		background: grayscale($bg);
 		color: grayscale($fg);
 		box-shadow: 0 0 1rem rgba(0, 0, 0, .3);
-		>.fragment-collapse {
-			display: block;
-		}
 	}
 }
 @media (min-width: 52rem) {
 	.fragment-json:hover {
 		max-width: 50rem;
 	}
-}
-.fragment-collapse {
-	display: none;
 }
 .fragment-pre {
 	font-size: 1rem;
