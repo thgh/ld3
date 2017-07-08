@@ -424,6 +424,9 @@ export default {
       var n = this.a.url || this.a['@id'] || 'nope'
       n = n.slice(n.lastIndexOf(':') + 1)
       n = n.slice(n.lastIndexOf('/') + 1)
+      if (n.startsWith('2017')) {
+        return '-'
+      }
       return n.indexOf('-') > 0 ? n.slice(0, n.indexOf('-')) : n
     },
     dateCreated () {
@@ -578,6 +581,23 @@ export default {
       },
       click: () => {
         this.$root.show.view = 'Invoice'
+      }
+    })
+    this.$parent.addCapability({
+      id: 'invoice.print',
+      type: 'view',
+      label: 'Print',
+      enabled () {
+        return this.a['@type'] === 'Invoice'
+      },
+      click: () => {
+        this.$root.show.view = 'Invoice'
+        this.$nextTick(() => {
+          this.print()
+          this.$nextTick(() => {
+            this.$root.show.view = false
+          })
+        })
       }
     })
   },

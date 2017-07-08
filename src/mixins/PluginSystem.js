@@ -51,6 +51,9 @@ export default {
       }
     },
     addCapability (capability) {
+      if (this.capabilities.find(c => c.id === capability.id)) {
+        return
+      }
       this.capabilities.push(capability)
     }
   }

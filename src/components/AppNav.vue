@@ -53,9 +53,6 @@ export default {
     line-height: $navHeight;
     text-decoration: none;
   }
-  .app--wide & {
-    transform: translateY(10vh);
-  }
 }
 .app-nav__input {
   width: 100%;

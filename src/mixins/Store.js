@@ -61,6 +61,7 @@ export default {
       showURI: false,
       show: {
         appLeft: false,
+        json: false,
         view: false,
       },
 
@@ -108,6 +109,7 @@ export default {
         this.syncLocal()
       } else {
         this.$set(this.fetchedFragments, uri, null)
+        this.fragments[uri] = inert(this.fetchedFragments[uri])
         this.fetch(uri)
       }
     },

@@ -18,20 +18,24 @@
               <button type="submit">refetch {{ fragment['@id'] }}</button>
             </form>
             <pre class="fragment-pre">{{ fragment }}</pre>
+            <input-raw v-model="fragment" />
           </div>
           </transition>
       </div>
     </header>
 
     <article>
+      <input-raw v-model="fragment" v-if="$root.show.json" />
       <props-list :fragment="fragment"></props-list>
     </article>
 
     <nav class="fragment__nav">
       <div class="nav-right">
-        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI" @>URI</button>
-        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI" @>Duplicate</button>
-        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI" @>JSON</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI">URI</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI">Duplicate</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.show.json = !$root.show.json">JSON</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.sync(fragment['@id'])">Save</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.discard(fragment['@id'])">Discard</button>
         <button class="btn btn-soft app-nav__uri" type="button" v-for="c in capabilities" @click="c.click">{{ c.label || c.type || '*' }}</button>
       </div>
     </nav>
@@ -42,9 +46,10 @@
 
 <script>
 import InputClass from './InputClass.vue'
+import InputRaw from './InputRaw.vue'
 import InputSubtle from './InputSubtle.vue'
-import PropsList from './PropsList.vue'
 import Prop from './Prop.vue'
+import PropsList from './PropsList.vue'
 import TempPlugin from './TempPlugin.vue'
 import TextareaSubtle from './TextareaSubtle.vue'
 
@@ -106,6 +111,7 @@ export default {
   mixins: [PluginSystem],
   components: {
     InputClass,
+    InputRaw,
     InputSubtle,
     Prop,
     PropsList,
