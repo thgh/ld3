@@ -50,7 +50,6 @@ import InputRaw from './InputRaw.vue'
 import InputSubtle from './InputSubtle.vue'
 import Prop from './Prop.vue'
 import PropsList from './PropsList.vue'
-import TempPlugin from './TempPlugin.vue'
 import TextareaSubtle from './TextareaSubtle.vue'
 
 import PluginSystem from '../mixins/PluginSystem.js'
@@ -115,7 +114,6 @@ export default {
     InputSubtle,
     Prop,
     PropsList,
-    TempPlugin,
     TextareaSubtle
   }
 }
@@ -150,5 +148,17 @@ export default {
       text-align: left;
     }
   }
+}
+
+.plugin--overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 0 0 3rem;
+  overflow: auto;
+  background-color: #1b1f32;
+  z-index: 60;
 }
 </style>

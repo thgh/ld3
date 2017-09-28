@@ -425,7 +425,7 @@ export default {
       n = n.slice(n.lastIndexOf(':') + 1)
       n = n.slice(n.lastIndexOf('/') + 1)
       if (n.startsWith('2017')) {
-        return '-'
+        return n.charAt(7)
       }
       return n.indexOf('-') > 0 ? n.slice(0, n.indexOf('-')) : n
     },
@@ -569,7 +569,8 @@ export default {
   },
   mounted () {
     setTimeout(() => {
-    }, 100)
+      this.$root.show.view = 'Invoice'
+    }, 0)
   },
   beforeCreate () {
     this.$parent.addCapability({

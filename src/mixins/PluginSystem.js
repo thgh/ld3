@@ -23,32 +23,12 @@ export default {
       if (!this.plugins.list.includes(name)) {
         return
       }
-      if (this.plugins.loaded.includes(name)) {
-        return name
+
+      if (!this.$options.components[name]) {
+        this.$options.components[name] = () => import('../plugins/' + name + '.vue')
       }
 
-      if (name === 'Invoice') {
-        require.ensure(['../plugins/Invoice.vue'], (require) => {
-          this.finishLoading(require('../plugins/Invoice.vue'), name)
-        })
-      // } else if (name === 'Foobar') {
-      //   require.ensure(['../plugins/Foobar.vue'], (require) => {
-      //     this.finishLoading(require('../plugins/Foobar.vue'), name)
-      //   })
-      }
-
-      if (this.plugins.loaded.includes(name)) {
-        return name
-      }
-
-      return 'temp-plugin'
-    },
-    finishLoading (plugin, name) {
-      if (!this.plugins.loaded.includes(name)) {
-        this.$options.components[name] = this.$root.extend(plugin)
-        this.plugins.loaded.push(name)
-        console.log('finishLoading', name)
-      }
+      return name
     },
     addCapability (capability) {
       if (this.capabilities.find(c => c.id === capability.id)) {
