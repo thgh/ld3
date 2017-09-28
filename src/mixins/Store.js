@@ -255,7 +255,7 @@ export default {
       var obj = inert(this.fragments[uri])
       for (let prop in obj) {
         // Recursive
-        if (options > 0 && typeof obj[prop] === 'object' && Object.keys(obj[prop]).length === 1 && obj[prop]['@id']) {
+        if (options > 0 && typeof obj[prop] && typeof obj[prop] === 'object' && Object.keys(obj[prop]).length === 1 && obj[prop]['@id']) {
           obj[prop] = this.resolve(obj[prop]['@id'], options - 1)
         }
       }
