@@ -32,9 +32,12 @@ const UPDATED_AT = '@updated_at';
 
 export default {
   data () {
+    const fragments = {}
+    const fetchedFragments = {}
+    /*
     const fragments = ls('fragments') || {}
-    // const fetchedFragments = {}
     const fetchedFragments = ls('fetchedFragments') || {}
+    */
 
     if (!fragments['_:config']) {
       console.warn('Initial config')
@@ -126,7 +129,7 @@ export default {
       if (id && id.startsWith('_:')) {
         this.fetchedFragments[id] = inert(fragment)
         this.syncLocal()
-        return
+        return console.log('Store.sync only local')
       }
 
       //

@@ -18,7 +18,8 @@ export function timestamp () {
 /* Namespace handling */
 
 // [{prefix: 'schema:', url: 'http://schema.org/'}]
-const namespaces = [{prefix: 'http:', url: 'https:'}, {prefix: 'https:', url: 'http:'}]
+// const namespaces = [{prefix: 'http:', url: 'https:'}, {prefix: 'https:', url: 'http:'}]
+const namespaces = []
 
 export function fromMin (obj) {
   // Replace prefix by url in strings
@@ -69,6 +70,7 @@ export function getJSON (url) {
   return window.fetch(httpsFix(url), {
     redirect: 'follow',
     headers: {
+     'Authorization': 'Basic ' + btoa('visitor:'), 
       Accept: 'application/json'
     }
   })
@@ -82,6 +84,7 @@ export function putJSON (data) {
     body: JSON.stringify(data),
     redirect: 'follow',
     headers: {
+     'Authorization': 'Basic ' + btoa('visitor:'), 
       Accept: 'application/json',
       Authorization: 'insecure'
     }

@@ -4,7 +4,7 @@
       v-for="(item, index) in value"
       :is="toType(item)"
       :value="item"
-      :key="item"
+      :key="key(item) || index"
       @focus="focus(index)"
       @input="input(index, $event)"
       @remove="remove(index)"
@@ -36,9 +36,11 @@ export default {
     }
   },
   computed: {
-
   },
   methods: {
+    key (item) {
+      return item && item['@id']
+    },
     focus (index) {
       console.debug('value-array focus', index)
       this.focusIndex = index
@@ -47,7 +49,9 @@ export default {
       this.$set(this.value, index, val)
     },
     remove (index) {
-      this.$emit('input', this.value.splice(index, 1))
+      const input = this.value.slice()
+      input.splice(index, 1)
+      this.$emit('input', input)
     },
     push () {
       var a = this.value
@@ -65,7 +69,7 @@ export default {
     ValueArray,
     ValueLiteral,
     ValueObject,
-    ValueObject,
+    ValueReference,
     ValueString,
     ValueText
   }

@@ -58,9 +58,10 @@ export default {
       if (!this.a || !this.a['@id']) {
         return console.warn('input single only supports fragments with @id')
       }
-      var a = this.storage(this.a)
 
-      var pieces = this.path && this.path.split('.') || []
+      let a = this.storage(this.a)
+
+      const pieces = this.path && this.path.split('.') || []
       let lastPiece = '.'
 
       // Loop over all path pieces
@@ -70,7 +71,7 @@ export default {
         // Return the last piece and its parent
         if (i === pieces.length - 1) {
           if (typeof a[piece] === 'undefined') {
-            this.$set(a, piece, '(something went wrong)')
+            this.$set(a, piece, '')
           }
           return {
             parent: a,
@@ -78,13 +79,18 @@ export default {
           }
         }
 
-        // Really need this to be an object
-        if (a[piece] === null || typeof a[piece] !== 'object') {
-          this.$set(a, piece, { blub: 'blub' })
+        if (a[piece] === undefined) {
+          this.$set(a, piece, { '@id': '', '@type':'', 'schema:name': '' })
           a = a[piece]
-        } else {
+        } else if (!a[piece] || typeof a[piece] === 'string' || typeof a[piece] === 'number') {
+          a[piece] = { '@id': '', '@type':'', 'schema:name': a[piece] || '' }
+          a = a[piece]
+        } else if (typeof a[piece] === 'object') {
           a = this.storage(a[piece]) || a[piece]
+        } else {
+          console.warn('unexpected piece', a, piece)
         }
+
         lastPiece = piece
       }
       throw 'path param in follow() is required'

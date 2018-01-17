@@ -321,7 +321,7 @@
                     <p class="pre-wrap" v-if="order.orderedItem.description">{{order.orderedItem.description}}</p>
                   </td>
                   <td class="e">
-                    <span v-if="order.acceptedOffer.price">
+                    <span v-if="order.acceptedOffer && order.acceptedOffer.price">
                     € {{order.acceptedOffer.price||0}}
                     </span>
                   </td>
@@ -350,7 +350,7 @@
 
       <div class="print-hidden">
         <div class="invoice-ctrl">
-          <button class="btn btn-soft" @click="preview=0">Close</button>
+          <button class="btn btn-soft" @click="close">Close</button>
         </div>
       </div>
     </div>
@@ -453,25 +453,33 @@ export default {
       return this.a.provider && this.a.provider['be:taxExemptionRule']
     },
     total () {
-      return last(this.totalPaymentDue).price
+      const due = last(this.totalPaymentDue)
+      return due && due.price
     },
     orders () {
-      return Array.isArray(this.a.referencesOrder) ? this.a.referencesOrder : [this.a.referencesOrder]
+      const ro = this.a.referencesOrder
+      console.log('this.orders', this.a.referencesOrder)
+      return Array.isArray(ro) ? ro : ro && (ro.orderedItem || ro.acceptedOffer) ? [ro] : []
     },
     totalPaymentDue () {
       if (this.a.totalPaymentDue) {
         return this.a.totalPaymentDue
       }
 
-      if (!this.orders) {
-        this.a.referencesOrder = [{
+      if (!this.orders.length) {
+        const firstItem = {
           orderedItem: {
-            name: ''
+            name: 'a'
           },
           acceptedOffer: {
             price: 10
           }
-        }]
+        }
+        if (Array.isArray(this.a.referencesOrder)) {
+          this.a.referencesOrder.push(firstItem)
+        } else {
+          this.a.referencesOrder = [firstItem]
+        }
       }
 
       if (typeof this.orders[0] !== 'object') {
@@ -484,6 +492,7 @@ export default {
       var tax = inert(defaultTax)
       this.orders.forEach(function(v, k) {
 
+        if (!v) return
         if (!v.orderedItem) return
         if (!v.acceptedOffer) return
 
@@ -553,6 +562,12 @@ export default {
     }
   },
   methods: {
+    keydown (evt) {
+      if ((evt.keyCode || evt.which) === 27) {
+        this.$emit('close')
+        this.close()
+      }
+    },
     print () {
       var content = document.getElementById('printme').innerHTML
       var pri = document.getElementById('ifmcontentstoprint').contentWindow
@@ -561,6 +576,9 @@ export default {
       pri.document.close()
       pri.focus()
       pri.print()
+    },
+    close () {
+      this.preview = 0
     }
   },
   created () {
@@ -571,6 +589,10 @@ export default {
     setTimeout(() => {
       this.$root.show.view = 'Invoice'
     }, 0)
+    window.addEventListener('keydown', this.keydown)
+  },
+  beforeDestroy () {
+    window.removeEventListener('keydown', this.keydown)
   },
   beforeCreate () {
     this.$parent.addCapability({

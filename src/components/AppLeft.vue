@@ -25,7 +25,15 @@
 export default {
   methods: {
     createByType () {
-
+      const id = '_:' + Math.random().toString(36).slice(2)
+      this.$root.setFragment({
+        '@type': null,
+        '@id': id,
+        'schema:name': null,
+        'schema:description': null,
+        'schema:url': null
+      })
+      window.location.hash = '!' + id
     }
   }
 }
