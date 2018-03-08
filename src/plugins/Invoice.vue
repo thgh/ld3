@@ -424,6 +424,9 @@ export default {
       var n = this.a.url || this.a['@id'] || 'nope'
       n = n.slice(n.lastIndexOf(':') + 1)
       n = n.slice(n.lastIndexOf('/') + 1)
+      if (n.startsWith('2018-')) {
+        return n.slice(0, 8)
+      }
       if (n.startsWith('2017')) {
         return n.charAt(7)
       }
