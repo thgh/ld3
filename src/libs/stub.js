@@ -15,6 +15,9 @@ function suggest (type) {
       return ['schema:name', 'schema:streetAddress', 'schema:addressLocality', 'schema:postalCode', 'schema:addressCountry']
     case 'Invoice':
       return ['schema:name', 'schema:description', 'schema:dateCreated', 'schema:paymentDueDate', 'schema:paymentMethod', 'schema:provider', 'schema:customer', 'schema:referencesOrder']
+    case 'Offer': return ['schema:price']
+    case 'Order': return ['schema:orderedItem', 'schema:acceptedOffer']
+    case 'OrderItem': return ['schema:name']
   }
   return ['schema:name', 'schema:description', 'schema:url']
 }
