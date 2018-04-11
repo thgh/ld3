@@ -19,12 +19,12 @@ export default {
     }
   },
   methods: {
-    createByType () {
+    createByType (type) {
       const id = '_:' + Math.random().toString(36).slice(2)
       this.$root.setFragment({
-        '@type': null,
+        '@type': 'schema:' + type,
         '@id': id,
-        'schema:name': null,
+        'schema:name': 'new ' + type,
         'schema:description': null,
         'schema:url': null
       })
