@@ -32,7 +32,7 @@
     <nav class="fragment__nav">
       <div class="nav-right">
         <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI">URI</button>
-        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.showURI = !$root.showURI">Duplicate</button>
+        <button class="btn btn-soft app-nav__uri" type="button" @click="$root.copyFragment(fragment['@id'])">Duplicate</button>
         <button class="btn btn-soft app-nav__uri" type="button" @click="$root.show.json = !$root.show.json">JSON</button>
         <button class="btn btn-soft app-nav__uri" type="button" @click="$root.sync(fragment['@id'])">Save</button>
         <button class="btn btn-soft app-nav__uri" type="button" @click="$root.discard(fragment['@id'])">Discard</button>
@@ -93,10 +93,7 @@ export default {
       if (!this.copyURI) {
         return console.warn('Fragment: copyURI is empty')
       }
-      var uri = this.$root.copyFragment(this.fragment['@id'], this.copyURI)
-      if (uri) {
-        window.location.href = '#!' + uri
-      }
+      this.$root.copyFragment(this.fragment['@id'], this.copyURI)
     }
   },
   watch: {

@@ -211,13 +211,18 @@ export default {
       if (!this.fragments[uri]) {
         return console.warn('Store.rename: cant find', uri)
       }
-      if (this.fragments[to]) {
+      if (!to) {
+        const index = uri.lastIndexOf('/')
+        to = index > 0 ? uri.slice(0, index + 1) : '_:'
+        to += Math.random().toString(36).slice(2)
+      } else if (this.fragments[to]) {
         return console.warn('Store.rename: overwriting is disabled', to)
       }
       var temp = inert(this.fragments[uri])
       temp['@id'] = to
       this.setFragment(temp)
       console.log('copied', uri, 'to', to)
+      window.location.href = '#!' + to
       return to
     },
     setFragment (f, fetched) {
