@@ -9,7 +9,7 @@
     <span v-else v-text="placeholder"></span>
     <input-class v-model="model['@type']" placeholder="wut"></input-class>
     <span class="icon-clear" @click="clear">&times;</span>
-    <props-list v-if="focus" :fragment="value"></props-list>
+    <props-list v-if="expanded || !isReference" :fragment="value"></props-list>
   </div>
 </template>
 
@@ -26,6 +26,7 @@ export default {
   props: ['value', 'id', 'focus'],
   data () {
     return {
+      expanded: false,
       search: false
     }
   },
@@ -58,9 +59,9 @@ export default {
   },
   methods: {
     objectFocus () {
-      if (!this.focus) {
+      if (this.isReference) {
         console.debug('objectFocus')
-        this.$emit('focus')
+        this.expanded = !this.expanded
       }
     },
     toggleRef (evt) {

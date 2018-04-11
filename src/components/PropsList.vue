@@ -85,12 +85,13 @@ export default {
   flex-shrink: 0;
 }
 .prop .props-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  margin-left: 0;
-  margin-right: 0;
+  // position: absolute;
+  // top: 100%;
+  // left: 0;
+  // right: 0;
+  font-size: 14px;
+  margin-left: .2rem;
+  margin-right: -.5rem;
   padding: 0 0 .5rem;
   // outline: 1px solid purple;
   transition: background .3s;

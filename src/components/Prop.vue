@@ -67,6 +67,13 @@ export default {
 <style lang="scss">
 @import '../scss/variables';
 
+.prop  {
+  .inp--label-prop, .prop {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}
+
 .prop {
   &:hover {
     // z-index: 11;
